@@ -1,3 +1,59 @@
-<%- include("templates/header") %> 
-    
-<%- include("templates/footer") %> 
+<%- include("templates/header") %>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Profile Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <p><%= name %></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <p><%= email %></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password-input" value=<%= password %>
+                                disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()"
+                                    id="showPassword">Show</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dietaryRestrictions">Dietary Restrictions:</label>
+                        <% if (dietaryRestrictions && dietaryRestrictions.length) { %>
+                        <ul>
+                            <% dietaryRestrictions.forEach(function(item) { %>
+                            <li><%= item %></li>
+                            <% }); %>
+                        </ul>
+                        <% } else { %>
+                        <p>No dietary restrictions specified.</p>
+                        <% } %>
+                    </div>
+                    <!-- <a href="/editProfile" class="btn btn-primary">Edit Profile</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password-input');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    }
+</script>
+
+<%- include("templates/footer") %>

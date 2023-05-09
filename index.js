@@ -46,6 +46,12 @@ var mongoStore = MongoStore.create({
     }
 })
 
+// Generate a random token
+function generateToken() {
+    const token = crypto.randomBytes(20).toString('hex');
+    return token;
+  }
+
 app.use(express.json());
 
 
@@ -80,7 +86,7 @@ app.post('/submit', async (req, res) => {
         var name = req.body.name;
         var email = req.body.email;
         var password = req.body.password;
-        const dietaryRestrictions = req.body.dietaryRestrictions;
+        var dietaryRestrictions = req.body.dietaryRestrictions;
 
         // Validate the user input using Joi
         const Joi = require('joi');
@@ -131,6 +137,10 @@ app.post('/submit', async (req, res) => {
         req.session.authenticated = true;
         req.session.userId = result.insertedId;
         req.session.name = name;
+        req.session.email = email;
+        req.session.password = password;
+        req.session.dietaryRestrictions = dietaryRestrictions;
+
 
         // Redirect the user to the home page
         res.render("home", {name: req.session.name});
@@ -189,6 +199,28 @@ app.post('/loggingin', async (req, res) => {
     }
 });
 
+app.get('/profile', (req, res) => {
+    var name = req.session.name;
+    var email = req.session.email;
+    var password = req.session.password;
+    var restrictions = req.session.dietaryRestrictions;
+    if (!req.session.authenticated) {
+        res.render("index");
+    }
+    res.render("profile", {email: email, name: name, password: password, dietaryRestrictions: restrictions});
+});
+
+// app.get('/editProfile', (req, res) => {
+//     var name = req.session.name;
+//     var email = req.session.email;
+//     var password = req.session.password;
+//     var restrictions = req.session.dietaryRestrictions;
+//     if (!req.session.authenticated) {
+//         res.render("index");
+//     }
+//     res.render("editProfile", {email: email, name: name, password: password, dietaryRestrictions: restrictions, allRestrictions: dietaryRestrictions});
+// });
+
 app.get('/home', (req, res) => {
     if (!req.session.authenticated) {
         res.render("index");
@@ -198,17 +230,111 @@ app.get('/home', (req, res) => {
 
 });
 
+// Route for rendering forgot password form
+app.get('/forgot-password', (req, res) => {
+    res.render('forgot-password');
+});
+
+// Route for handling password reset request
+app.post('/forgot-password', (req, res) => {
+    const { email } = req.body;
+
+    // Validate email using Joi
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+    });
+    const { error } = schema.validate({ email });
+    if (error) {
+        return res.status(400).send('Invalid email');
+    }
+
+    // Check if user exists in the database
+    userCollection.findOne({ email }, (err, user) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal server error');
+        }
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Generate unique token and store it in the database along with user email and expiration time
+        const resetToken = generateToken();
+        const expirationTime = Date.now() + expireTime;
+        userCollection.updateOne({ email }, { $set: { resetToken, expirationTime } }, (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Internal server error');
+            }
+
+            // Send password reset email with reset token
+            const resetLink = `http://localhost:${port}/reset-password?token=${resetToken}`;
+            sendResetPasswordEmail(email, resetLink);
+
+            res.send('Password reset email sent');
+        });
+    });
+});
+
+// Route for rendering password reset form
+app.get('/reset-password', (req, res) => {
+    const { token } = req.query;
+
+    // Check if token exists and hasn't expired
+    userCollection.findOne({ resetToken: token, expirationTime: { $gt: Date.now() } }, (err, user) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal server error');
+        }
+        if (!user) {
+            return res.status(404).send('Invalid or expired token');
+        }
+
+        res.render('reset-password', { token });
+    });
+});
+
+// Route for handling password reset
+app.post('/reset-password', (req, res) => {
+    const { token, password } = req.body;
+
+    // Check if token exists and hasn't expired
+    userCollection.findOne({ resetToken: token, expirationTime: { $gt: Date.now() } }, (err, user) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal server error');
+        }
+        if (!user) {
+            return res.status(404).send('Invalid or expired token');
+        }
+
+        // Hash new password and update in the database
+        bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Internal server error');
+            }
+            userCollection.updateOne({ email: user.email }, { $set: { password: hashedPassword } }, (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Internal server error');
+                }
+
+                res.send('Password reset successful');
+            });
+        });
+    });
+});
+
+  
+  
+
 app.get('/logout', (req, res) => {
     req.session.destroy();
     res.render('index');
 });
 
 app.use(express.static(__dirname + "/public"));
-
-app.get('/public/dietaryRestrictions.json', (req, res) => {
-    res.sendFile(__dirname + "/public/dietaryRestrictions.json");
-});
-
 app.get("*", (req, res) => {
     res.status(404);
     res.render("404");
