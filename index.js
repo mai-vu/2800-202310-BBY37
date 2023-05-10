@@ -313,7 +313,7 @@ app.post('/forgot-password', async (req, res) => {
         );
 
         // Send password reset email with reset token
-        const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+        const resetLink = `https://entreepreneur.cyclic.app/reset-password?token=${resetToken}`;
         sendResetPasswordEmail(email, resetLink);
         console.log(resetLink);
 
@@ -322,8 +322,6 @@ app.post('/forgot-password', async (req, res) => {
         console.error(err);
         return res.status(500).send('Internal server error');
     }
-
-    console.log('After');
 });
 
 
