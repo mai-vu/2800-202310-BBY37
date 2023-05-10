@@ -7,6 +7,7 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const Joi = require("joi");
 const saltRounds = 12;
+const crypto = require('crypto');
 const fs = require('fs');
 
 // read and parse the JSON file
@@ -27,11 +28,33 @@ const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 /* END secret section */
 
+/** For sending reset password email */
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 var {
     database
 } = include('database');
 
 const userCollection = database.db(mongodb_database).collection('users');
+
+const sendResetPasswordEmail = (email, resetLink) => {
+    const msg = {
+        to: email,
+        from: 'noreply.entreepreneur@gmail.com',
+        subject: 'Reset your password for Entreepreneur account',
+        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`
+    };
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+};
+
 
 app.set('view engine', 'ejs')
 
@@ -50,7 +73,7 @@ var mongoStore = MongoStore.create({
 function generateToken() {
     const token = crypto.randomBytes(20).toString('hex');
     return token;
-  }
+}
 
 app.use(express.json());
 
@@ -78,7 +101,9 @@ app.get('/', (req, res) => {
 // Define a route for the sign up page
 app.get('/signup', (req, res) => {
     console.log(dietaryRestrictions);
-    res.render('signup', { dietaryRestrictions: dietaryRestrictions });
+    res.render('signup', {
+        dietaryRestrictions: dietaryRestrictions
+    });
 });
 
 app.post('/submit', async (req, res) => {
@@ -143,7 +168,9 @@ app.post('/submit', async (req, res) => {
 
 
         // Redirect the user to the home page
-        res.render("home", {name: req.session.name});
+        res.render("home", {
+            name: req.session.name
+        });
     } catch (err) {
         console.error(err);
         res.send('An error occurred. Please try again later.');
@@ -171,7 +198,6 @@ app.post('/loggingin', async (req, res) => {
     }).project({
         email: 1,
         name: 1,
-        user_type: 1,
         password: 1,
         _id: 1
     }).toArray();
@@ -189,7 +215,9 @@ app.post('/loggingin', async (req, res) => {
         req.session.user_type = result[0].user_type
         req.session.cookie.maxAge = expireTime;
 
-        res.render('home', {name: req.session.name});
+        res.render('home', {
+            name: req.session.name
+        });
         return;
     } else {
         console.log("incorrect password");
@@ -207,7 +235,12 @@ app.get('/profile', (req, res) => {
     if (!req.session.authenticated) {
         res.render("index");
     }
-    res.render("profile", {email: email, name: name, password: password, dietaryRestrictions: restrictions});
+    res.render("profile", {
+        email: email,
+        name: name,
+        password: password,
+        dietaryRestrictions: restrictions
+    });
 });
 
 // app.get('/editProfile', (req, res) => {
@@ -226,7 +259,9 @@ app.get('/home', (req, res) => {
         res.render("index");
     }
 
-    res.render("home", {name: req.session.name});
+    res.render("home", {
+        name: req.session.name
+    });
 
 });
 
@@ -236,98 +271,116 @@ app.get('/forgot-password', (req, res) => {
 });
 
 // Route for handling password reset request
-app.post('/forgot-password', (req, res) => {
-    const { email } = req.body;
+// Route for handling password reset request
+app.post('/forgot-password', async (req, res) => {
+    const {
+        email
+    } = req.body;
+
+    const Joi = require('joi');
 
     // Validate email using Joi
     const schema = Joi.object({
-        email: Joi.string().email().required(),
+        email: Joi.string().email().required()
     });
-    const { error } = schema.validate({ email });
+    const {error} = schema.validate({email});
     if (error) {
         return res.status(400).send('Invalid email');
     }
 
-    // Check if user exists in the database
-    userCollection.findOne({ email }, (err, user) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Internal server error');
-        }
+    try {
+        // Check if user exists in the database
+        const user = await userCollection.findOne({ email: email });
+        console.log('Email: ' + email);
         if (!user) {
             return res.status(404).send('User not found');
         }
+        console.log('User: ' + user.name);
 
         // Generate unique token and store it in the database along with user email and expiration time
         const resetToken = generateToken();
         const expirationTime = Date.now() + expireTime;
-        userCollection.updateOne({ email }, { $set: { resetToken, expirationTime } }, (err, result) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send('Internal server error');
+        console.log(resetToken);
+        console.log(expirationTime);
+        const result = await userCollection.updateOne(
+            { email: email },
+            {
+                $set: {
+                    resetToken: resetToken,
+                    expirationTime: expirationTime
+                }
             }
+        );
 
-            // Send password reset email with reset token
-            const resetLink = `http://localhost:${port}/reset-password?token=${resetToken}`;
-            sendResetPasswordEmail(email, resetLink);
+        // Send password reset email with reset token
+        const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+        sendResetPasswordEmail(email, resetLink);
+        console.log(resetLink);
 
-            res.send('Password reset email sent');
-        });
-    });
+        res.send('Password reset email sent');
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send('Internal server error');
+    }
+
+    console.log('After');
 });
 
+
 // Route for rendering password reset form
-app.get('/reset-password', (req, res) => {
+app.get('/reset-password', async (req, res) => {
     const { token } = req.query;
 
-    // Check if token exists and hasn't expired
-    userCollection.findOne({ resetToken: token, expirationTime: { $gt: Date.now() } }, (err, user) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Internal server error');
-        }
+    try {
+        // Check if token exists and hasn't expired
+        const user = await userCollection.findOne({
+            resetToken: token,
+            expirationTime: { $gt: Date.now() }
+        });
+
         if (!user) {
             return res.status(404).send('Invalid or expired token');
         }
 
         res.render('reset-password', { token });
-    });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal server error');
+    }
 });
 
 // Route for handling password reset
-app.post('/reset-password', (req, res) => {
+app.post('/reset-password', async (req, res) => {
     const { token, password } = req.body;
 
-    // Check if token exists and hasn't expired
-    userCollection.findOne({ resetToken: token, expirationTime: { $gt: Date.now() } }, (err, user) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Internal server error');
-        }
+    try {
+        // Check if token exists and hasn't expired
+        const user = await userCollection.findOne({
+            resetToken: token,
+            expirationTime: { $gt: Date.now() }
+        });
+
         if (!user) {
             return res.status(404).send('Invalid or expired token');
         }
 
         // Hash new password and update in the database
-        bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send('Internal server error');
-            }
-            userCollection.updateOne({ email: user.email }, { $set: { password: hashedPassword } }, (err, result) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send('Internal server error');
-                }
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-                res.send('Password reset successful');
-            });
-        });
-    });
+        await userCollection.updateOne(
+            { email: user.email },
+            { $set: { password: hashedPassword } }
+        );
+
+        // Redirect to login page after password reset
+        res.redirect('/login');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal server error');
+    }
 });
 
-  
-  
+
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
