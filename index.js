@@ -17,7 +17,7 @@ const dietaryRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictio
 const app = express();
 const port = process.env.PORT || 3000;
 
-const expireTime = 2 * 60 * 60 * 1000; // expires in 2 hours (in milliseconds)
+const expireTime = 60 * 60 * 1000; // expires in 1 hour (in milliseconds)
 
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
@@ -135,7 +135,8 @@ app.get('/', (req, res) => {
         return;
     } else {
         res.render("home", {
-            name: req.session.name
+            name: req.session.name,
+            dietaryRestrictions: req.session.dietaryRestrictions
         });
         return;
     }
@@ -156,6 +157,9 @@ app.post('/submit', async (req, res) => {
         var email = req.body.email;
         var password = req.body.password;
         var dietaryRestrictions = req.body.dietaryRestrictions;
+        if (!Array.isArray(dietaryRestrictions)) {
+            dietaryRestrictions = [dietaryRestrictions];
+        }
 
         // Validate the user input using Joi
         const Joi = require('joi');
@@ -188,6 +192,7 @@ app.post('/submit', async (req, res) => {
         });
         if (user) {
             res.send(`The email address is already in use. <a href="/signup">Try again</a>`);
+            return;
         }
 
         // Hash the password using bcrypt
@@ -243,6 +248,7 @@ app.post('/loggingin', async (req, res) => {
         email: 1,
         name: 1,
         password: 1,
+        dietaryRestrictions: 1,
         _id: 1
     }).toArray();
 
@@ -256,7 +262,9 @@ app.post('/loggingin', async (req, res) => {
         console.log("correct password");
         req.session.authenticated = true;
         req.session.name = result[0].name;
-        req.session.user_type = result[0].user_type
+        req.session.email = result[0].email;
+        req.session.password = password;
+        req.session.dietaryRestrictions = result[0].dietaryRestrictions;
         req.session.cookie.maxAge = expireTime;
 
         res.render('home', {
@@ -346,16 +354,15 @@ app.post('/forgot-password', async (req, res) => {
         const expirationTime = Date.now() + expireTime;
         console.log(resetToken);
         console.log(expirationTime);
-        const result = await userCollection.updateOne(
-            { email: email },
-            {
-                $set: {
-                    resetToken: resetToken,
-                    expirationTime: expirationTime
-                }
+        const result = await userCollection.updateOne({
+            email: email
+        }, {
+            $set: {
+                resetToken: resetToken,
+                expirationTime: expirationTime
             }
-        );
-
+        });
+        
         // Send password reset email with reset token
         // const resetLink = `https://entreepreneur.cyclic.app/reset-password?token=${resetToken}`;
 
