@@ -9,6 +9,7 @@ const Joi = require("joi");
 const saltRounds = 12;
 const crypto = require('crypto');
 const fs = require('fs');
+const { Configuration, OpenAIApi } = require("openai");
 
 // read and parse the JSON file
 const dietaryRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.json'));
@@ -24,8 +25,12 @@ const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
 const node_session_secret = process.env.NODE_SESSION_SECRET;
+
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  const openai = new OpenAIApi(configuration);
 /* END secret section */
 
 /** For sending reset password email */
@@ -55,6 +60,9 @@ const sendResetPasswordEmail = (email, resetLink) => {
         })
 };
 
+// prompt test variable
+let testPrompt = "can you give me a recipe for a vegan meal that is low in calories and high in protein?"
+
 
 app.set('view engine', 'ejs')
 
@@ -68,6 +76,7 @@ var mongoStore = MongoStore.create({
         secret: mongodb_session_secret
     }
 })
+
 
 // Generate a random token
 function generateToken() {
@@ -84,6 +93,41 @@ app.use(session({
     saveUninitialized: false,
     resave: true
 }));
+
+app.get('/test', async (req, res) => {
+    if (!configuration.apiKey) {
+       console.log("API key is not configured");
+       res.status(500).send("API key is not configured");
+    } else {
+          console.log("API key is configured");
+          
+      }
+
+      try {
+        const completion = await openai.createCompletion({
+          model: "text-davinci-003",
+          prompt: testPrompt,
+          temperature: 0.6,
+        });
+        res.status(200).json({ result: completion.data.choices[0].text });
+        console.log(completion.data)
+      } catch(error) {
+        // Consider adjusting the error handling logic for your use case
+        if (error.response) {
+          console.error(error.response.status, error.response.data);
+          res.status(error.response.status).json(error.response.data);
+        } else {
+          console.error(`Error with OpenAI API request: ${error.message}`);
+          res.status(500).json({
+            error: {
+              message: 'An error occurred during your request.',
+            }
+          });
+        }
+      }
+    
+});
+
 
 app.get('/', (req, res) => {
     if (!req.session.authenticated) {
@@ -313,7 +357,9 @@ app.post('/forgot-password', async (req, res) => {
         );
 
         // Send password reset email with reset token
-        const resetLink = `https://entreepreneur.cyclic.app/reset-password?token=${resetToken}`;
+        // const resetLink = `https://entreepreneur.cyclic.app/reset-password?token=${resetToken}`;
+
+        const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`; 
         sendResetPasswordEmail(email, resetLink);
         console.log(resetLink);
 
