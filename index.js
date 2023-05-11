@@ -113,6 +113,9 @@ app.post('/submit', async (req, res) => {
         var email = req.body.email;
         var password = req.body.password;
         var dietaryRestrictions = req.body.dietaryRestrictions;
+        if (!Array.isArray(dietaryRestrictions)) {
+            dietaryRestrictions = [dietaryRestrictions];
+        }
 
         // Validate the user input using Joi
         const Joi = require('joi');
@@ -145,6 +148,7 @@ app.post('/submit', async (req, res) => {
         });
         if (user) {
             res.send(`The email address is already in use. <a href="/signup">Try again</a>`);
+            return;
         }
 
         // Hash the password using bcrypt
@@ -306,16 +310,15 @@ app.post('/forgot-password', async (req, res) => {
         const expirationTime = Date.now() + expireTime;
         console.log(resetToken);
         console.log(expirationTime);
-        const result = await userCollection.updateOne(
-            { email: email },
-            {
-                $set: {
-                    resetToken: resetToken,
-                    expirationTime: expirationTime
-                }
+        const result = await userCollection.updateOne({
+            email: email
+        }, {
+            $set: {
+                resetToken: resetToken,
+                expirationTime: expirationTime
             }
-        );
-
+        });
+        
         // Send password reset email with reset token
         const resetLink = `https://entreepreneur.cyclic.app/reset-password?token=${resetToken}`;
         sendResetPasswordEmail(email, resetLink);
