@@ -61,7 +61,7 @@ const sendResetPasswordEmail = (email, resetLink) => {
 };
 
 // prompt test variable
-let testPrompt = "can you give me a recipe for a vegan meal that is low in calories and high in protein?"
+let testPrompt = "can you give me 3 recipe names if i have rice beans and beef in json format"
 
 
 app.set('view engine', 'ejs')
@@ -108,8 +108,9 @@ app.get('/test', async (req, res) => {
           model: "text-davinci-003",
           prompt: testPrompt,
           temperature: 0.6,
+          max_tokens: 100,
         });
-        res.status(200).json({ result: completion.data.choices[0].text });
+        res.status(200).send({ result: completion.data.choices[0].text });
         console.log(completion.data)
       } catch(error) {
         // Consider adjusting the error handling logic for your use case
