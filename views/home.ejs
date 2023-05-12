@@ -1,4 +1,46 @@
-<%- include("templates/header") %> 
-    <!-- home page content -->
-    Hello, <%= name %>
-<%- include("templates/footer") %> 
+<%- include("templates/header") %>
+<!-- home page content -->
+Hello, <%= name %>
+<a href="#" class="button" id="getRecipesButton">Get Recipes</a>
+
+<div id="recipeContainer">
+    <% if (recipes && recipes.length > 0) { %>
+        <% recipes.forEach(recipe => { %>
+            <div class="card">
+                <h2><%= recipe.title %></h2>
+                <p><%= recipe.description %></p>
+            </div>
+        <% }); %>
+    <% } %>
+</div>
+
+<script>
+   document.getElementById("getRecipesButton").addEventListener("click", async function() {
+    // Your logic for fetching recipes here
+    fetch('/recipes')
+        .then(response => response.json())
+        .then(data => {
+            // Store the fetched recipes in the recipeContainer element
+            const recipeContainer = document.getElementById("recipeContainer");
+            recipeContainer.innerHTML = "";
+
+            if (data && data.recipes && data.recipes.length > 0) {
+                data.recipes.forEach(recipe => {
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+                    card.innerHTML = `
+                        <h2>${recipe.title}</h2>
+                        <p>${recipe.description}</p>
+                    `;
+                    recipeContainer.appendChild(card);
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching recipes:", error);
+        });
+});
+
+</script>
+
+<%- include("templates/footer") %>

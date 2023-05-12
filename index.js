@@ -60,13 +60,29 @@ const sendResetPasswordEmail = (email, resetLink) => {
         })
 };
 
+//
+let recentRecipes = [];
+
 // prompt test variable
 const testPrompt = `
 Write me the title of 3 recipes and a 1 sentence description. Return the response in the following parsable JSON format:
-    {
-        "title": "title of recipe",
-        "description": "description of recipe"
-    }
+{
+    "recipes": [
+      {
+        "title": "Title of Recipe 1",
+        "description": "Description of Recipe 1"
+      },
+      {
+        "title": "Title of Recipe 2",
+        "description": "Description of Recipe 2"
+      },
+      {
+        "title": "Title of Recipe 3",
+        "description": "Description of Recipe 3"
+      }
+    ]
+  }
+  
 `;
 
 
@@ -93,11 +109,17 @@ async function runPrompt(prompt) {
         temperature : 0.9,
     });
     const parsableJSON = response.data.choices[0].text;
-    // const parasableJSON = response.data.choices[0].text;
-    // const parsedJSON = JSON.parse(parasableJSON);
+
+    const parsedJSON = JSON.parse(parsableJSON);
 
     console.log(parsableJSON);
+    console.log(parsedJSON);
+    console.log(parsedJSON.recipes.length);
+    return parsedJSON;
+    
 };
+
+
 
 
 
@@ -153,19 +175,32 @@ app.use(session({
 // });
 
 
-app.get('/', (req, res) => {
-    runPrompt(testPrompt);
+app.get('/', async (req, res) => {
     if (!req.session.authenticated) {
         res.render("index");
         return;
     } else {
-        res.render("home", {
-            name: req.session.name,
-            dietaryRestrictions: req.session.dietaryRestrictions
-        });
-        return;
+        try {
+            const parsedJSON = await runPrompt(testPrompt);
+            recentRecipes = parsedJSON.recipes;
+            res.render("home", {
+                name: req.session.name,
+                dietaryRestrictions: req.session.dietaryRestrictions,
+                recipes: parsedJSON.recipes
+            });
+            return;
+        } catch (error) {
+            console.error("Error retrieving recipes:", error);
+            res.render("home", {
+                name: req.session.name,
+                dietaryRestrictions: req.session.dietaryRestrictions,
+                recipes: [] // Empty array if an error occurs
+            });
+            return;
+        }
     }
 });
+
 
 
 // Define a route for the sign up page
@@ -243,7 +278,8 @@ app.post('/submit', async (req, res) => {
 
         // Redirect the user to the home page
         res.render("home", {
-            name: req.session.name
+            name: req.session.name,
+            recipes: recentRecipes
         });
     } catch (err) {
         console.error(err);
@@ -293,7 +329,8 @@ app.post('/loggingin', async (req, res) => {
         req.session.cookie.maxAge = expireTime;
 
         res.render('home', {
-            name: req.session.name
+            name: req.session.name,
+            recipes: recentRecipes
         });
         return;
     } else {
@@ -334,13 +371,36 @@ app.get('/profile', (req, res) => {
 app.get('/home', (req, res) => {
     if (!req.session.authenticated) {
         res.render("index");
+        return;
     }
 
-    res.render("home", {
-        name: req.session.name
-    });
+    const recipes = req.session.recipes || [];
 
+    res.render("home", {
+        name: req.session.name,
+        recipes: recipes
+    });
 });
+
+
+
+app.get('/recipes', async (req, res) => {
+    try {
+        const parsedJSON = await runPrompt(testPrompt);
+        const recipes = parsedJSON.recipes;
+        req.session.recipes = recipes;
+        // Render the recipes directly instead of redirecting
+        res.json({ recipes });
+    } catch (error) {
+        console.error("Error retrieving recipes:", error);
+        res.status(500).json({ error: "Error retrieving recipes" });
+    }
+});
+
+
+
+
+
 
 // Route for rendering forgot password form
 app.get('/forgot-password', (req, res) => {
