@@ -301,7 +301,7 @@ app.post('/updateProfile', async (req, res) => {
         return res.render('editProfile', {
             error: 'Current password is incorrect.',
             email,
-            name: user.name,
+            name,
             password: user.password,
             dietaryRestrictions: user.dietaryRestrictions,
             allRestrictions
