@@ -101,7 +101,6 @@ app.get('/', (req, res) => {
 
 // Define a route for the sign up page
 app.get('/signup', (req, res) => {
-    console.log(dietaryRestrictions);
     res.render('signup', {
         dietaryRestrictions: dietaryRestrictions
     });
@@ -168,7 +167,7 @@ app.post('/submit', async (req, res) => {
         req.session.userId = result.insertedId;
         req.session.name = name;
         req.session.email = email;
-        req.session.password = password;
+        req.session.password = hashedPassword;
         req.session.dietaryRestrictions = dietaryRestrictions;
 
 
@@ -219,7 +218,7 @@ app.post('/loggingin', async (req, res) => {
         req.session.authenticated = true;
         req.session.name = result[0].name;
         req.session.email = result[0].email;
-        req.session.password = password;
+        req.session.password = result[0].password;
         req.session.dietaryRestrictions = result[0].dietaryRestrictions;
         req.session.cookie.maxAge = expireTime;
 

@@ -16,16 +16,6 @@
                         <p><%= email %></p>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="password-input" value=<%= password %> disabled>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()"
-                                    id="showPassword">Show</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="dietaryRestrictions">Dietary Restrictions:</label>
                         <% if (dietaryRestrictions && dietaryRestrictions.length) { %>
                         <ul>
@@ -43,16 +33,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    function togglePassword() {
-        const passwordInput = document.getElementById('password-input');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-        } else {
-            passwordInput.type = 'password';
-        }
-    }
-</script>
 
 <%- include("templates/footer") %>
