@@ -1,4 +1,15 @@
 <%- include("templates/header") %> 
     <!-- home page content -->
-    Hello, <%= name %>
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold">
+            Hello, <%= name %>!
+        </h1>
+        <div class="col-lg-6 mx-auto">
+            Let's reduce food waste, one dish at a time!
+        </div>
+        <form class="w-100 me-3" role="search">
+            <input class="form-control" type="search" id="ingredientInput" placeholder="Enter ingredient">
+            <button class="btn btn-info my-1" id="addIngredientBtn">Add</button>
+        </form>
+    </div>
 <%- include("templates/footer") %> 
