@@ -11,7 +11,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 
 // read and parse the JSON file
-const dietaryRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.json'));
+const allRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.json'));
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -102,7 +102,7 @@ app.get('/', (req, res) => {
 // Define a route for the sign up page
 app.get('/signup', (req, res) => {
     res.render('signup', {
-        dietaryRestrictions: dietaryRestrictions
+        dietaryRestrictions: allRestrictions
     });
 });
 
@@ -151,7 +151,7 @@ app.post('/submit', async (req, res) => {
         }
 
         // Hash the password using bcrypt
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        var hashedPassword = await bcrypt.hash(password, saltRounds);
 
         // Add the user to the MongoDB database
         const newUser = {
@@ -250,16 +250,79 @@ app.get('/profile', (req, res) => {
     });
 });
 
-// app.get('/editProfile', (req, res) => {
-//     var name = req.session.name;
-//     var email = req.session.email;
-//     var password = req.session.password;
-//     var restrictions = req.session.dietaryRestrictions;
-//     if (!req.session.authenticated) {
-//         res.render("index");
-//     }
-//     res.render("editProfile", {email: email, name: name, password: password, dietaryRestrictions: restrictions, allRestrictions: dietaryRestrictions});
-// });
+app.get('/editProfile', (req, res) => {
+    var name = req.session.name;
+    var email = req.session.email;
+    var password = req.session.password;
+    var restrictions = req.session.dietaryRestrictions;
+    if (!req.session.authenticated) {
+        res.render("index");
+    }
+    res.render("editProfile", {email: email, name: name, password: password, dietaryRestrictions: restrictions, allRestrictions: allRestrictions, error: undefined});
+});
+
+app.post('/updateProfile', async (req, res) => {
+    var { name, currentPassword, newPassword, confirmPassword, dietaryRestrictions } = req.body;
+
+    if (!Array.isArray(dietaryRestrictions)) {
+        dietaryRestrictions = [dietaryRestrictions];
+    }
+
+    const email = req.session.email;
+  
+    // Retrieve the current user from the database
+    const user = await userCollection.findOne({ email });
+
+    console.log(user);
+    // Check if the current password is correct
+    const isCorrectPassword = await bcrypt.compare(currentPassword, user.password);
+    if (!isCorrectPassword) {
+      return res.render('editProfile', {
+        error: 'Current password is incorrect.',
+        email,
+        name,
+        password: user.password,
+        dietaryRestrictions: user.dietaryRestrictions,
+        allRestrictions
+      });
+    }
+  
+    // Update the user's information
+    const updates = {
+      $set: { name, email, dietaryRestrictions }
+    };
+  
+    // Check if the user wants to update their password
+    if (newPassword && confirmPassword) {
+      // Check if the new password matches the confirmed password
+      if (newPassword !== confirmPassword) {
+        return res.render('editProfile', {
+          error: 'Passwords do not match.',
+          email,
+          name,
+          password: user.password,
+          confirmPassword,
+          dietaryRestrictions: user.dietaryRestrictions,
+          allRestrictions
+        });
+      }
+  
+      // Hash the new password and add it to the updates object
+      var hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+      updates.$set.password = hashedPassword;
+    }
+  
+    // Update the user in the database
+    await userCollection.updateOne({ email }, updates);
+  
+    // Update the session with the new user information
+    req.session.name = name;
+    req.session.password = hashedPassword;
+    req.session.dietaryRestrictions = dietaryRestrictions;
+  
+    res.redirect('/profile');
+  });
+  
 
 app.get('/home', (req, res) => {
     if (!req.session.authenticated) {
