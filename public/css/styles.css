@@ -1,0 +1,9 @@
+@font-face {
+    font-family: virgo;
+    src: url(/public/files_font/virgo.ttf);
+}
+
+@font-face {
+    font-family: ostrich;
+    src: url(/public/files_font/ostrichSans.otf);
+}

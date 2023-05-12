@@ -1,0 +1,25 @@
+[{
+  "id": 0,
+  "name": "Vegan"
+}, {
+  "id": 1,
+  "name": "Vegetarian"
+}, {
+  "id": 2,
+  "name": "Gluten-Free"
+}, {
+  "id": 3,
+  "name": "Lactose-Free"
+}, {
+  "id": 4,
+  "name": "Kosher"
+}, {
+  "id": 5,
+  "name": "Halal"
+}, {
+  "id": 6,
+  "name": "Low-Carb"
+}, {
+  "id": 7,
+  "name": "Low-Fat"
+}]
