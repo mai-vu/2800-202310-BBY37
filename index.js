@@ -37,6 +37,7 @@ var {
 } = include('database');
 
 const userCollection = database.db(mongodb_database).collection('users');
+let ingredients = [];
 
 const sendResetPasswordEmail = (email, resetLink) => {
     const msg = {
@@ -98,6 +99,32 @@ app.get('/', (req, res) => {
     }
 });
 
+app.get('/home', (req, res) => {
+    if (!req.session.authenticated) {
+        res.render("index");
+    }
+    res.render("home", {
+        name: req.session.name,
+        ingredients: ingredients,
+    });
+});
+
+//Add ingredients to a list and prints on /home
+app.post('/home', (req, res) => {
+    const ingredient = req.body.ingredient.trim();
+    if (ingredient !== "") {
+        ingredients.push(ingredient);
+        console.log("Added " + ingredients);
+    }
+    res.redirect('/home');
+});
+
+//Clear ingredients list, then redirects /home
+app.post('/clearIngredients', (req, res) => {
+    ingredients = [];
+    console.log("Cleared all ingredients");
+    res.redirect('/home');
+});
 
 // Define a route for the sign up page
 app.get('/signup', (req, res) => {
@@ -341,7 +368,6 @@ app.get('/forgot-password', (req, res) => {
 });
 
 // Route for handling password reset request
-// Route for handling password reset request
 app.post('/forgot-password', async (req, res) => {
     const {
         email
@@ -446,8 +472,6 @@ app.post('/reset-password', async (req, res) => {
         res.status(500).send('Internal server error');
     }
 });
-
-
 
 app.get('/logout', (req, res) => {
     req.session.destroy();

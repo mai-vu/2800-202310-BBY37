@@ -1,0 +1,11 @@
+<!-- Prints ingredients -->
+<% if (ingredients.length > 0) { %>
+  <div class="text-start">
+    <h2>Ingredients:</h2>
+    <ul>
+        <% for (let i = 0; i < ingredients.length; i++) { %>
+            <li><%= ingredients[i] %></li>
+        <% } %>
+    </ul>
+  </div>
+<% } %>

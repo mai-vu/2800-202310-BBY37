@@ -7,9 +7,15 @@
         <div class="col-lg-6 mx-auto">
             Let's reduce food waste, one dish at a time!
         </div>
-        <form class="w-100 me-3" role="search">
-            <input class="form-control" type="search" id="ingredientInput" placeholder="Enter ingredient">
+        <form class="w-100 me-3" role="userInput" method="POST" action="/home">
+            <input class="form-control" type="text" id="ingredientInput" name="ingredient" placeholder="Enter ingredient">
             <button class="btn btn-info my-1" id="addIngredientBtn">Add</button>
         </form>
+        <%- include("ingredients") %> 
+        <% if (ingredients.length > 0) { %>
+            <form class="w-100" method="POST" action="/clearIngredients">
+                <button class="btn btn-danger">Clear Ingredients</button>
+            </form>
+          <% } %>
     </div>
 <%- include("templates/footer") %> 
