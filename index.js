@@ -61,7 +61,14 @@ const sendResetPasswordEmail = (email, resetLink) => {
 };
 
 // prompt test variable
-let testPrompt = "can you give me 3 recipe names if i have rice beans and beef in json format"
+const testPrompt = `
+Write me the title of 3 recipes and a 1 sentence description. Return the response in the following parsable JSON format:
+    {
+        "title": "title of recipe",
+        "description": "description of recipe"
+    }
+`;
+
 
 
 app.set('view engine', 'ejs')
@@ -76,6 +83,22 @@ var mongoStore = MongoStore.create({
         secret: mongodb_session_secret
     }
 })
+
+//function to for openai completion without test page
+async function runPrompt(prompt) {
+    const response = await openai.createCompletion({
+        model : "text-davinci-003",
+        prompt : prompt,
+        max_tokens : 2000,
+        temperature : 0.9,
+    });
+    const parsableJSON = response.data.choices[0].text;
+    // const parasableJSON = response.data.choices[0].text;
+    // const parsedJSON = JSON.parse(parasableJSON);
+
+    console.log(parsableJSON);
+};
+
 
 
 // Generate a random token
@@ -94,43 +117,44 @@ app.use(session({
     resave: true
 }));
 
-app.get('/test', async (req, res) => {
-    if (!configuration.apiKey) {
-       console.log("API key is not configured");
-       res.status(500).send("API key is not configured");
-    } else {
-          console.log("API key is configured");
+// app.get('/test', async (req, res) => {
+//     if (!configuration.apiKey) {
+//        console.log("API key is not configured");
+//        res.status(500).send("API key is not configured");
+//     } else {
+//           console.log("API key is configured");
           
-      }
+//       }
 
-      try {
-        const completion = await openai.createCompletion({
-          model: "text-davinci-003",
-          prompt: testPrompt,
-          temperature: 0.6,
-          max_tokens: 100,
-        });
-        res.status(200).send({ result: completion.data.choices[0].text });
-        console.log(completion.data)
-      } catch(error) {
-        // Consider adjusting the error handling logic for your use case
-        if (error.response) {
-          console.error(error.response.status, error.response.data);
-          res.status(error.response.status).json(error.response.data);
-        } else {
-          console.error(`Error with OpenAI API request: ${error.message}`);
-          res.status(500).json({
-            error: {
-              message: 'An error occurred during your request.',
-            }
-          });
-        }
-      }
+//       try {
+//         const completion = await openai.createCompletion({
+//           model: "text-davinci-003",
+//           prompt: testPrompt,
+//           temperature: 0.6,
+//           max_tokens: 100,
+//         });
+//         res.status(200).send({ result: completion.data.choices[0].text });
+//         console.log(completion.data)
+//       } catch(error) {
+//         // Consider adjusting the error handling logic for your use case
+//         if (error.response) {
+//           console.error(error.response.status, error.response.data);
+//           res.status(error.response.status).json(error.response.data);
+//         } else {
+//           console.error(`Error with OpenAI API request: ${error.message}`);
+//           res.status(500).json({
+//             error: {
+//               message: 'An error occurred during your request.',
+//             }
+//           });
+//         }
+//       }
     
-});
+// });
 
 
 app.get('/', (req, res) => {
+    runPrompt(testPrompt);
     if (!req.session.authenticated) {
         res.render("index");
         return;
