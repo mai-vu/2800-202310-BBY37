@@ -1,5 +1,4 @@
 require("./utils.js");
-
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -37,6 +36,7 @@ var {
 } = include('database');
 
 const userCollection = database.db(mongodb_database).collection('users');
+let ingredients = [];
 
 const sendResetPasswordEmail = (email, resetLink) => {
     const msg = {
@@ -54,7 +54,6 @@ const sendResetPasswordEmail = (email, resetLink) => {
             console.error(error)
         })
 };
-
 
 app.set('view engine', 'ejs')
 
@@ -77,7 +76,6 @@ function generateToken() {
 
 app.use(express.json());
 
-
 app.use(session({
     secret: node_session_secret,
     store: mongoStore, //default is memory store 
@@ -85,19 +83,44 @@ app.use(session({
     resave: true
 }));
 
+//Index page, gatekeeps if user is logged in
 app.get('/', (req, res) => {
-    if (!req.session.authenticated) {
-        res.render("index");
-        return;
-    } else {
-        res.render("home", {
-            name: req.session.name,
-            dietaryRestrictions: req.session.dietaryRestrictions
-        });
-        return;
-    }
+  if (!req.session.authenticated) {
+    const error = req.query.error;
+    res.render("index", { error: error });
+  } else {
+    res.redirect('/home');
+  }
 });
 
+app.get('/home', (req, res) => {
+    if (!req.session.authenticated) {
+        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+        return;
+      }
+    res.render("home", {
+        name: req.session.name,
+        dietaryRestrictions: req.session.dietaryRestrictions,
+        ingredients: ingredients,
+    });
+});
+
+//Add ingredients to a list and prints on /home
+app.post('/home', (req, res) => {
+    const ingredient = req.body.ingredient.trim();
+    if (ingredient !== "") {
+        ingredients.push(ingredient);
+        console.log("Added " + ingredients);
+    }
+    res.redirect('/home');
+});
+
+//Clear ingredients list, then redirects /home
+app.post('/clearIngredients', (req, res) => {
+    ingredients = [];
+    console.log("Cleared all ingredients");
+    res.redirect('/home');
+});
 
 // Define a route for the sign up page
 app.get('/signup', (req, res) => {
@@ -172,9 +195,7 @@ app.post('/submit', async (req, res) => {
 
 
         // Redirect the user to the home page
-        res.render("home", {
-            name: req.session.name
-        });
+        res.redirect('/home');
     } catch (err) {
         console.error(err);
         res.send('An error occurred. Please try again later.');
@@ -222,9 +243,7 @@ app.post('/loggingin', async (req, res) => {
         req.session.dietaryRestrictions = result[0].dietaryRestrictions;
         req.session.cookie.maxAge = expireTime;
 
-        res.render('home', {
-            name: req.session.name
-        });
+        res.redirect('/home');
         return;
     } else {
         console.log("incorrect password");
@@ -240,8 +259,9 @@ app.get('/profile', (req, res) => {
     var password = req.session.password;
     var restrictions = req.session.dietaryRestrictions;
     if (!req.session.authenticated) {
-        res.render("index");
-    }
+        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+        return;
+      }
     res.render("profile", {
         email: email,
         name: name,
@@ -256,8 +276,9 @@ app.get('/editProfile', (req, res) => {
     var password = req.session.password;
     var restrictions = req.session.dietaryRestrictions;
     if (!req.session.authenticated) {
-        res.render("index");
-    }
+        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+        return;
+      }
     res.render("editProfile", {email: email, name: name, password: password, dietaryRestrictions: restrictions, allRestrictions: allRestrictions, error: undefined});
 });
 
@@ -324,23 +345,11 @@ app.post('/updateProfile', async (req, res) => {
   });
   
 
-app.get('/home', (req, res) => {
-    if (!req.session.authenticated) {
-        res.render("index");
-    }
-
-    res.render("home", {
-        name: req.session.name
-    });
-
-});
-
 // Route for rendering forgot password form
 app.get('/forgot-password', (req, res) => {
     res.render('forgot-password');
 });
 
-// Route for handling password reset request
 // Route for handling password reset request
 app.post('/forgot-password', async (req, res) => {
     const {
@@ -447,11 +456,9 @@ app.post('/reset-password', async (req, res) => {
     }
 });
 
-
-
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.render('index');
+    res.redirect('/');
 });
 
 app.use(express.static(__dirname + "/public"));
