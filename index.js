@@ -298,14 +298,14 @@ app.post('/updateProfile', async (req, res) => {
     // Check if the current password is correct
     const isCorrectPassword = await bcrypt.compare(currentPassword, user.password);
     if (!isCorrectPassword) {
-      return res.render('editProfile', {
-        error: 'Current password is incorrect.',
-        email,
-        name,
-        password: user.password,
-        dietaryRestrictions: user.dietaryRestrictions,
-        allRestrictions
-      });
+        return res.render('editProfile', {
+            error: 'Current password is incorrect.',
+            email,
+            name: user.name,
+            password: user.password,
+            dietaryRestrictions: user.dietaryRestrictions,
+            allRestrictions
+          });
     }
   
     // Update the user's information
@@ -318,14 +318,13 @@ app.post('/updateProfile', async (req, res) => {
       // Check if the new password matches the confirmed password
       if (newPassword !== confirmPassword) {
         return res.render('editProfile', {
-          error: 'Passwords do not match.',
-          email,
-          name,
-          password: user.password,
-          confirmPassword,
-          dietaryRestrictions: user.dietaryRestrictions,
-          allRestrictions
-        });
+            error: 'Passwords do not match.',
+            email,
+            name,
+            password: user.password,
+            dietaryRestrictions: user.dietaryRestrictions,
+            allRestrictions
+          });
       }
   
       // Hash the new password and add it to the updates object
