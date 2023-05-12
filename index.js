@@ -1,5 +1,4 @@
 require("./utils.js");
-
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -56,7 +55,6 @@ const sendResetPasswordEmail = (email, resetLink) => {
         })
 };
 
-
 app.set('view engine', 'ejs')
 
 app.use(express.urlencoded({
@@ -78,7 +76,6 @@ function generateToken() {
 
 app.use(express.json());
 
-
 app.use(session({
     secret: node_session_secret,
     store: mongoStore, //default is memory store 
@@ -86,16 +83,13 @@ app.use(session({
     resave: true
 }));
 
+//Index page, gatekeeps if user is logged in
 app.get('/', (req, res) => {
     if (!req.session.authenticated) {
         res.render("index");
         return;
     } else {
-        res.render("home", {
-            name: req.session.name,
-            dietaryRestrictions: req.session.dietaryRestrictions,
-            ingredients: ingredients
-        });
+        res.redirect('/home');
         return;
     }
 });
@@ -106,6 +100,7 @@ app.get('/home', (req, res) => {
     }
     res.render("home", {
         name: req.session.name,
+        dietaryRestrictions: req.session.dietaryRestrictions,
         ingredients: ingredients,
     });
 });
@@ -200,11 +195,7 @@ app.post('/submit', async (req, res) => {
 
 
         // Redirect the user to the home page
-        res.render("home", {
-            name: req.session.name,
-            dietaryRestrictions: req.session.dietaryRestrictions,
-            ingredients: ingredients
-        });
+        res.redirect('/home');
     } catch (err) {
         console.error(err);
         res.send('An error occurred. Please try again later.');
@@ -252,11 +243,7 @@ app.post('/loggingin', async (req, res) => {
         req.session.dietaryRestrictions = result[0].dietaryRestrictions;
         req.session.cookie.maxAge = expireTime;
 
-        res.render('home', {
-            name: req.session.name,
-            dietaryRestrictions: req.session.dietaryRestrictions,
-            ingredients: ingredients
-        });
+        res.redirect('/home');
         return;
     } else {
         console.log("incorrect password");
@@ -355,17 +342,6 @@ app.post('/updateProfile', async (req, res) => {
     res.redirect('/profile');
   });
   
-
-app.get('/home', (req, res) => {
-    if (!req.session.authenticated) {
-        res.render("index");
-    }
-
-    res.render("home", {
-        name: req.session.name
-    });
-
-});
 
 // Route for rendering forgot password form
 app.get('/forgot-password', (req, res) => {
