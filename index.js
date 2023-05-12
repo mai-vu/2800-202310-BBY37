@@ -201,7 +201,9 @@ app.post('/submit', async (req, res) => {
 
         // Redirect the user to the home page
         res.render("home", {
-            name: req.session.name
+            name: req.session.name,
+            dietaryRestrictions: req.session.dietaryRestrictions,
+            ingredients: ingredients
         });
     } catch (err) {
         console.error(err);
@@ -251,7 +253,9 @@ app.post('/loggingin', async (req, res) => {
         req.session.cookie.maxAge = expireTime;
 
         res.render('home', {
-            name: req.session.name
+            name: req.session.name,
+            dietaryRestrictions: req.session.dietaryRestrictions,
+            ingredients: ingredients
         });
         return;
     } else {
