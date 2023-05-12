@@ -11,11 +11,18 @@
             <input class="form-control" type="text" id="ingredientInput" name="ingredient" placeholder="Enter ingredient">
             <button class="btn btn-info my-1" id="addIngredientBtn">Add</button>
         </form>
-        <%- include("ingredients") %> 
         <% if (ingredients.length > 0) { %>
+            <div class="text-start">
+              <h2>Ingredients:</h2>
+              <ul>
+                  <% for (let i = 0; i < ingredients.length; i++) { %>
+                      <li><%= ingredients[i] %></li>
+                  <% } %>
+              </ul>
+            </div>
             <form class="w-100" method="POST" action="/clearIngredients">
                 <button class="btn btn-danger">Clear Ingredients</button>
             </form>
-          <% } %>
+        <% } %>
     </div>
 <%- include("templates/footer") %> 

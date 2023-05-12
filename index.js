@@ -93,7 +93,8 @@ app.get('/', (req, res) => {
     } else {
         res.render("home", {
             name: req.session.name,
-            dietaryRestrictions: req.session.dietaryRestrictions
+            dietaryRestrictions: req.session.dietaryRestrictions,
+            ingredients: ingredients
         });
         return;
     }
