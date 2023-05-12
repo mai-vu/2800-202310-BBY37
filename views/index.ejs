@@ -5,6 +5,11 @@
     <div class="col-md-6 col-lg-4">
       <div class="card text-center">
         <div class="card-body">
+          <% if (error) { %>
+            <div class="alert alert-danger" role="alert">
+              <%= error %>
+            </div>
+          <% } %>
           <h5 class="card-title">Welcome!</h5>
           <p class="card-text">Sign up or log in to get started.</p>
           <a href="/signup" class="btn btn-primary btn-lg">Sign Up</a>

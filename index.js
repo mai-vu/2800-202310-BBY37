@@ -85,19 +85,19 @@ app.use(session({
 
 //Index page, gatekeeps if user is logged in
 app.get('/', (req, res) => {
-    if (!req.session.authenticated) {
-        res.render("index");
-        return;
-    } else {
-        res.redirect('/home');
-        return;
-    }
+  if (!req.session.authenticated) {
+    const error = req.query.error;
+    res.render("index", { error: error });
+  } else {
+    res.redirect('/home');
+  }
 });
 
 app.get('/home', (req, res) => {
     if (!req.session.authenticated) {
-        res.render("index");
-    }
+        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+        return;
+      }
     res.render("home", {
         name: req.session.name,
         dietaryRestrictions: req.session.dietaryRestrictions,
@@ -259,8 +259,9 @@ app.get('/profile', (req, res) => {
     var password = req.session.password;
     var restrictions = req.session.dietaryRestrictions;
     if (!req.session.authenticated) {
-        res.render("index");
-    }
+        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+        return;
+      }
     res.render("profile", {
         email: email,
         name: name,
@@ -275,8 +276,9 @@ app.get('/editProfile', (req, res) => {
     var password = req.session.password;
     var restrictions = req.session.dietaryRestrictions;
     if (!req.session.authenticated) {
-        res.render("index");
-    }
+        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+        return;
+      }
     res.render("editProfile", {email: email, name: name, password: password, dietaryRestrictions: restrictions, allRestrictions: allRestrictions, error: undefined});
 });
 
@@ -456,7 +458,7 @@ app.post('/reset-password', async (req, res) => {
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.render('index');
+    res.redirect('/');
 });
 
 app.use(express.static(__dirname + "/public"));
