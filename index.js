@@ -461,6 +461,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.use(express.static(__dirname + "/public"));
+
 app.get("*", (req, res) => {
     res.status(404);
     res.render("404");
