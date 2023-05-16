@@ -27,6 +27,7 @@
                   <li class="d-inline-block me-2"><%= recipes[i].tags[j] %></li>
                 <% } %>
               </ul>
+              <a href="/home/recipes/<%= encodeURIComponent(recipes[i].name) %>" class="btn btn-primary">View Recipe</a>
             </div>
           </div>
         </div>
