@@ -25,6 +25,7 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 const passwordRouter = require('./routes/password');
 const profileRouter = require('./routes/profile');
 const joinRouter = require('./routes/join');
+const homeRouter = require('./routes/home');
 
 var {
     database
@@ -65,34 +66,7 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/home', (req, res) => {
-    if (!req.session.authenticated) {
-        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
-        return;
-      }
-    res.render("home", {
-        name: req.session.name,
-        dietaryRestrictions: req.session.dietaryRestrictions,
-        ingredients: ingredients,
-    });
-});
-
-//Add ingredients to a list and prints on /home
-app.post('/home', (req, res) => {
-    const ingredient = req.body.ingredient.trim();
-    if (ingredient !== "") {
-        ingredients.push(ingredient);
-        console.log("Added " + ingredients);
-    }
-    res.redirect('/home');
-});
-
-//Clear ingredients list, then redirects /home
-app.post('/clearIngredients', (req, res) => {
-    ingredients = [];
-    console.log("Cleared all ingredients");
-    res.redirect('/home');
-});
+app.use('/home', homeRouter);
 
 app.use('/join', joinRouter);
 
