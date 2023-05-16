@@ -1,0 +1,38 @@
+<%- include("templates/header") %>
+
+<div class="container">
+  <h1>Recipes</h1>
+
+  <% if (recipes.length === 0) { %>
+    <p>Sorry, no recipes found.</p>
+  <% } else { %>
+    <div class="row">
+      <% for (let i = 0; i < recipes.length; i++) { %>
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h2 class="card-title"><%= recipes[i].name %></h2>
+              <p class="card-text"><%= recipes[i].description %></p>
+              <% if (parseInt(recipes[i].minutes) > 60) { %>
+                <% const hours = Math.floor(parseInt(recipes[i].minutes) / 60); %>
+                <% const minutes = parseInt(recipes[i].minutes) % 60; %>
+                <p class="card-text"><strong>Time:</strong> <%= hours %> hours <%= minutes %> minutes</p>
+              <% } else { %>
+                <p class="card-text"><strong>Time:</strong> <%= recipes[i].minutes %> minutes</p>
+              <% } %>
+              <p class="card-text"><strong>Number of Ingredients:</strong> <%= recipes[i].n_ingredients %></p>
+              <p class="card-text"><strong>Tags:</strong></p>
+              <ul class="list-unstyled">
+                <% for (let j = 0; j < recipes[i].tags.length; j++) { %>
+                  <li class="d-inline-block me-2"><%= recipes[i].tags[j] %></li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<%- include("templates/footer") %>
