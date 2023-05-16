@@ -20,12 +20,16 @@ const expireTime = 60 * 60 * 1000; // expires in 1 hour (in milliseconds)
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
-const mongodb_password = process.env.MONGODB_PASSWORD;
+const mongodb_password = process.env.MONGODB_PASSWORD;  
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 /* END secret section */
+
+/** For Routes */
+const passwordRouter = require('./routes/password');
+const profileRouter = require('./routes/profile');
 
 /** For sending reset password email */
 const sgMail = require('@sendgrid/mail');
@@ -37,23 +41,6 @@ var {
 
 const userCollection = database.db(mongodb_database).collection('users');
 let ingredients = [];
-
-const sendResetPasswordEmail = (email, resetLink) => {
-    const msg = {
-        to: email,
-        from: 'noreply.entreepreneur@gmail.com',
-        subject: 'Reset your password for Entreepreneur account',
-        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`
-    };
-    sgMail
-        .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
-        })
-};
 
 app.set('view engine', 'ejs')
 
@@ -67,12 +54,6 @@ var mongoStore = MongoStore.create({
         secret: mongodb_session_secret
     }
 })
-
-// Generate a random token
-function generateToken() {
-    const token = crypto.randomBytes(20).toString('hex');
-    return token;
-}
 
 app.use(express.json());
 
@@ -253,207 +234,11 @@ app.post('/loggingin', async (req, res) => {
     }
 });
 
-app.get('/profile', (req, res) => {
-    var name = req.session.name;
-    var email = req.session.email;
-    var password = req.session.password;
-    var restrictions = req.session.dietaryRestrictions;
-    if (!req.session.authenticated) {
-        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
-        return;
-      }
-    res.render("profile", {
-        email: email,
-        name: name,
-        password: password,
-        dietaryRestrictions: restrictions
-    });
-});
-
-app.get('/editProfile', (req, res) => {
-    var name = req.session.name;
-    var email = req.session.email;
-    var password = req.session.password;
-    var restrictions = req.session.dietaryRestrictions;
-    if (!req.session.authenticated) {
-        res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
-        return;
-      }
-    res.render("editProfile", {email: email, name: name, password: password, dietaryRestrictions: restrictions, allRestrictions: allRestrictions, error: undefined});
-});
-
-app.post('/updateProfile', async (req, res) => {
-    var { name, currentPassword, newPassword, confirmPassword, dietaryRestrictions } = req.body;
-
-    if (!Array.isArray(dietaryRestrictions)) {
-        dietaryRestrictions = [dietaryRestrictions];
-    }
-
-    const email = req.session.email;
+// Define a route for the profile related pages
+app.use('/profile', profileRouter);
   
-    // Retrieve the current user from the database
-    const user = await userCollection.findOne({ email });
-
-    console.log(user);
-    // Check if the current password is correct
-    const isCorrectPassword = await bcrypt.compare(currentPassword, user.password);
-    if (!isCorrectPassword) {
-        return res.render('editProfile', {
-            error: 'Current password is incorrect.',
-            email,
-            name,
-            password: user.password,
-            dietaryRestrictions: user.dietaryRestrictions,
-            allRestrictions
-          });
-    }
-  
-    // Update the user's information
-    const updates = {
-      $set: { name, email, dietaryRestrictions }
-    };
-  
-    // Check if the user wants to update their password
-    if (newPassword && confirmPassword) {
-      // Check if the new password matches the confirmed password
-      if (newPassword !== confirmPassword) {
-        return res.render('editProfile', {
-            error: 'Passwords do not match.',
-            email,
-            name,
-            password: user.password,
-            dietaryRestrictions: user.dietaryRestrictions,
-            allRestrictions
-          });
-      }
-  
-      // Hash the new password and add it to the updates object
-      var hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-      updates.$set.password = hashedPassword;
-    }
-  
-    // Update the user in the database
-    await userCollection.updateOne({ email }, updates);
-  
-    // Update the session with the new user information
-    req.session.name = name;
-    req.session.password = hashedPassword;
-    req.session.dietaryRestrictions = dietaryRestrictions;
-  
-    res.redirect('/profile');
-  });
-  
-
-// Route for rendering forgot password form
-app.get('/forgot-password', (req, res) => {
-    res.render('forgot-password');
-});
-
-// Route for handling password reset request
-app.post('/forgot-password', async (req, res) => {
-    const {
-        email
-    } = req.body;
-
-    const Joi = require('joi');
-
-    // Validate email using Joi
-    const schema = Joi.object({
-        email: Joi.string().email().required()
-    });
-    const {error} = schema.validate({email});
-    if (error) {
-        return res.status(400).send('Invalid email');
-    }
-
-    try {
-        // Check if user exists in the database
-        const user = await userCollection.findOne({ email: email });
-        console.log('Email: ' + email);
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-        console.log('User: ' + user.name);
-
-        // Generate unique token and store it in the database along with user email and expiration time
-        const resetToken = generateToken();
-        const expirationTime = Date.now() + expireTime;
-        console.log(resetToken);
-        console.log(expirationTime);
-        const result = await userCollection.updateOne({
-            email: email
-        }, {
-            $set: {
-                resetToken: resetToken,
-                expirationTime: expirationTime
-            }
-        });
-        
-        // Send password reset email with reset token
-        const resetLink = `https://entreepreneur.cyclic.app/reset-password?token=${resetToken}`;
-        sendResetPasswordEmail(email, resetLink);
-        console.log(resetLink);
-
-        res.send('Password reset email sent');
-    } catch (err) {
-        console.error(err);
-        return res.status(500).send('Internal server error');
-    }
-});
-
-
-// Route for rendering password reset form
-app.get('/reset-password', async (req, res) => {
-    const { token } = req.query;
-
-    try {
-        // Check if token exists and hasn't expired
-        const user = await userCollection.findOne({
-            resetToken: token,
-            expirationTime: { $gt: Date.now() }
-        });
-
-        if (!user) {
-            return res.status(404).send('Invalid or expired token');
-        }
-
-        res.render('reset-password', { token });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal server error');
-    }
-});
-
-// Route for handling password reset
-app.post('/reset-password', async (req, res) => {
-    const { token, password } = req.body;
-
-    try {
-        // Check if token exists and hasn't expired
-        const user = await userCollection.findOne({
-            resetToken: token,
-            expirationTime: { $gt: Date.now() }
-        });
-
-        if (!user) {
-            return res.status(404).send('Invalid or expired token');
-        }
-
-        // Hash new password and update in the database
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        await userCollection.updateOne(
-            { email: user.email },
-            { $set: { password: hashedPassword } }
-        );
-
-        // Redirect to login page after password reset
-        res.redirect('/login');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal server error');
-    }
-});
+// Define a route for the password related pages
+app.use('/password', passwordRouter);
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
