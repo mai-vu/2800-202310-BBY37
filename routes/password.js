@@ -3,14 +3,11 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 const crypto = require('crypto');
-
 const express = require('express')
 const router = express.Router()
-
+const expireTime = 60 * 60 * 1000; // 1 hour
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-const expireTime = 60 * 60 * 1000; // 1 hour
 
 const mongodb_database = process.env.MONGODB_DATABASE;
 var {
@@ -146,7 +143,7 @@ router.post('/reset-password', async (req, res) => {
         );
 
         // Redirect to login page after password reset
-        res.redirect('/login');
+        res.redirect('/join/login');
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal server error');

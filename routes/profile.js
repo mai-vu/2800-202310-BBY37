@@ -9,14 +9,14 @@ const fs = require('fs');
 // read and parse the JSON file
 const allRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.json'));
 
+//database connection
 const mongodb_database = process.env.MONGODB_DATABASE;
-
 var {
     database
 } = include('database');
-
 const userCollection = database.db(mongodb_database).collection('users');
 
+//Route to profile page
 router.get('/', (req, res) => {
     var name = req.session.name;
     var email = req.session.email;
@@ -34,6 +34,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//Route to edit profile page
 router.get('/editProfile', (req, res) => {
     var name = req.session.name;
     var email = req.session.email;
@@ -53,6 +54,7 @@ router.get('/editProfile', (req, res) => {
     });
 });
 
+//Define a route for the edit profile form's action
 router.post('/updateProfile', async (req, res) => {
     const email = req.session.email;
     var {
