@@ -3,10 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const fs = require('fs');
-
-// read and parse the JSON file
-const allRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.json'));
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,7 +11,6 @@ const port = process.env.PORT || 3000;
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;  
-const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
 const node_session_secret = process.env.NODE_SESSION_SECRET;
@@ -27,12 +22,6 @@ const profileRouter = require('./routes/profile');
 const joinRouter = require('./routes/join');
 const homeRouter = require('./routes/home');
 
-var {
-    database
-} = include('database');
-
-const userCollection = database.db(mongodb_database).collection('users');
-let ingredients = [];
 
 app.set('view engine', 'ejs')
 
