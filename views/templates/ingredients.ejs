@@ -1,0 +1,17 @@
+<% if (ingredients.length > 0) { %>
+  <div class="ingredient-list">
+    <% for (let i = 0; i < ingredients.length; i++) { %>
+      <div class="ingredient-item d-flex align-items-center justify-content-between">
+        <span class="me-2"><%= ingredients[i] %></span>
+        <button class="btn btn-sm btn-outline-danger" onclick="removeIngredient(<%= i %>)">Remove</button>
+      </div>
+    <% } %>
+  </div>
+  <form class="mt-4" method="POST" action="/home/clearIngredients">
+    <button class="btn btn-danger">Clear Ingredients</button>
+  </form>
+  <form class="mt-2" method="POST" action="/recipes">
+    <input type="hidden" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
+    <button class="btn btn-success">Find Recipes</button>
+  </form>
+<% } %>

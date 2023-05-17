@@ -1,0 +1,37 @@
+<%- include("templates/header") %>
+
+<div class="container">
+  <h1><%= recipe.name %></h1>
+  
+  <p><strong>Time:</strong> <%= recipe.minutes %> minutes</p>
+  
+  <p><strong>Ingredients:</strong></p>
+  <ul>
+    <% for (let i = 0; i < recipe.ingredients.length; i++) { %>
+      <li><%= recipe.ingredients[i] %></li>
+    <% } %>
+  </ul>
+  
+  <p><strong>Nutrition:</strong></p>
+  <ul>
+    <li>Calories: <%= recipe.nutrition[0] %></li>
+    <li>Total Fat: <%= recipe.nutrition[1] %> (PDV)</li>
+    <li>Sugar: <%= recipe.nutrition[2] %> (PDV)</li>
+    <li>Sodium: <%= recipe.nutrition[3] %> (PDV)</li>
+    <li>Protein: <%= recipe.nutrition[4] %> (PDV)</li>
+    <li>Saturated Fat: <%= recipe.nutrition[5] %> (PDV)</li>
+    <li>Carbohydrates: <%= recipe.nutrition[6] %> (PDV)</li>
+  </ul>
+  
+  <p><strong>Steps:</strong></p>
+  <ol>
+    <% for (let i = 0; i < recipe.steps.length; i++) { %>
+      <li><%= recipe.steps[i] %></li>
+    <% } %>
+  </ol>
+  
+  <p><strong>Description:</strong></p>
+  <p><%= recipe.description %></p>
+</div>
+
+<%- include("templates/footer") %>

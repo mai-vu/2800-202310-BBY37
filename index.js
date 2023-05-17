@@ -21,6 +21,7 @@ const passwordRouter = require('./routes/password');
 const profileRouter = require('./routes/profile');
 const joinRouter = require('./routes/join');
 const homeRouter = require('./routes/home');
+const recipesRouter = require('./routes/recipes');
 const fuzzysearchRouter = require('./routes/fuzzySearch');
 
 
@@ -65,6 +66,8 @@ app.use('/profile', profileRouter);
   
 // Define a route for the password related pages
 app.use('/password', passwordRouter);
+
+app.use('/recipes', recipesRouter);
 
 
 app.use(express.static(__dirname + "/public"));

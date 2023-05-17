@@ -1,0 +1,63 @@
+<%- include("templates/header") %>
+
+<div class="container">
+  <h1>Recipes</h1>
+
+  <% if (recipes.length === 0) { %>
+    <p>Sorry, no recipes found.</p>
+  <% } else { %>
+    <div class="row">
+      <% for (let i = 0; i < recipes.length; i++) { %>
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h2 class="card-title"><%= recipes[i].name %></h2>
+              <p class="card-text"><%= recipes[i].description %></p>
+              <% if (parseInt(recipes[i].minutes) > 60) { %>
+                <% const hours = Math.floor(parseInt(recipes[i].minutes) / 60); %>
+                <% const minutes = parseInt(recipes[i].minutes) % 60; %>
+                <p class="card-text"><strong>Time:</strong> <%= hours %> hours <%= minutes %> minutes</p>
+              <% } else { %>
+                <p class="card-text"><strong>Time:</strong> <%= recipes[i].minutes %> minutes</p>
+              <% } %>
+              <p class="card-text"><strong>Number of Ingredients:</strong> <%= recipes[i].n_ingredients %></p>
+              <p class="card-text"><strong>Tags:</strong></p>
+              <div class="tags">
+                <% for (let j = 0; j < recipes[i].tags.length; j++) { %>
+                  <span class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill"><%= recipes[i].tags[j] %></span>
+                <% } %>
+              </div><br>
+              <div class="d-flex align-items-center justify-content-between">
+                <a href="/recipes/<%= encodeURIComponent(recipes[i].name) %>" class="btn btn-primary">View Recipe</a>
+                <a href="#" class="btn btn-outline-primary" onclick="saveRecipe(<%= i %>)">
+                <i class="bi bi-star"></i>
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<%- include("templates/footer") %>
+
+<script>
+  function saveRecipe(index) {
+    // Implement the logic to save the recipe to "My Recipes"
+    // You can use AJAX or any other technique to send a request to the server
+
+    // Example AJAX code:
+    // const recipeId = recipes[index].id;
+    // const request = new XMLHttpRequest();
+    // request.open('POST', '/save-recipe');
+    // request.setRequestHeader('Content-Type', 'application/json');
+    // request.onreadystatechange = function () {
+    //   if (request.readyState === 4 && request.status === 200) {
+    //     console.log('Recipe saved successfully');
+    //   }
+    // };
+    // request.send(JSON.stringify({ recipeId }));
+  }
+</script>

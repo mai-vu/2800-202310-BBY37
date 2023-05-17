@@ -127,14 +127,12 @@ router.post('/loggingin', async (req, res) => {
         _id: 1
     }).toArray();
 
-    console.log(result);
     if (result.length != 1) {
         console.log("user not found");
         res.render('login');
         return;
     }
     if (await bcrypt.compare(password, result[0].password)) {
-        console.log("correct password");
         req.session.authenticated = true;
         req.session.name = result[0].name;
         req.session.email = result[0].email;
