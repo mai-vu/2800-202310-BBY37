@@ -11,6 +11,10 @@
             <input class="form-control" type="text" id="ingredientInput" name="ingredient" placeholder="Enter ingredient">
             <button class="btn btn-info my-1" id="addIngredientBtn">Add</button>
         </form>
+        <button id="topTenButton" type="button">Top Ten</button>
+        <div id="topTenResults"></div>
         <%- include("ingredients") %> 
     </div>
+
+    <script src="/scripts/topTen.js"></script>
 <%- include("templates/footer") %> 
