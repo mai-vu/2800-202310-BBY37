@@ -22,7 +22,6 @@ const profileRouter = require('./routes/profile');
 const joinRouter = require('./routes/join');
 const homeRouter = require('./routes/home');
 
-
 app.set('view engine', 'ejs')
 
 app.use(express.urlencoded({
@@ -55,6 +54,10 @@ app.get('/', (req, res) => {
   }
 });
 
+app.get('/webcam', (req, res) => {
+    res.render("webcam");  
+});
+
 app.use('/home', homeRouter);
 
 app.use('/join', joinRouter);
@@ -64,7 +67,6 @@ app.use('/profile', profileRouter);
   
 // Define a route for the password related pages
 app.use('/password', passwordRouter);
-
 
 app.use(express.static(__dirname + "/public"));
 
