@@ -39,6 +39,16 @@ router.post('/', (req, res) => {
     res.redirect('/home/');
 });
 
+// Remove an ingredient from the list
+router.post('/removeIngredient', (req, res) => {
+    const index = req.body.index;
+    if (index >= 0 && index < ingredients.length) {
+      ingredients.splice(index, 1);
+    }
+    res.sendStatus(200);
+  });
+  
+
 //Clear ingredients list, then redirects /home
 router.post('/clearIngredients', (req, res) => {
     ingredients.length = 0;
@@ -75,7 +85,8 @@ router.post('/recipes', async (req, res) => {
           }
         ])
         .toArray();
-  
+    
+      // Render the recipes page (recipes.ejs) with the matching recipes  
       res.render("recipes", {
         name: req.session.name,
         dietaryRestrictions: req.session.dietaryRestrictions,
@@ -85,6 +96,25 @@ router.post('/recipes', async (req, res) => {
     } catch (err) {
       console.error(err);
       res.status(500).send("Internal Server Error");
+    }
+  });
+
+  router.get('/recipes/:recipeName', async (req, res) => {
+    try {
+      // Retrieve the recipe name from the request parameters
+      const recipeName = req.params.recipeName;
+  
+      // Query the database or retrieve the recipe details based on the recipe name
+      const recipeDetails = await recipeCollection.findOne({ name: recipeName });
+
+      // Render the recipe details page (recipe.ejs) with the matching recipe
+      res.render('recipe', {
+        recipe: recipeDetails,
+      });
+    } catch (err) {
+      // Handle error
+      console.error(err);
+      res.status(500).send('Internal Server Error');
     }
   });
   

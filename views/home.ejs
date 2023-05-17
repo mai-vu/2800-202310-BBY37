@@ -1,17 +1,24 @@
-<%- include("templates/header") %> 
-    <!-- home page content -->
-    <div class="px-4 py-5 my-5 text-center">
-        <h1 class="display-5 fw-bold">
-            Hello, <%= name %>!
-        </h1>
-        <div class="col-lg-6 mx-auto">
-            What are we making today?
-        </div>
-        <form class="w-100 me-3" role="userInput" method="POST" action="/home">
-            <input class="form-control" type="text" id="ingredientInput" name="ingredient" placeholder="Enter ingredient">
-            <button class="btn btn-info my-1" id="addIngredientBtn">Add</button>
-        </form>
-        <%- include("ingredients") %> 
+<%- include("templates/header") %>
+<!-- Home page content -->
+<div class="container py-5 text-center">
+    <h1 class="display-4 fw-bold">
+        Hello, <%= name %>!
+    </h1>
+    <div class="col-lg-6 mx-auto mt-4">
+        What are we making today?
     </div>
-    
-<%- include("templates/footer") %> 
+    <form class="w-100 mx-auto mt-4" role="userInput" method="POST" action="/home">
+        <div class="input-group">
+            <input class="form-control" type="text" id="ingredientInput" name="ingredient"
+                placeholder="Enter ingredient">
+            <button class="btn btn-primary" id="addIngredientBtn">Add</button>
+        </div>
+    </form><br>
+    <div>
+        <%- include('templates/ingredients', {ingredients: ingredients}) %><br>
+    </div>
+</div>
+
+<script src="/scripts/home.js"></script>
+
+<%- include("templates/footer") %>

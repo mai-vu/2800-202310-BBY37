@@ -22,11 +22,11 @@
               <% } %>
               <p class="card-text"><strong>Number of Ingredients:</strong> <%= recipes[i].n_ingredients %></p>
               <p class="card-text"><strong>Tags:</strong></p>
-              <ul class="list-unstyled">
+              <div class="tags">
                 <% for (let j = 0; j < recipes[i].tags.length; j++) { %>
-                  <li class="d-inline-block me-2"><%= recipes[i].tags[j] %></li>
+                  <span class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill"><%= recipes[i].tags[j] %></span>
                 <% } %>
-              </ul>
+              </div><br>
               <a href="/home/recipes/<%= encodeURIComponent(recipes[i].name) %>" class="btn btn-primary">View Recipe</a>
             </div>
           </div>
