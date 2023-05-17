@@ -7,18 +7,22 @@
     <div class="col-lg-6 mx-auto mt-4">
         What are we making today?
     </div>
-    <form class="w-100 mx-auto mt-4" role="userInput" method="POST" action="/home">
+    <form class="w-100 mx-auto mt-4" id="form" role="userInput" method="POST" action="/home">
         <div class="input-group">
             <input class="form-control" type="text" id="ingredientInput" name="ingredient"
                 placeholder="Enter ingredient">
-            <button class="btn btn-primary" id="addIngredientBtn">Add</button>
         </div>
-    </form><br>
+    </form>
+    <div id="suggestions"></div>
+    <br>
     <div>
         <%- include('templates/ingredients', {ingredients: ingredients}) %><br>
     </div>
 </div>
 
 <script src="/scripts/home.js"></script>
-
+<script src="/scripts/topTen.js"></script>
 <%- include("templates/footer") %>
+
+
+<%- include("templates/footer") %> 

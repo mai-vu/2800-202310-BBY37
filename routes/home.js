@@ -4,6 +4,8 @@ const express = require('express')
 const router = express.Router()
 const fs = require('fs');
 
+
+
 // read and parse the JSON file
 const allRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.json'));
 
@@ -15,6 +17,8 @@ var {
 const userCollection = database.db(mongodb_database).collection('users');
 const recipeCollection = database.db(mongodb_database).collection('recipes');
 const ingredients = [];
+
+//testing clena up later ***********
 
 //Route to home page
 router.get('/', (req, res) => {
