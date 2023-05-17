@@ -27,7 +27,12 @@
                   <span class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill"><%= recipes[i].tags[j] %></span>
                 <% } %>
               </div><br>
-              <a href="/home/recipes/<%= encodeURIComponent(recipes[i].name) %>" class="btn btn-primary">View Recipe</a>
+              <div class="d-flex align-items-center justify-content-between">
+                <a href="/recipes/<%= encodeURIComponent(recipes[i].name) %>" class="btn btn-primary">View Recipe</a>
+                <a href="#" class="btn btn-outline-primary" onclick="saveRecipe(<%= i %>)">
+                <i class="bi bi-star"></i>
+              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -37,3 +42,22 @@
 </div>
 
 <%- include("templates/footer") %>
+
+<script>
+  function saveRecipe(index) {
+    // Implement the logic to save the recipe to "My Recipes"
+    // You can use AJAX or any other technique to send a request to the server
+
+    // Example AJAX code:
+    // const recipeId = recipes[index].id;
+    // const request = new XMLHttpRequest();
+    // request.open('POST', '/save-recipe');
+    // request.setRequestHeader('Content-Type', 'application/json');
+    // request.onreadystatechange = function () {
+    //   if (request.readyState === 4 && request.status === 200) {
+    //     console.log('Recipe saved successfully');
+    //   }
+    // };
+    // request.send(JSON.stringify({ recipeId }));
+  }
+</script>
