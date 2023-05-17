@@ -7,12 +7,10 @@
         <div class="col-lg-6 mx-auto">
             What are we making today?
         </div>
-        <form class="w-100 me-3" role="userInput" method="POST" action="/home">
+        <form class="w-100 me-3" id="form" role="userInput" method="POST" action="/home">
             <input class="form-control" type="text" id="ingredientInput" name="ingredient" placeholder="Enter ingredient">
-            <button class="btn btn-info my-1" id="addIngredientBtn">Add</button>
         </form>
-        <button id="topTenButton" type="button">Top Ten</button>
-        <div id="topTenResults"></div>
+        <div id="suggestions"></div>
         <%- include("ingredients") %> 
     </div>
 

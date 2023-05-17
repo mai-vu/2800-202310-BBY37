@@ -15,10 +15,25 @@ const ingredientsCollection = database.db(mongodb_database).collection('ingredie
 
 router.get('/', async (req, res) => {
     console.log('GET /fuzzysearch');
-     const testEntry = req.query.entry; // Access testEntry from the query parameters
+    const testEntry = req.query.entry; // Access testEntry from the query parameters
     console.log('Test entry:', testEntry); // Print testEntry
     try {
-        const docs = await ingredientsCollection.find().limit(10).toArray();
+        const query = [
+            {
+              $search: {
+                index: "default",
+                text: {
+                  query: testEntry,  // use testEntry here
+                  fuzzy: {},
+                  path: {
+                    wildcard: "*"
+                  }
+                }
+              }
+            }
+        ];
+
+        const docs = await ingredientsCollection.aggregate(query).limit(10).toArray();
         const topTen = docs.map(doc => doc.name);
         console.log('Top 10 results:', topTen);
         res.json(topTen);
@@ -28,4 +43,4 @@ router.get('/', async (req, res) => {
     }
 });
 
-module.exports = router;    
+module.exports = router;  
