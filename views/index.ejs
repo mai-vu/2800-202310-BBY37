@@ -1,16 +1,16 @@
 <%- include("templates/header") %> 
 
-<main class="container mt-5 py-5">
+<main class="container mt-5 py-5 justify-content-center">
   <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-4 text-center">
-      <h1 class="display-5 fw-bold" style="font-family: ostrich; font-size: 300%" id="typedText"></h1>
+    <div class="col-md-6 col-lg-7 text-center" style="padding-left: -200px; padding-right: -200px">
+      <h1 class="display-5 fw-bold" style="font-family: ostrich; font-size: 250%; background-color: plum; border-radius: 50px" id="typedText"></h1>
     </div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-4 text-center">
+    <div class="col-md-6 col-lg-4">
       <div class="card text-center fixed-card">
-        <div class="card-body" style="font-family: comfortaaBold">
+        <div class="card-body py-4 px-3" style="font-family: comfortaaBold; max-width: 200%;">
           <% if (error) { %>
             <div class="alert alert-danger" role="alert">
               <%= error %>
@@ -18,29 +18,31 @@
           <% } %>
           <h5 class="card-title">Welcome!</h5>
           <p class="card-text">Sign up or log in to get started.</p>
-          <a href="/join/signup" class="btn btn-primary btn-lg">Sign Up</a>
-          <a href="/join/login" class="btn btn-outline-primary btn-lg">Log In</a>
+          <a href="/join/signup" class="btn  btn-lg" style="background-color: plum">Sign Up</a>
+          <a href="/join/login" class="btn  btn-lg">Log In</a>
         </div>
       </div>
     </div>
   </div>
 </main>
 
+
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var typed = new Typed("#typedText", {
       strings: [
-        "Let's eliminate food waste, one dish at a time.",
-        "Have something to cook?",
-        "Let's get started!",
-        "Got the recipes? We got your meal."
+        "Let's minimize food waste, one dish at a time.",
+        "Have something to cook? We can help.",
+        "Let's get started! No need to wait.",
+        "Got the recipes? We got your meal.",
+        "What can we make of those scraps?"
       ],
-      typeSpeed: 50, // Speed of typing in milliseconds
-      startDelay: 3000, // Delay before typing starts in milliseconds
-      backSpeed: 30, // Speed of deleting in milliseconds
-      loop: true, // Loop the typing effect
-      showCursor: false, // Hide the cursor
-      smartBackspace: false // Disable smart backspace
+      typeSpeed: 50,            // Speed of typing in milliseconds
+      startDelay: 3000,         // Delay before typing starts in milliseconds
+      backSpeed: 30,            // Speed of deleting in milliseconds
+      loop: true,               // Loop the typing effect
+      showCursor: false,        // Hide the cursor
+      smartBackspace: false     // Disable smart backspace
     });
   });
 </script>
