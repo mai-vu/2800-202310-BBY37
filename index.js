@@ -22,6 +22,7 @@ const profileRouter = require('./routes/profile');
 const joinRouter = require('./routes/join');
 const homeRouter = require('./routes/home');
 const recipesRouter = require('./routes/recipes');
+const fuzzysearchRouter = require('./routes/fuzzySearch');
 
 
 app.set('view engine', 'ejs')
@@ -71,9 +72,10 @@ app.use('/recipes', recipesRouter);
 
 app.use(express.static(__dirname + "/public"));
 
+app.use('/fuzzySearch', fuzzysearchRouter);
+
 app.get("*", (req, res) => {
-    res.status(404);
-    res.render("404");
+  res.status(404).render("404");
 })
 
 app.listen(port, () => {
