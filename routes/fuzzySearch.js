@@ -14,9 +14,7 @@ var {
 const ingredientsCollection = database.db(mongodb_database).collection('ingredients');
 
 router.get('/', async (req, res) => {
-    console.log('GET /fuzzysearch');
     const testEntry = req.query.entry; // Access testEntry from the query parameters
-    console.log('Test entry:', testEntry); // Print testEntry
     try {
         const query = [
             {
@@ -35,7 +33,6 @@ router.get('/', async (req, res) => {
 
         const docs = await ingredientsCollection.aggregate(query).limit(10).toArray();
         const topTen = docs.map(doc => doc.name);
-        console.log('Top 10 results:', topTen);
         res.json(topTen);
     } catch (err) {
         console.error('Error fetching ingredients:', err);
