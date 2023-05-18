@@ -18,6 +18,10 @@ const recipeCollection = database.db(mongodb_database).collection('recipes');
 //Generate recipes based on ingredients list
 router.post('/', async (req, res) => {
     try {
+        if (!req.session.authenticated) {
+            res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+            return;
+          }
         const ingredients = JSON.parse(req.body.ingredients);
         console.log(ingredients);
         // Search for recipes that contain at least one of the ingredients  
@@ -92,6 +96,10 @@ router.post('/', async (req, res) => {
 
 router.get('/myRecipes', async (req, res) => {
     try {
+        if (!req.session.authenticated) {
+            res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+            return;
+          }
         // Get the user's saved recipe IDs from the user document
         const email = req.session.email;
         const user = await userCollection.findOne({
@@ -116,7 +124,8 @@ router.get('/myRecipes', async (req, res) => {
         });
     } catch (err) {
         console.error(err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send("Internal Server Error");
+        return;
     }
 });
 
@@ -197,7 +206,8 @@ router.post('/saveRecipe', async (req, res) => {
     } catch (err) {
         // Handle error
         console.error(err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+        return;
     }
 });
 
