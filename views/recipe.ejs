@@ -2,19 +2,19 @@
 
 <div class="container">
   <div class="d-flex align-items-center justify-content-between">
-  <h1><%= recipe.name %></h1>
-  <i class="btn btn-outline-primary bi <%= recipe.isSaved ? 'bi-star-fill' : 'bi-star' %>"
-    onclick="saveRecipe('<%= recipe.id %>', this)"></i>
+    <h1><%= recipe.name %></h1>
+    <i class="btn btn-outline-primary bi <%= recipe.isSaved ? 'bi-star-fill' : 'bi-star' %>"
+      onclick="saveRecipe('<%= recipe.id %>', this)"></i>
   </div>
   <p><strong>Time:</strong> <%= recipe.minutes %> minutes</p>
-  
+
   <p><strong>Ingredients:</strong></p>
   <ul>
     <% for (let i = 0; i < recipe.ingredients.length; i++) { %>
       <li><%= recipe.ingredients[i] %></li>
     <% } %>
   </ul>
-  
+
   <p><strong>Nutrition:</strong></p>
   <ul>
     <li>Calories: <%= recipe.nutrition[0] %></li>
@@ -25,14 +25,20 @@
     <li>Saturated Fat: <%= recipe.nutrition[5] %> (PDV)</li>
     <li>Carbohydrates: <%= recipe.nutrition[6] %> (PDV)</li>
   </ul>
-  
+
   <p><strong>Steps:</strong></p>
   <ol>
     <% for (let i = 0; i < recipe.steps.length; i++) { %>
-      <li><%= recipe.steps[i] %></li>
+      <% if (i === 0) { %>
+        <li><%= recipe.steps[i].slice(1) %></li>
+      <% } else if (i === recipe.steps.length - 1) { %>
+        <li><%= recipe.steps[i].slice(0, -1) %></li>
+      <% } else { %>
+        <li><%= recipe.steps[i] %></li>
+      <% } %>
     <% } %>
   </ol>
-  
+
   <p><strong>Description:</strong></p>
   <p><%= recipe.description %></p>
 </div>
