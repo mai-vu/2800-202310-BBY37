@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
         if (!req.session.authenticated) {
             res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
             return;
-          }
+        }
         const ingredients = JSON.parse(req.body.ingredients);
         console.log(ingredients);
         // Search for recipes that contain at least one of the ingredients  
@@ -99,7 +99,7 @@ router.get('/myRecipes', async (req, res) => {
         if (!req.session.authenticated) {
             res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
             return;
-          }
+        }
         // Get the user's saved recipe IDs from the user document
         const email = req.session.email;
         const user = await userCollection.findOne({
@@ -139,6 +139,24 @@ router.get('/:recipeName', async (req, res) => {
         const recipeDetails = await recipeCollection.findOne({
             name: recipeName
         });
+
+        // Retrieve the user's email from the session
+        const email = req.session.email;
+
+        // Query the user collection to get the user's saved recipes
+        const user = await userCollection.findOne({
+            email: email
+        });
+
+        // Check if the user exists and retrieve the saved recipes
+        if (user) {
+            const savedRecipes = user.savedRecipes || [];
+
+            // Add the 'isSaved' property to the recipe indicating if it is saved
+            const isSaved = savedRecipes.includes(recipeDetails.id.toString());
+            recipeDetails.isSaved = isSaved;
+        }
+
 
         // Render the recipe details page (recipe.ejs) with the matching recipe
         res.render('recipe', {
