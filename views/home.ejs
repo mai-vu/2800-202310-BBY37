@@ -9,14 +9,14 @@
     </div>
     <form class="w-100 mx-auto mt-4" id="form" role="userInput" method="POST" action="/home/addIngredient" >
         <div class="input-group">
-            <input class="form-control" type="text" id="ingredientInput" name="ingredient"
-                placeholder="Enter ingredient">
+            <input class="form-control comfortaaBold" type="text" id="ingredientInput" name="ingredient"
+                placeholder="Enter ingredient" style="border-radius:50px">
         </div>
     </form>
     <div id="suggestions"></div>
     <br>
-    <div>
-        <%- include('templates/ingredients', {ingredients: ingredients}) %><br>
+    <div style="background-color: plum; border-radius: 50px">
+        <%- include('templates/ingredients', {ingredients: ingredients}) %>
     </div>
     <form class="mt-4" method="POST" action="/home/clearIngredients">
         <button class="btn btn-danger">Clear Ingredients</button>
