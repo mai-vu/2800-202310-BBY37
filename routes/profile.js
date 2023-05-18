@@ -98,7 +98,6 @@ router.post('/updateProfile', async (req, res) => {
         email
     });
 
-    console.log(user);
     // Check if the current password is correct
     const isCorrectPassword = await bcrypt.compare(currentPassword, user.password);
     if (!isCorrectPassword) {

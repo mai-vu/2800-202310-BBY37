@@ -10,7 +10,7 @@ const allRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.j
 //database connection
 const mongodb_database = process.env.MONGODB_DATABASE;
 var {
-  database
+    database
 } = include('database');
 const userCollection = database.db(mongodb_database).collection('users');
 const recipeCollection = database.db(mongodb_database).collection('recipes');
@@ -18,131 +18,187 @@ const recipeCollection = database.db(mongodb_database).collection('recipes');
 //Generate recipes based on ingredients list
 router.post('/', async (req, res) => {
     try {
-      const ingredients = JSON.parse(req.body.ingredients);
-      console.log(ingredients);
-      // Search for recipes that contain at least one of the ingredients  
-      const recipes = await recipeCollection.aggregate([
-        {
-          $match: {
-            ingredients: { $in: ingredients }
-          }
-        },
-        {
-          $addFields: {
-            matchedIngredients: { $setIntersection: [ingredients, "$ingredients"] }
-          }
-        },
-        {
-          $addFields: {
-            numMatches: { $size: "$matchedIngredients" }
-          }
-        },
-        {
-          $sort: {
-            numMatches: -1
-          }
-        },
-        {
-          // Only return the top 40 recipes
-          $limit: 40
+        const ingredients = JSON.parse(req.body.ingredients);
+        console.log(ingredients);
+        // Search for recipes that contain at least one of the ingredients  
+        const recipes = await recipeCollection.aggregate([{
+                $match: {
+                    ingredients: {
+                        $in: ingredients
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    matchedIngredients: {
+                        $setIntersection: [ingredients, "$ingredients"]
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    numMatches: {
+                        $size: "$matchedIngredients"
+                    }
+                }
+            },
+            {
+                $sort: {
+                    numMatches: -1
+                }
+            },
+            {
+                // Only return the top 40 recipes
+                $limit: 40
+            }
+        ]).toArray();
+
+        // Retrieve the user's email from the session
+        const email = req.session.email;
+        // Query the database for the user
+        const user = await userCollection.findOne({
+            email: email
+        });
+
+        if (user) {
+            // Retrieve the user's saved recipes
+            const savedRecipes = user.savedRecipes || [];
+
+            // Add a property 'isSaved' to each recipe indicating if it is saved
+            const recipesWithSavedStatus = recipes.map(recipe => {
+                return {
+                    ...recipe,
+                    isSaved: savedRecipes.includes(recipe.id)
+                };
+            });
+
+            // Render the recipes page (recipes.ejs) with the matching recipes  
+            res.render("recipes", {
+                email: req.session.email,
+                name: req.session.name,
+                dietaryRestrictions: req.session.dietaryRestrictions,
+                ingredients: ingredients,
+                recipes: recipesWithSavedStatus
+            });
+        } else {
+            // Handle case when user is not found
+            res.status(404).send('User not found');
         }
-      ]).toArray();
-  
-      // Retrieve the user's email from the session
-      const email = req.session.email;
-      // Query the database for the user
-      const user = await userCollection.findOne({ email: email });
-  
-      if (user) {
-        // Retrieve the user's saved recipes
-        const savedRecipes = user.savedRecipes || [];
-  
-        // Add a property 'isSaved' to each recipe indicating if it is saved
-        const recipesWithSavedStatus = recipes.map(recipe => {
-          return {
-            ...recipe,
-            isSaved: savedRecipes.includes(recipe.id)
-          };
-        });
-  
-        // Render the recipes page (recipes.ejs) with the matching recipes  
-        res.render("recipes", {
-          email: req.session.email,
-          name: req.session.name,
-          dietaryRestrictions: req.session.dietaryRestrictions,
-          ingredients: ingredients,
-          recipes: recipesWithSavedStatus
-        });
-      } else {
-        // Handle case when user is not found
-        res.status(404).send('User not found');
-      }
     } catch (err) {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
+        console.error(err);
+        res.status(500).send('Internal Server Error');
     }
-  });
+});
 
+router.get('/myRecipes', async (req, res) => {
+    try {
+        // Get the user's saved recipe IDs from the user document
+        const email = req.session.email;
+        const user = await userCollection.findOne({
+            email: email
+        });
+        const savedRecipeIds = user.savedRecipes;
+
+        // Retrieve the saved recipes from the recipe collection
+        const savedRecipes = await recipeCollection.find({
+            id: {
+                $in: savedRecipeIds
+            }
+        }).toArray();
+
+        // Add 'isSaved' property to each recipe
+        savedRecipes.forEach(recipe => {
+            recipe.isSaved = savedRecipeIds.includes(recipe.id.toString());
+        });
+
+        res.render('recipes', {
+            recipes: savedRecipes
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+//View recipe details
 router.get('/:recipeName', async (req, res) => {
-  try {
-    // Retrieve the recipe name from the request parameters
-    const recipeName = req.params.recipeName;
+    try {
+        // Retrieve the recipe name from the request parameters
+        const recipeName = req.params.recipeName;
 
-    // Query the database or retrieve the recipe details based on the recipe name
-    const recipeDetails = await recipeCollection.findOne({
-      name: recipeName
-    });
+        // Query the database or retrieve the recipe details based on the recipe name
+        const recipeDetails = await recipeCollection.findOne({
+            name: recipeName
+        });
 
-    // Render the recipe details page (recipe.ejs) with the matching recipe
-    res.render('recipe', {
-      recipe: recipeDetails,
-    });
-  } catch (err) {
-    // Handle error
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
+        // Render the recipe details page (recipe.ejs) with the matching recipe
+        res.render('recipe', {
+            recipe: recipeDetails,
+        });
+    } catch (err) {
+        // Handle error
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 // Save recipe function
 router.post('/saveRecipe', async (req, res) => {
     try {
-      // Retrieve the recipe id from the request body
-      const recipeId = req.body.id;
-      console.log(recipeId);
-      // Retrieve the user's email from the session
-      const email = req.session.email;
-      // Query the database for the user
-      const user = await userCollection.findOne({ email: email });
-  
-      if (user) {
-        // Retrieve the user's saved recipes or initialize as an empty array
-        const savedRecipes = user.savedRecipes || [];
-        // Check if the recipe is already saved
-        const isSaved = savedRecipes.includes(recipeId);
-  
-        if (isSaved) {
-          // If the recipe is already saved, remove it from the saved recipes
-          const updatedRecipes = savedRecipes.filter((id) => id !== recipeId);
-          await userCollection.updateOne({ email: email }, { $set: { savedRecipes: updatedRecipes } });
-          // Send a success response with saved status
-          res.json({ saved: false });
+        // Retrieve the recipe id from the request body
+        const recipeId = req.body.id;
+        console.log(recipeId);
+        // Retrieve the user's email from the session
+        const email = req.session.email;
+        // Query the database for the user
+        const user = await userCollection.findOne({
+            email: email
+        });
+
+        if (user) {
+            // Retrieve the user's saved recipes or initialize as an empty array
+            const savedRecipes = user.savedRecipes || [];
+            // Check if the recipe is already saved
+            const isSaved = savedRecipes.includes(recipeId);
+
+            if (isSaved) {
+                // If the recipe is already saved, remove it from the saved recipes
+                const updatedRecipes = savedRecipes.filter((id) => id !== recipeId);
+                await userCollection.updateOne({
+                    email: email
+                }, {
+                    $set: {
+                        savedRecipes: updatedRecipes
+                    }
+                });
+                // Send a success response with saved status
+                res.json({
+                    saved: false
+                });
+            } else {
+                // If the recipe is not already saved, add it to the saved recipes
+                const updatedRecipes = [...savedRecipes, recipeId];
+                await userCollection.updateOne({
+                    email: email
+                }, {
+                    $set: {
+                        savedRecipes: updatedRecipes
+                    }
+                });
+                // Send a success response with saved status
+                res.json({
+                    saved: true
+                });
+            }
         } else {
-          // If the recipe is not already saved, add it to the saved recipes
-          const updatedRecipes = [...savedRecipes, recipeId];
-          await userCollection.updateOne({ email: email }, { $set: { savedRecipes: updatedRecipes } });
-          // Send a success response with saved status
-          res.json({ saved: true });
+            // Handle case when user is not found
+            res.status(404).send('User not found');
         }
-      } else {
-        // Handle case when user is not found
-        res.status(404).send('User not found');
-      }
     } catch (err) {
-      // Handle error
-      console.error(err);
-      res.status(500).send('Internal Server Error');
+        // Handle error
+        console.error(err);
+        res.status(500).send('Internal Server Error');
     }
-  }); 
-        
+});
+
 module.exports = router
