@@ -11,7 +11,6 @@ function saveRecipe(id, icon) {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       if (data.saved) {
         icon.classList.remove("bi-star");
         icon.classList.add("bi-star-fill");
