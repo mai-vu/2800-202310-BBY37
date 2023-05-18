@@ -8,7 +8,7 @@
   <% } else { %>
   <div class="row">
     <% for (let i = 0; i < recipes.length; i++) { %>
-    <div id="recipe-<%= recipes[i].id %>" class="col-md-6">
+    <div class="col-md-6">
       <div class="card mb-4">
         <div class="card-body">
           <h2 class="card-title"><%= recipes[i].name %></h2>
@@ -42,6 +42,34 @@
 <% } %>
 </div>
 
-<script src="/scripts/recipes.js"></script>
+<script>
+  function saveRecipe(id, icon) {
+    console.log("saving recipe");
+    fetch("/recipes/saveRecipe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: id
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        // Update the class of the star icon based on the saved status
+        if (data.saved) {
+          icon.classList.remove("bi-star");
+          icon.classList.add("bi-star-fill");
+        } else {
+          icon.classList.remove("bi-star-fill");
+          icon.classList.add("bi-star");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+  }
+</script>
 
 <%- include("templates/footer") %>
