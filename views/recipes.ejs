@@ -2,14 +2,12 @@
 
 <div class="container">
   <h1>Recipes</h1>
-  <!-- Dropdown for sorting -->
-  <div id="sortRecipeDropdown" class="mb-3">
-    <label for="sort-select" class="form-label">Sort by Time:</label>
-    <select class="form-select" id="sort-select" onchange="sortRecipes(this.value)">
-      <option value="asc">Ascending</option>
-      <option value="desc">Descending</option>
-    </select>
+  <!-- Buttons for sorting -->
+  <div class="btn-group">
+    <button type="button" class="btn btn-secondary" onclick="sortRecipes('asc', recipes)">Sort Ascending</button>
+    <button type="button" class="btn btn-secondary" onclick="sortRecipes('desc', recipes)">Sort Descending</button>
   </div>
+
   <!-- Renders all the recipes -->
   <% if (recipes.length === 0) { %>
   <p>Sorry, no recipes found.</p>
@@ -50,7 +48,7 @@
 </div>
 
 <script src="/scripts/recipes.js"></script>
-<script src="/public/scripts/sortRecipes.js"></script>
+<script src="/scripts/sortRecipes.js"></script>
 
 
 <%- include("templates/footer") %>

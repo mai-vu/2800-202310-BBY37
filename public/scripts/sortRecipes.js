@@ -1,24 +1,15 @@
-function sortRecipes(sortOrder) {
-  const recipesContainer = document.querySelector('.row');
-  const recipeCards = Array.from(recipesContainer.querySelectorAll('.col-md-6'));
+function sortRecipes(order, callback) {
+  recipes.sort((a, b) => {
+    const ingredientsA = parseInt(a.n_ingredients);
+    const ingredientsB = parseInt(b.n_ingredients);
 
-  recipeCards.sort((cardA, cardB) => {
-    const timeA = getTimeValue(cardA);
-    const timeB = getTimeValue(cardB);
-
-    return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
+    if (order === 'asc') {
+      return ingredientsA - ingredientsB;
+    } else {
+      return ingredientsB - ingredientsA;
+    }
   });
 
-  recipesContainer.innerHTML = '';
-
-  for (const card of recipeCards) {
-    recipesContainer.appendChild(card);
-  }
-}
-
-function getTimeValue(card) {
-  const timeText = card.querySelector('.card-body .card-text strong:contains("Time:")').nextSibling.textContent;
-  const minutes = parseInt(recipes[i].minutes);
-
-  return minutes;
+  // Call the callback function with the sorted recipes
+  callback(render("recipes"));
 }
