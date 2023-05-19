@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
       res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
       return;
     }
-    // ingredients.length = 0;
+    ingredients.length = 0;
     res.render("home", {
       name: req.session.name,
       dietaryRestrictions: req.session.dietaryRestrictions,
@@ -45,7 +45,11 @@ router.post('/addIngredient', async (req, res) => {
     if (ingredient !== "") {
       ingredients.push(ingredient);
     }
-    res.redirect('/home');
+    res.render("home", {
+      name: req.session.name,
+      dietaryRestrictions: req.session.dietaryRestrictions,
+      ingredients: ingredients,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Internal Server Error");
