@@ -9,6 +9,19 @@ function toggleDietaryRestrictions(checkbox) {
   document.getElementById('recipesForm').submit();
 }
 
+function sortRecipes() {
+  // Get the sorting option (ascending or descending) from the select element
+  const selectElement = document.getElementById('sortOption');
+  const sortOption = selectElement.value;
+
+  const hiddenInput = document.getElementById('sortInput');
+  hiddenInput.value = sortOption;
+
+  console.log(sortOption + " in sortRecipe " + hiddenInput.value);
+  
+  document.getElementById('recipesForm').submit();
+}
+
 //save recipe to user's savedRecipes array, or unsave it if it's already saved
 function saveRecipe(id, icon) {
   fetch("/recipes/saveRecipe", {

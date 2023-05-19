@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         const ignoreDietaryRestrictions = (req.body.ignoreDietaryRestrictions === 'true');
 
         const ingredients = JSON.parse(req.body.ingredients);
-        console.log(ingredients);
+        // console.log(ingredients);
         // Search for recipes that contain at least one of the ingredients  
         const recipes = await recipeCollection.aggregate([{
                 $match: {
@@ -79,6 +79,14 @@ router.post('/', async (req, res) => {
                 };
             });
 
+            // Sort the recipes based on the sort option
+            const sortOption = req.body.sort;
+            if (sortOption === 'asc') {
+                recipesWithSavedStatus.sort((a, b) => a.minutes - b.minutes);
+            } else if (sortOption === 'desc') {
+                recipesWithSavedStatus.sort((a, b) => b.minutes - a.minutes);
+            }
+
             const ingredientsJSON = JSON.stringify(ingredients);
 
             // Render the recipes page (recipes.ejs) with the matching recipes  
@@ -87,6 +95,7 @@ router.post('/', async (req, res) => {
                 name: req.session.name,
                 dietaryRestrictions: req.session.dietaryRestrictions,
                 ingredients: ingredientsJSON,
+                sort: sortOption,
                 ignoreDietaryRestrictions: ignoreDietaryRestrictions,
                 recipes: recipesWithSavedStatus
             });
@@ -99,7 +108,7 @@ router.post('/', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-  
+
 router.get('/myRecipes', async (req, res) => {
     try {
         if (!req.session.authenticated) {
