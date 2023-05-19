@@ -1,9 +1,152 @@
+
+/* These are the font setters */
 @font-face {
     font-family: virgo;
-    src: url(/public/files_font/virgo.ttf);
+    src: url(/files_font/virgo.ttf);
 }
 
 @font-face {
     font-family: ostrich;
-    src: url(/public/files_font/ostrichSans.otf);
+    src: url(/files_font/ostrichSans.otf);
 }
+
+@font-face {
+    font-family: ostrichBlack;
+    src: url(/files_font/ostrichSansBlack.otf);
+}
+
+@font-face {
+    font-family: comfortaa;
+    src: url(/files_font/comfortaa.ttf);
+}
+
+@font-face {
+    font-family: comfortaaBold;
+    src: url(/files_font/comfortaaBold.ttf);
+}
+
+@font-face {
+  font-family: mcReg;
+  src: url(/files_font/mcReg.otf);
+}
+
+@font-face {
+  font-family: mcItalic;
+  src: url(/files_font/mcItalic.otf);
+}
+
+/* These are the classes to implement the font */
+.ostrichFont {
+    font-family: ostrich;
+}
+
+.ostrichFontBlack {
+    font-family: ostrichBlack;
+}
+
+.comfortaa {
+    font-family: comfortaa;
+}
+
+.comfortaaBold {
+    font-family: comfortaaBold;
+}
+
+/* Typing effect font settings */
+#typedText {
+    font-family: ostrich;
+    font-size: 125%;
+    color: #000;
+  }
+
+.fixed-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fixed-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @media (max-width: 767px) {
+    .fixed-card {
+      align-content: center;
+      width: 90%;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .fixed-card {
+      align-content: center;
+      width: 80%;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .fixed-card {
+      align-content: center;
+      width: 60%;
+    }
+  }
+
+
+  body {
+    background-color: plum;
+    background: url(/img/ai_bg.jpg) no-repeat center fixed;
+    background-size: cover;
+  }
+
+  .form-control{
+    font-family: comfortaaBold !important;
+  }
+
+
+  a {
+    float: left;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #9d3cce;
+  }
+  
+  a:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 3px;
+    width: 0;
+    background: transparent;
+  }
+
+  .nav-link:after {
+    transition: width .5s ease, background-color .5s ease, left .5s ease;
+  }
+  
+  .nav-link:hover:after {
+    width: 100%;
+    left: 0;
+    background: black;
+  }
+
+  .nav-link {
+    color: darkmagenta;
+    font-size: 110%;
+  }
+
+  .nav-link:hover {
+    color: black;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  
+  

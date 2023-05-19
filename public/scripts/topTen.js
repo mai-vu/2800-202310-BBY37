@@ -30,6 +30,7 @@ document.getElementById('ingredientInput').addEventListener('input', async funct
                 console.log('Button created:', btn);
                 btn.type = 'button';
                 btn.className = 'btn btn-primary m-1';
+                btn.style = 'border-radius: 50px; background-color: plum; border-color: transparent' ;
                 btn.textContent = suggestion;
                 
                 // Add a click event listener to the button
