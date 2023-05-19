@@ -22,6 +22,9 @@ router.post('/', async (req, res) => {
             res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
             return;
         }
+
+        const ignoreDietaryRestrictions = (req.body.ignoreDietaryRestrictions === 'true');
+
         const ingredients = JSON.parse(req.body.ingredients);
         console.log(ingredients);
         // Search for recipes that contain at least one of the ingredients  
@@ -52,7 +55,7 @@ router.post('/', async (req, res) => {
                 }
             },
             {
-                // Only return the top 40 recipes
+                // Only return the top 100 recipes
                 $limit: 40
             }
         ]).toArray();
@@ -76,12 +79,15 @@ router.post('/', async (req, res) => {
                 };
             });
 
+            const ingredientsJSON = JSON.stringify(ingredients);
+
             // Render the recipes page (recipes.ejs) with the matching recipes  
             res.render("recipes", {
                 email: req.session.email,
                 name: req.session.name,
                 dietaryRestrictions: req.session.dietaryRestrictions,
-                ingredients: ingredients,
+                ingredients: ingredientsJSON,
+                ignoreDietaryRestrictions: ignoreDietaryRestrictions,
                 recipes: recipesWithSavedStatus
             });
         } else {
@@ -93,7 +99,7 @@ router.post('/', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
+  
 router.get('/myRecipes', async (req, res) => {
     try {
         if (!req.session.authenticated) {

@@ -1,6 +1,17 @@
+function toggleDietaryRestrictions(checkbox) {
+  // Update the value of the checkbox input
+  checkbox.value = checkbox.checked;
+
+  // Update the value of the hidden input
+  const hiddenInput = document.getElementById('ignoreDietaryRestrictionsInput');
+  hiddenInput.value = checkbox.checked;
+  
+  document.getElementById('recipesForm').submit();
+}
+
 //save recipe to user's savedRecipes array, or unsave it if it's already saved
 function saveRecipe(id, icon) {
-    fetch("/recipes/saveRecipe", {
+  fetch("/recipes/saveRecipe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -31,4 +42,4 @@ function saveRecipe(id, icon) {
     .catch(error => {
       console.error("Error:", error);
     });
-  }
+}

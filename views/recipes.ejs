@@ -3,11 +3,30 @@
 <div class="container">
   <h1>Recipes</h1>
 
+  <!-- Checkbox for ignoring dietary restrictions -->
+  <form class="mt-2" id="recipesForm" method="POST" action="/recipes">
+    <label>
+      <input type="checkbox" id="ignoreDietaryRestrictionsCheckbox" onchange="toggleDietaryRestrictions(this)"
+        value="<%= ignoreDietaryRestrictions %>" <% if(ignoreDietaryRestrictions) { %>checked<% } %>>
+      Ignore my dietary restrictions
+    </label>
+    <input type="hidden" id="ignoreDietaryRestrictionsInput" name="ignoreDietaryRestrictions"
+      value="<%= ignoreDietaryRestrictions %>">
+    <input type="hidden" name="ingredients" value="<%= ingredients %>">
+  </form>
+
   <% if (recipes.length === 0) { %>
   <p>Sorry, no recipes found.</p>
   <% } else { %>
   <div class="row">
     <% for (let i = 0; i < recipes.length; i++) { %>
+    <!-- Inside the loop -->
+    <% if (ignoreDietaryRestrictions || ((!dietaryRestrictions.includes('Gluten-Free') || recipes[i].tags.includes('gluten-free')) 
+    && (!dietaryRestrictions.includes('Low-Carb') || recipes[i].tags.includes('low-carb')) 
+    &&(!dietaryRestrictions.includes('Low-Fat') || recipes[i].tags.includes('low-fat')) 
+    && (!dietaryRestrictions.includes('Vegetarian') || (recipes[i].tags.includes('vegan') && recipes[i].tags.includes('vegetarian'))) 
+    && (!dietaryRestrictions.includes('Lactose-Free') || recipes[i].tags.includes('dairy-free'))
+    )) { %>
     <div id="recipe-<%= recipes[i].id %>" class="col-md-6">
       <div class="card mb-4">
         <div class="card-body">
@@ -24,8 +43,9 @@
           <p class="card-text"><strong>Tags:</strong></p>
           <div class="tags">
             <% for (let j = 0; j < recipes[i].tags.length; j++) { %>
-            <span
-              class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill"><%= recipes[i].tags[j] %></span>
+            <span class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill">
+              <%= recipes[i].tags[j] %>
+            </span>
             <% } %>
           </div><br>
           <div class="d-flex align-items-center justify-content-between">
@@ -36,10 +56,10 @@
         </div>
       </div>
     </div>
+    <% } %>
+    <% } %>
   </div>
   <% } %>
-</div>
-<% } %>
 </div>
 
 <script src="/scripts/recipes.js"></script>
