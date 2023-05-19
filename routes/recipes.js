@@ -99,7 +99,8 @@ router.post('/', async (req, res) => {
                 ingredients: ingredientsJSON,
                 sort: sortOption,
                 ignoreDietaryRestrictions: ignoreDietaryRestrictions,
-                recipes: recipesWithSavedStatus
+                recipes: recipesWithSavedStatus, 
+                isMyRecipesPage: false
             });
         } else {
             // Handle case when user is not found
@@ -117,6 +118,9 @@ router.get('/myRecipes', async (req, res) => {
             res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
             return;
         }
+
+        const ignoreDietaryRestrictions = (req.query.ignoreDietaryRestrictions === 'true');
+
         // Get the user's saved recipe IDs from the user document
         const email = req.session.email;
         const user = await userCollection.findOne({
@@ -136,8 +140,22 @@ router.get('/myRecipes', async (req, res) => {
             recipe.isSaved = savedRecipeIds.includes(recipe.id.toString());
         });
 
+        // Sort the recipes based on the sort option
+        const sortOption = req.query.sort;
+        if (sortOption === 'asc') {
+            savedRecipes.sort((a, b) => a.minutes - b.minutes);
+        } else if (sortOption === 'desc') {
+            savedRecipes.sort((a, b) => b.minutes - a.minutes);
+        } else if (sortOption === 'numIngredients') {
+            savedRecipes.sort((a, b) => a.ingredients.length - b.ingredients.length);
+        }
+
         res.render('recipes', {
-            recipes: savedRecipes
+            recipes: savedRecipes,
+            dietaryRestrictions: req.session.dietaryRestrictions,
+            ignoreDietaryRestrictions: ignoreDietaryRestrictions,
+            sort: sortOption,
+            isMyRecipesPage: true
         });
     } catch (err) {
         console.error(err);

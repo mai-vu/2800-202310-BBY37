@@ -4,7 +4,7 @@
   <h1>Recipes</h1>
 
   <!-- Checkbox for ignoring dietary restrictions and sorting drop down -->
-  <form class="mt-2" id="recipesForm" method="POST" action="/recipes">
+  <form class="mt-2" id="recipesForm" method="<%= isMyRecipesPage ? 'GET' : 'POST' %>" action="<%= isMyRecipesPage ? '/recipes/myRecipes' : '/recipes' %>">
     <div class="form-group">
       <label for="sortOption">Sort by:</label>
       <select class="form-control" id="sortOption" onchange="sortRecipes()">
@@ -25,7 +25,9 @@
       <!-- Hidden inputs for dietary restrictions and ingredients -->
       <input type="hidden" id="ignoreDietaryRestrictionsInput" name="ignoreDietaryRestrictions"
         value="<%= ignoreDietaryRestrictions %>">
-      <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= ingredients %>">
+        <% if (!isMyRecipesPage) { %>
+          <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= ingredients %>">
+        <% } %>
     </div>    
   </form>
 
