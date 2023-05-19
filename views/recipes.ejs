@@ -11,6 +11,7 @@
         <option value="" <%= !sort ? 'selected' : '' %>>Most matched ingredients</option>
         <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Ascending</option>
         <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Descending</option>
+        <option value="numIngredients" <%= sort === 'numIngredients' ? 'selected' : '' %>>Least Ingredients Required</option>
       </select>
       <input type="hidden" id="sortInput" name="sort" value="<%= sort %>">
     </div>

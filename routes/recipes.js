@@ -85,6 +85,8 @@ router.post('/', async (req, res) => {
                 recipesWithSavedStatus.sort((a, b) => a.minutes - b.minutes);
             } else if (sortOption === 'desc') {
                 recipesWithSavedStatus.sort((a, b) => b.minutes - a.minutes);
+            } else if (sortOption === 'numIngredients') {
+                recipesWithSavedStatus.sort((a, b) => a.ingredients.length - b.ingredients.length);
             }
 
             const ingredientsJSON = JSON.stringify(ingredients);
