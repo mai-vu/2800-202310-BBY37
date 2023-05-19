@@ -68,7 +68,6 @@ router.post('/removeIngredient', async (req, res) => {
 //Clear ingredients list, then redirects /home
 router.post('/clearIngredients', (req, res) => {
   ingredients.length = 0;
-  console.log("Cleared all ingredients");
   res.redirect('/home');
 });
 

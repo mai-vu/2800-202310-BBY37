@@ -21,9 +21,12 @@ router.post('/', async (req, res) => {
         if (!req.session.authenticated) {
             res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
             return;
-          }
+        }
+
+        const ignoreDietaryRestrictions = (req.body.ignoreDietaryRestrictions === 'true');
+
         const ingredients = JSON.parse(req.body.ingredients);
-        console.log(ingredients);
+        // console.log(ingredients);
         // Search for recipes that contain at least one of the ingredients  
         const recipes = await recipeCollection.aggregate([{
                 $match: {
@@ -52,7 +55,7 @@ router.post('/', async (req, res) => {
                 }
             },
             {
-                // Only return the top 40 recipes
+                // Only return the top 100 recipes
                 $limit: 40
             }
         ]).toArray();
@@ -76,12 +79,26 @@ router.post('/', async (req, res) => {
                 };
             });
 
+            // Sort the recipes based on the sort option
+            const sortOption = req.body.sort;
+            if (sortOption === 'asc') {
+                recipesWithSavedStatus.sort((a, b) => a.minutes - b.minutes);
+            } else if (sortOption === 'desc') {
+                recipesWithSavedStatus.sort((a, b) => b.minutes - a.minutes);
+            } else if (sortOption === 'numIngredients') {
+                recipesWithSavedStatus.sort((a, b) => a.ingredients.length - b.ingredients.length);
+            }
+
+            const ingredientsJSON = JSON.stringify(ingredients);
+
             // Render the recipes page (recipes.ejs) with the matching recipes  
             res.render("recipes", {
                 email: req.session.email,
                 name: req.session.name,
                 dietaryRestrictions: req.session.dietaryRestrictions,
-                ingredients: ingredients,
+                ingredients: ingredientsJSON,
+                sort: sortOption,
+                ignoreDietaryRestrictions: ignoreDietaryRestrictions,
                 recipes: recipesWithSavedStatus
             });
         } else {
@@ -99,7 +116,7 @@ router.get('/myRecipes', async (req, res) => {
         if (!req.session.authenticated) {
             res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
             return;
-          }
+        }
         // Get the user's saved recipe IDs from the user document
         const email = req.session.email;
         const user = await userCollection.findOne({
@@ -139,6 +156,24 @@ router.get('/:recipeName', async (req, res) => {
         const recipeDetails = await recipeCollection.findOne({
             name: recipeName
         });
+
+        // Retrieve the user's email from the session
+        const email = req.session.email;
+
+        // Query the user collection to get the user's saved recipes
+        const user = await userCollection.findOne({
+            email: email
+        });
+
+        // Check if the user exists and retrieve the saved recipes
+        if (user) {
+            const savedRecipes = user.savedRecipes || [];
+
+            // Add the 'isSaved' property to the recipe indicating if it is saved
+            const isSaved = savedRecipes.includes(recipeDetails.id.toString());
+            recipeDetails.isSaved = isSaved;
+        }
+
 
         // Render the recipe details page (recipe.ejs) with the matching recipe
         res.render('recipe', {
