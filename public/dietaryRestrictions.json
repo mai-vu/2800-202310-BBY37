@@ -12,14 +12,8 @@
   "name": "Lactose-Free"
 }, {
   "id": 4,
-  "name": "Kosher"
-}, {
-  "id": 5,
-  "name": "Halal"
-}, {
-  "id": 6,
   "name": "Low-Carb"
 }, {
-  "id": 7,
+  "id": 5,
   "name": "Low-Fat"
 }]

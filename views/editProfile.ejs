@@ -8,7 +8,7 @@
           <%= error %>
         </div>
         <% } %>
-      <form action="/updateProfile" method="POST" class="py-3">
+      <form action="/profile/updateProfile" method="POST" class="py-3">
         <small class="form-text text-muted">* Required fields are mandatory</small>
         <div class="form-group">
           <label for="name">Name: *</label>
@@ -36,7 +36,8 @@
           <div class="form-check">
             <input class="form-check-input" type="checkbox" name="dietaryRestrictions" 
             value="<%= dietaryRestriction.name %>" 
-            <% if (dietaryRestrictions.includes(dietaryRestriction.name)) { %>checked <% } %>
+            <% if (dietaryRestrictions && dietaryRestrictions.length && dietaryRestrictions[0] !== null 
+            && dietaryRestrictions.includes(dietaryRestriction.name)) { %>checked <% } %>
             id="dietaryRestriction<%= dietaryRestriction.id %>">
             <label class="form-check-label" for="dietaryRestriction<%= dietaryRestriction.id %>">
               <%= dietaryRestriction.name %>
@@ -50,16 +51,6 @@
   </div>
 </div>
 
-<script>
-  function checkNewPassword() {
-    var newPasswordInput = document.getElementById("newPassword");
-    var confirmPasswordInput = document.getElementById("confirmPassword");
-    if (newPasswordInput.value !== "") {
-      confirmPasswordInput.required = true;
-    } else {
-      confirmPasswordInput.required = false;
-    }
-  }
-</script>
+<script src="/scripts/editProfile.js"></script>
 
 <%- include("templates/footer") %>
