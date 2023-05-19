@@ -2,7 +2,15 @@
 
 <div class="container">
   <h1>Recipes</h1>
-
+  <!-- Dropdown for sorting -->
+  <div id="sortRecipeDropdown" class="mb-3">
+    <label for="sort-select" class="form-label">Sort by Time:</label>
+    <select class="form-select" id="sort-select" onchange="sortRecipes(this.value)">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+  </div>
+  <!-- Renders all the recipes -->
   <% if (recipes.length === 0) { %>
   <p>Sorry, no recipes found.</p>
   <% } else { %>
@@ -36,12 +44,13 @@
         </div>
       </div>
     </div>
-  </div>
   <% } %>
 </div>
 <% } %>
 </div>
 
 <script src="/scripts/recipes.js"></script>
+<script src="/public/scripts/sortRecipes.js"></script>
+
 
 <%- include("templates/footer") %>
