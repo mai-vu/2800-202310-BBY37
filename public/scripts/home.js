@@ -19,3 +19,10 @@ function removeIngredient(index) {
       console.error('Failed to remove ingredient:', error);
     });
   }
+
+  //Custom Easter Egg Card Appearance
+  function showCustomCard(event) {
+    event.preventDefault();
+    const customCard = document.getElementById('customCard');
+    customCard.classList.toggle('hidden');
+  }

@@ -25,6 +25,16 @@
     src: url(/files_font/comfortaaBold.ttf);
 }
 
+@font-face {
+  font-family: mcReg;
+  src: url(/files_font/mcReg.otf);
+}
+
+@font-face {
+  font-family: mcItalic;
+  src: url(/files_font/mcItalic.otf);
+}
+
 /* These are the classes to implement the font */
 .ostrichFont {
     font-family: ostrich;
@@ -44,8 +54,8 @@
 
 /* Typing effect font settings */
 #typedText {
-    font-family: Arial, sans-serif;
-    font-size: 18px;
+    font-family: ostrich;
+    font-size: 200%;
     color: #000;
   }
 
@@ -127,10 +137,16 @@
 
   .nav-link {
     color: darkmagenta;
-    padding-right: 30%;
+    font-size: 110%;
   }
 
   .nav-link:hover {
     color: black;
   }
+
+  .hidden {
+    display: none;
+  }
+
+  
   

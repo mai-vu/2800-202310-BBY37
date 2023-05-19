@@ -1,21 +1,70 @@
 <%- include("templates/header") %>
 <!-- Home page content -->
 <div class="container py-5 text-center">
-    <h1 class="display-4 fw-bold">
+    <h1 class="display-4 fw-bold comfortaaBold">
         Hello, <%= name %>!
     </h1>
-    <div class="col-lg-6 mx-auto mt-4">
+    <div class="col-lg-6 mx-auto mt-4 ostrichFontBlack">
         What are we making today?
     </div>
-    <form class="w-100 mx-auto mt-4" id="form" role="userInput" method="POST" action="/home/addIngredient" >
+    <form class="w-100 mx-auto mt-4" id="form" role="userInput" method="POST" action="/home/addIngredient">
         <div class="input-group">
             <input class="form-control comfortaaBold" type="text" id="ingredientInput" name="ingredient"
-                placeholder="Enter ingredient" style="border-radius:50px">
+                placeholder="Enter ingredient" style="border-radius:50px;">
         </div>
     </form>
+
+    <% if (ingredients.includes('rose petals') && ingredients.includes('cremini mushroom') && ingredients.includes('porcini mushroom') && ingredients.includes('bread bowl')) { %>
+        <div class="card mt-5" style="background-image: url(/img/wooden_planks2.jpg); border-radius: 0px; border-color: transparent; margin-left: 20%; margin-right: 20%">
+            <div class="card-body">
+                <h5 class="card-title" style="font-family: mcReg; font-size: 200%">Special Recipe</h5>
+                <p class="card-text" style="font-family: mcReg; font-size: 180%">You've made yourself quite a concoction! Try crafting this special dish.</p>
+                <a href="#" class="btn" style="align-items: center; font-family: mcItalic; font-size: 180%; text-decoration: underline" onclick="showCustomCard(event)">View Recipe</a>
+            </div>
+        </div>
+        <div id="customCard" class="hidden">
+            <div class="container" style="padding-left: 2%; padding-right: 2%; margin-bottom: 5%; margin-top: 2.5%; padding-bottom: 2.5%; padding-top: 2.5%; background-image: url(/img/mushroomBlock.png); 
+                                          background-size: 100%; background-repeat: repeat; border-radius: 0px; text-align:justify; max-width: 60%; font-family: mcReg; color: black">
+                <img src="/img/sus_stew.png">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h1>Suspicious Stew</h1>
+                </div>
+                <p><strong>Time:</strong> ??? minutes</p>
+              
+                <p><strong>Ingredients:</strong></p>
+                <ul class>
+                  <li>Rose Petals</li>
+                  <li>Porcini Mushroom</li>
+                  <li>Cremini Mushroom</li>
+                  <li>Bread Bowl</li>
+                </ul>
+              
+                <p><strong>Nutrition:</strong></p>
+                <ul>
+                  <li>Blindness: [5-7 Seconds]</li>
+                  <li>Jump Boost [7-10 Seconds]</li>
+                  <li>Weakness [6-8 Seconds]</li>
+                  <li>Night-Vision [7-10 Seconds]</li>
+                </ul>
+              
+                <p><strong>Steps:</strong></p>
+                <ol>
+                  <li>Step 1: Place Porcini Mushroom onto [Crafting Table]</li>
+                  <li>Step 2: Place Crimini Mushroom onto [Crafting Table]</li>
+                  <li>Step 3: Place Rose Petals onto [Crafting Table]</li>
+                  <li>Step 4: Place Bread Bowl onto [Crafting Table]</li>
+                  <li>Step 5: Wait ??? second(s), and your stew will be complete.</li>
+                </ol>
+              
+                <p><strong>Description:</strong></p>
+                <p>This is a unique food item that can give the player a status effect that depends on the flower used to craft it. Viewable only.</p>
+              </div>
+        </div>
+        <% } %>
+
     <div id="suggestions"></div>
     <br>
-    <div style="background-color: plum; border-radius: 50px">
+    <div style="background-color: plum; border-radius: 10px; padding-left: 2%">
         <%- include('templates/ingredients', {ingredients: ingredients}) %>
     </div>
     <form class="mt-4" method="POST" action="/home/clearIngredients">
@@ -25,11 +74,10 @@
         <input type="hidden" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
         <button class="btn btn-success">Find Recipes</button>
     </form>
+    
+    
 </div>
 
 <script src="/scripts/home.js"></script>
 <script src="/scripts/topTen.js"></script>
-<%- include("templates/footer") %>
-
-
 <%- include("templates/footer") %>

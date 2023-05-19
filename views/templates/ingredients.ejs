@@ -3,7 +3,7 @@
     <% for (let i = 0; i < ingredients.length; i++) { %>
       <div class="ingredient-item d-flex align-items-center justify-content-between comfortaaBold">
         <span class="me-2"><%= ingredients[i] %></span>
-        <button class="btn btn-sm btn-outline-danger comfortaaBold" style="border-radius: 50px" onclick="removeIngredient(<%= i %>)">Remove</button>
+        <button class="btn btn-sm btn-outline-danger comfortaaBold" style="border-radius: 100px" onclick="removeIngredient(<%= i %>)">x</button>
       </div>
     <% } %>
   </div>
