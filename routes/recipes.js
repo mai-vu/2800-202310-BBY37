@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         const ignoreDietaryRestrictions = (req.body.ignoreDietaryRestrictions === 'true');
 
         const ingredients = JSON.parse(req.body.ingredients);
-        // console.log(ingredients);
+        console.log(ingredients);
         // Search for recipes that contain at least one of the ingredients  
         const recipes = await recipeCollection.aggregate([{
                 $match: {
