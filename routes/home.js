@@ -17,8 +17,6 @@ var {
 const userCollection = database.db(mongodb_database).collection('users');
 const recipeCollection = database.db(mongodb_database).collection('recipes');
 
-//testing clena up later ***********
-
 //Route to home page
 router.get('/', async (req, res) => {
   try {
@@ -67,7 +65,7 @@ router.post('/removeIngredient', async (req, res) => {
   const index = req.body.index;
   req.session.ingredients = req.session.ingredients.filter((_, i) => i !== index);
 
-  console.log("after remove " + req.session.ingredients);
+  console.log("list after remove " + req.session.ingredients);
   res.render("home", {
     name: req.session.name,
     dietaryRestrictions: req.session.dietaryRestrictions,

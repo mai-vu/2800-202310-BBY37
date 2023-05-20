@@ -71,7 +71,7 @@
         <button class="btn btn-danger">Clear Ingredients</button>
     </form>
     <form class="mt-2" method="POST" action="/recipes">
-        <input type="hidden" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
+        <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
         <button class="btn btn-success">Find Recipes</button>
     </form>
     

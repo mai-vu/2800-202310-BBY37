@@ -12,6 +12,12 @@ function removeIngredient(index) {
       // Remove the ingredient from the UI
       const ingredientItem = document.getElementById(`ingredientItem-${index}`);
       ingredientItem.remove();
+
+      // Update the value of the hidden input with the updated ingredients array
+      const ingredientsInput = document.getElementById('ingredientsInput');
+      const updatedIngredients = Array.from(document.querySelectorAll('.ingredient-item span'))
+        .map(ingredient => ingredient.textContent.trim());
+      ingredientsInput.value = JSON.stringify(updatedIngredients);
     } else {
       console.error('Failed to remove ingredient');
     }

@@ -9,8 +9,8 @@
       <label for="sortOption">Sort by:</label>
       <select class="form-control" id="sortOption" onchange="sortRecipes()">
         <option value="" <%= !sort ? 'selected' : '' %>>Most matched ingredients</option>
-        <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Ascending</option>
-        <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Descending</option>
+        <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Time: Ascending</option>
+        <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Time: Descending</option>
         <option value="numIngredients" <%= sort === 'numIngredients' ? 'selected' : '' %>>Least Ingredients Required</option>
       </select>
       <input type="hidden" id="sortInput" name="sort" value="<%= sort %>">
