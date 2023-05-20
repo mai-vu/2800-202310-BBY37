@@ -126,14 +126,17 @@ router.get('/myRecipes', async (req, res) => {
         const user = await userCollection.findOne({
             email: email
         });
-        const savedRecipeIds = user.savedRecipes;
 
+        //if user doesn't have any saved recipes, assign an empty array
+        const savedRecipeIds = user.savedRecipes || [];
+        
         // Retrieve the saved recipes from the recipe collection
         const savedRecipes = await recipeCollection.find({
             id: {
                 $in: savedRecipeIds
             }
         }).toArray();
+  
 
         // Add 'isSaved' property to each recipe
         savedRecipes.forEach(recipe => {
