@@ -17,17 +17,13 @@ document.getElementById('ingredientInput').addEventListener('input', async funct
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            console.log("the response is ", response);
-
             const data = await response.json(); // assuming you're expecting JSON
 
             // Process your data here
-            console.log("inside anon function but below", data);
             const suggestionsDiv = document.getElementById('suggestions');
             suggestionsDiv.innerHTML = ''; // Clear out any previous suggestions
             for (const suggestion of data) {
                 const btn = document.createElement('button');
-                console.log('Button created:', btn);
                 btn.type = 'button';
                 btn.className = 'btn btn-primary m-1';
                 btn.style = 'border-radius: 50px; background-color: plum; border-color: transparent' ;
@@ -42,7 +38,6 @@ document.getElementById('ingredientInput').addEventListener('input', async funct
                 });
                 
                 suggestionsDiv.appendChild(btn);
-                console.log('Current content of suggestions:', suggestionsDiv.innerHTML);
             }
         } catch (error) {
             console.log('inside anon function Error:', error);
