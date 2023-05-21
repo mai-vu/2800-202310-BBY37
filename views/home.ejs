@@ -4,6 +4,7 @@
     <h1 class="display-4 fw-bold comfortaaBold">
         Hello, <%= name %>!
     </h1>
+    <%- include('foodwaste.ejs') %>
     <div class="col-lg-6 mx-auto mt-4 ostrichFontBlack">
         What are we making today?
     </div>
@@ -73,6 +74,10 @@
     <form class="mt-2" method="POST" action="/recipes">
         <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
         <button class="btn btn-success">Find Recipes</button>
+    </form>
+    <form class="mt-5" method="POST" action="/foodWaste">
+        <input type="hidden" id="wasteInput" name="waste" value="<%= JSON.stringify(ingredients) %>">
+        <button class="btn btn-primary">Reduce My Waste!</button>
     </form>
     
     
