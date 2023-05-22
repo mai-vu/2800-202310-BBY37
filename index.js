@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const fetch = require('node-fetch');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,7 +24,7 @@ const joinRouter = require('./routes/join');
 const homeRouter = require('./routes/home');
 const recipesRouter = require('./routes/recipes');
 const fuzzysearchRouter = require('./routes/fuzzySearch');
-
+const webcamRouter = require('./routes/webcam');
 
 app.set('view engine', 'ejs')
 
@@ -69,9 +70,12 @@ app.use('/password', passwordRouter);
 
 app.use('/recipes', recipesRouter);
 
+app.use('/webcam', webcamRouter);
+
 app.use(express.static(__dirname + "/public"));
 
 app.use('/fuzzySearch', fuzzysearchRouter);
+
 
 app.get("*", (req, res) => {
   res.status(404).render("404");

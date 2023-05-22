@@ -16,6 +16,7 @@ var {
 } = include('database');
 const userCollection = database.db(mongodb_database).collection('users');
 const recipeCollection = database.db(mongodb_database).collection('recipes');
+const vision_key = process.env.VISION_API_KEY;
 
 //Route to home page
 router.get('/', async (req, res) => {
@@ -32,7 +33,8 @@ router.get('/', async (req, res) => {
     res.render("home", {
       name: req.session.name,
       dietaryRestrictions: req.session.dietaryRestrictions,
-      ingredients: req.session.ingredients
+      ingredients: req.session.ingredients,
+      vision_key: vision_key
     });
   } catch (error) {
     console.error(error);
