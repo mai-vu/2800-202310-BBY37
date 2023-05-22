@@ -3,7 +3,12 @@ require('dotenv').config();
 const express = require('express')
 const router = express.Router()
 const fs = require('fs');
-
+// OpenAI API 
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  const openai = new OpenAIApi(configuration);
 
 //test prompt
 let testPrompt = "give me two things, 1 what do do with expires bananas and what do to do with it when its about to go bad";
