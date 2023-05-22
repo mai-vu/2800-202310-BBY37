@@ -5,8 +5,8 @@ const captureButton = document.getElementById('captureButton');
 
 // Access the webcam and start video capture
 navigator.mediaDevices.getUserMedia({
-    video: true
-})
+        video: true
+    })
     .then((stream) => {
         video.srcObject = stream;
     })
@@ -21,6 +21,14 @@ function captureFrame() {
 
     // Get the image data from the canvas
     const imageData = canvas.toDataURL('image/jpeg');
+
+    // Create a new image element to display the captured image
+    const capturedImage = new Image();
+    capturedImage.src = imageData;
+
+    // Append the captured image to a container in the DOM
+    const imageContainer = document.getElementById('imageContainer');
+    imageContainer.appendChild(capturedImage);
 
     // Create a Blob object from the data URL
     const blob = dataURLToBlob(imageData);
@@ -63,5 +71,7 @@ function dataURLToBlob(dataURL) {
     while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
     }
-    return new Blob([u8arr], { type: mime });
+    return new Blob([u8arr], {
+        type: mime
+    });
 }

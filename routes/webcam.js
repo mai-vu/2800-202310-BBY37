@@ -27,75 +27,77 @@ async function getLabelsFromImage(imageFile) {
         const client = new vision.ImageAnnotatorClient();
 
         // Define the label hints for food ingredients
-        const labelHints = [{
-                description: 'meat'
-            },
-            {
-                description: 'poultry'
-            },
-            {
-                description: 'fish'
-            },
-            {
-                description: 'seafood'
-            },
-            {
-                description: 'egg'
-            },
-            {
-                description: 'dairy'
-            },
-            {
-                description: 'cheese'
-            },
-            {
-                description: 'milk'
-            },
-            {
-                description: 'yogurt'
-            },
-            {
-                description: 'tofu'
-            },
-            {
-                description: 'beans'
-            },
-            {
-                description: 'legumes'
-            },
-            {
-                description: 'nuts'
-            },
-            {
-                description: 'seeds'
-            },
-            {
-                description: 'grains'
-            },
-            {
-                description: 'bread'
-            },
-            {
-                description: 'pasta'
-            },
-            {
-                description: 'rice'
-            },
-            {
-                description: 'vegetable'
-            },
-            {
-                description: 'fruit'
-            },
-            {
-                description: 'herb'
-            },
-            {
-                description: 'spice'
-            },
-            {
-                description: 'oil'
-            },
+        const labelHints = [
+            {description: 'cooking ingredient'},
+            // {
+            //     description: 'meat'
+            // },
+            // {
+            //     description: 'poultry'
+            // },
+            // {
+            //     description: 'fish'
+            // },
+            // {
+            //     description: 'seafood'
+            // },
+            // {
+            //     description: 'egg'
+            // },
+            // {
+            //     description: 'dairy'
+            // },
+            // {
+            //     description: 'cheese'
+            // },
+            // {
+            //     description: 'milk'
+            // },
+            // {
+            //     description: 'yogurt'
+            // },
+            // {
+            //     description: 'tofu'
+            // },
+            // {
+            //     description: 'beans'
+            // },
+            // {
+            //     description: 'legumes'
+            // },
+            // {
+            //     description: 'nuts'
+            // },
+            // {
+            //     description: 'seeds'
+            // },
+            // {
+            //     description: 'grains'
+            // },
+            // {
+            //     description: 'bread'
+            // },
+            // {
+            //     description: 'pasta'
+            // },
+            // {
+            //     description: 'rice'
+            // },
+            // {
+            //     description: 'vegetable'
+            // },
+            // {
+            //     description: 'fruit'
+            // },
+            // {
+            //     description: 'herb'
+            // },
+            // {
+            //     description: 'spice'
+            // },
+            // {
+            //     description: 'oil'
+            // },
 
             // Add more relevant food ingredient labels or keywords as needed
         ];
