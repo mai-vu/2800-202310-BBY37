@@ -38,13 +38,13 @@ function captureFrame() {
     formData.append('imageFile', blob, 'image.jpg');
 
     // Call the getLabelsFromImage function with the image file
-    getLabelsFromImage(formData);
+    getObjectsFromImage(formData);
 }
 
 // Add event listener to the capture button
 captureButton.addEventListener('click', captureFrame);
 
-async function getLabelsFromImage(imageFile) {
+async function getObjectsFromImage(imageFile) {
     console.log('Getting labels from image...');
 
     const response = await fetch("/webcam/getLabels", {
@@ -53,9 +53,9 @@ async function getLabelsFromImage(imageFile) {
     });
 
     const data = await response.json();
-    if (data.labels && data.labels.length > 0) {
-        const labels = data.labels;
-        labels.forEach(label => console.log(label.description));
+    if (data.objects && data.objects.length > 0) {
+        const objects = data.objects;
+        objects.forEach(object => console.log(object.name));
     } else {
         console.log('No labels found in the image.');
     }

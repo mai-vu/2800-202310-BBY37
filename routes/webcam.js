@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-async function getLabelsFromImage(imageFile) {
+async function getObjectsFromImage(imageFile) {
     try {
         // Imports the Google Cloud client library
         const vision = require('@google-cloud/vision');
@@ -27,14 +27,11 @@ async function getLabelsFromImage(imageFile) {
         const client = new vision.ImageAnnotatorClient();
 
         // Perform label detection with label hints on the image file
-        const [result] = await client.labelDetection(imageFile.buffer);
+        const [result] = await client.objectLocalization(imageFile.buffer);
 
-        const labels = result.labelAnnotations;
+        const objects = result.localizedObjectAnnotations;
 
-        // // Extract the label descriptions
-        // const labelDescriptions = labels.map((label) => label.description);
-
-        return labels;
+        return objects;
     } catch (error) {
         console.error('Error in getLabelsFromImage:', error);
         throw new Error('Failed to process image.');
@@ -53,12 +50,12 @@ router.post('/getLabels', upload.single('imageFile'), async (req, res) => {
         const imageFile = req.file;
 
         // Call the function to get labels from the image using Google Cloud Vision API
-        const labels = await getLabelsFromImage(imageFile);
+        const objects = await getObjectsFromImage(imageFile);
 
-        labels.forEach(label => console.log(label.description));
+        objects.forEach(object => console.log(object.name));
 
         res.json({
-            labels: labels
+            objects: objects
         });
     } catch (error) {
         console.error(error);
