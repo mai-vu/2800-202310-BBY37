@@ -55,7 +55,6 @@ async function getLabelsFromImage(imageFile) {
     const data = await response.json();
     if (data.labels && data.labels.length > 0) {
         const labels = data.labels;
-        console.log('Labels:');
         labels.forEach(label => console.log(label.description));
     } else {
         console.log('No labels found in the image.');
