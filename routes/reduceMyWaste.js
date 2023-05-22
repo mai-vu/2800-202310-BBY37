@@ -10,8 +10,22 @@ const configuration = new Configuration({
   });
   const openai = new OpenAIApi(configuration);
 
-//test prompt
-let testPrompt = "give me two things, 1 what do do with expires bananas and what do to do with it when its about to go bad";
+
+//function to make prompt
+function makePrompt(ingredients) {
+    let prompt = `Use this follow array ingredients ` + ingredients + ` , and return a parsonable JSON string in the following format: 
+    [
+        {
+            "name": name of waste,
+            "expired" concise useful recommendations of uses for expired food,
+            "aboutToExpire" concise useful recommendations of uses for food about to expire,
+        }
+    ]
+    `
+    console.log("the made prompt is ", prompt);
+    return prompt;
+
+}
 
 //async function to get content from OpenAi API
 //function to for openai completion without test page
@@ -22,14 +36,11 @@ async function sendPrompt(testPrompt) {
         max_tokens : 2000,
         temperature : 0.9,
     });
-    const parsableJSON = response.data.choices[0].text;
+    const chatString = response.data.choices[0].text;
 
-    // const parsedJSON = JSON.parse(parsableJSON);
+    console.log(chatString);
 
-    console.log(parsableJSON);
-    // console.log(parsedJSON);
-    console.log(parsedJSON.recipes.length);
-    return parsedJSON;
+    return chatString;
     
 };
 
@@ -39,13 +50,14 @@ async function sendPrompt(testPrompt) {
 router.post('/', async (req, res) => {
    let ingredients = req.session.ingredients;
    console.log(ingredients);
-   for (let i = 0; i < ingredients.length; i++) {
-       console.log(ingredients[i]);
-   }
-   let chatString = await sendPrompt(testPrompt);
-   console.log(chatString);
-   res.send(chatString);
    
+   let chatString = await sendPrompt(makePrompt(ingredients));
+   console.log(chatString);
+   let chatJSON = JSON.parse(chatString);
+    console.log(chatJSON);
+   res.render('wasteReductionCards', {
+         wastes : chatJSON
+   });
 });
 
 
