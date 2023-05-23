@@ -1,28 +1,27 @@
-
 /* These are the font setters */
 @font-face {
-    font-family: virgo;
-    src: url(/files_font/virgo.ttf);
+  font-family: virgo;
+  src: url(/files_font/virgo.ttf);
 }
 
 @font-face {
-    font-family: ostrich;
-    src: url(/files_font/ostrichSans.otf);
+  font-family: ostrich;
+  src: url(/files_font/ostrichSans.otf);
 }
 
 @font-face {
-    font-family: ostrichBlack;
-    src: url(/files_font/ostrichSansBlack.otf);
+  font-family: ostrichBlack;
+  src: url(/files_font/ostrichSansBlack.otf);
 }
 
 @font-face {
-    font-family: comfortaa;
-    src: url(/files_font/comfortaa.ttf);
+  font-family: comfortaa;
+  src: url(/files_font/comfortaa.ttf);
 }
 
 @font-face {
-    font-family: comfortaaBold;
-    src: url(/files_font/comfortaaBold.ttf);
+  font-family: comfortaaBold;
+  src: url(/files_font/comfortaaBold.ttf);
 }
 
 @font-face {
@@ -37,27 +36,27 @@
 
 /* These are the classes to implement the font */
 .ostrichFont {
-    font-family: ostrich;
+  font-family: ostrich;
 }
 
 .ostrichFontBlack {
-    font-family: ostrichBlack;
+  font-family: ostrichBlack;
 }
 
 .comfortaa {
-    font-family: comfortaa;
+  font-family: comfortaa;
 }
 
 .comfortaaBold {
-    font-family: comfortaaBold;
+  font-family: comfortaaBold;
 }
 
 /* Typing effect font settings */
 #typedText {
-    font-family: ostrich;
-    font-size: 125%;
-    color: #000;
-  }
+  font-family: ostrich;
+  font-size: 125%;
+  color: #000;
+}
 
 .fixed-card {
   position: fixed;
@@ -67,86 +66,104 @@
 }
 
 .fixed-card {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
-  @media (max-width: 767px) {
-    .fixed-card {
-      align-content: center;
-      width: 90%;
-    }
-  }
+.bg-body-tertiary {
+  background-color: plum !important;
+}
 
-  @media (min-width: 768px) and (max-width: 991px) {
-    .fixed-card {
-      align-content: center;
-      width: 80%;
-    }
+@media (max-width: 767px) {
+  .fixed-card {
+    align-content: center;
+    width: 90%;
   }
+}
 
-  @media (min-width: 992px) and (max-width: 1199px) {
-    .fixed-card {
-      align-content: center;
-      width: 60%;
-    }
+@media (min-width: 768px) and (max-width: 991px) {
+  .fixed-card {
+    align-content: center;
+    width: 80%;
   }
+}
 
-
-  body {
-    background-color: plum;
-    background: url(/img/ai_bg.jpg) no-repeat center fixed;
-    background-size: cover;
+@media (min-width: 992px) and (max-width: 1199px) {
+  .fixed-card {
+    align-content: center;
+    width: 60%;
   }
+}
 
-  .form-control{
-    font-family: comfortaaBold !important;
-  }
+.custom-header {
+  border-bottom: 2px solid rgb(188, 123, 220);
+}
 
+body {
+  background-color: plum;
+  background: url(/img/ai_bg.jpg) no-repeat center fixed;
+  background-size: cover;
+}
 
-  a {
-    float: left;
-    position: relative;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #9d3cce;
-  }
-  
-  a:after {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    height: 3px;
-    width: 0;
-    background: transparent;
-  }
+.form-control {
+  font-family: comfortaaBold !important;
+}
 
-  .nav-link:after {
-    transition: width .5s ease, background-color .5s ease, left .5s ease;
-  }
-  
-  .nav-link:hover:after {
-    width: 100%;
-    left: 0;
-    background: black;
-  }
+.small-link {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  color: rgb(0, 26, 226) !important;
+}
 
-  .nav-link {
-    color: darkmagenta;
-    font-size: 110%;
-  }
+a {
+  float: left;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #9d3cce;
+}
 
-  .nav-link:hover {
-    color: black;
-  }
+a:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 3px;
+  width: 0;
+  background: transparent;
+}
 
-  .hidden {
-    display: none;
-  }
+.nav-link:after {
+  transition: width .5s ease, background-color .5s ease, left .5s ease;
+}
 
-  
-  
+.nav-link:hover:after {
+  width: 100%;
+  left: 0;
+  background: black;
+}
+
+.nav-link {
+  color: darkmagenta;
+  font-size: 110%;
+}
+
+/* Customize the active icon color */
+.nav-link.active i {
+  color: rgb(81, 12, 116);
+}
+
+/* .nav-link:hover {
+  color: black;
+} */
+
+.hidden {
+  display: none;
+}
+
+.custom-footer {
+  border-top: 2px solid rgb(188, 123, 220); /* Replace "red" with your desired color */
+}
