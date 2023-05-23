@@ -42,6 +42,10 @@ router.get('/', async (req, res) => {
 
 router.post('/addIngredient', async (req, res) => {
   try {
+    if (!req.session.authenticated) {
+      res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
+      return;
+    }
     const ingredient = req.body.ingredient.trim();
     if (ingredient !== "") {
       // Check if the ingredient already exists in the array
@@ -59,7 +63,7 @@ router.post('/addIngredient', async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error. Please log in again.");
   }
 });
 
