@@ -165,5 +165,5 @@ a:after {
 }
 
 .custom-footer {
-  border-top: 2px solid rgb(188, 123, 220); /* Replace "red" with your desired color */
+  border-top: 2px solid rgb(188, 123, 220); 
 }
