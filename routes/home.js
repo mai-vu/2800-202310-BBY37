@@ -44,7 +44,10 @@ router.post('/addIngredient', async (req, res) => {
   try {
     const ingredient = req.body.ingredient.trim();
     if (ingredient !== "") {
-      req.session.ingredients.push(ingredient);
+      // Check if the ingredient already exists in the array
+      if (!req.session.ingredients.includes(ingredient)) {
+        req.session.ingredients.push(ingredient);
+      }
     }
 
     console.log("add " + req.session.ingredients);
