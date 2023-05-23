@@ -1,0 +1,22 @@
+<div id="recipe-<%= recipe.id %>" class="col-md-8 p-1">
+    <div class="card mb-2" style="max-width: 100%; max-height: 100%; background-color: plum; border-radius: 50px">
+        <a href="/recipes/<%= encodeURIComponent(recipe.name) %>" class="card-link">
+            <div class="card-body">
+                <h2 class="card-title"><%= recipe.name %></h2>
+                <p class="card-text"><%= recipe.description %></p>
+                <% if (parseInt(recipe.minutes) > 60) { %>
+                <% const hours = Math.floor(parseInt(recipe.minutes) / 60); %>
+                <% const minutes = parseInt(recipe.minutes) % 60; %>
+                <p class="card-text"><strong>Time:</strong> <%= hours %> hours <%= minutes %> minutes</p>
+                <% } else { %>
+                <p class="card-text"><strong>Time:</strong> <%= recipe.minutes %> minutes</p>
+                <% } %>
+                <p class="card-text"><strong>Number of Ingredients:</strong> <%= recipe.n_ingredients %></p>
+            </div>
+        </a>
+        <div class="d-flex align-items-center justify-content-end pe-3 pb-2">
+            <i class="btn btn-outline-primary bi <%= recipe.isSaved ? 'bi-heart-fill' : 'bi-heart' %>"
+                style="border-radius: 100%;" onclick="saveRecipe('<%= recipe.id %>', this)"></i>
+        </div>
+    </div>
+</div>

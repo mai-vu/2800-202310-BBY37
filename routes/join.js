@@ -90,7 +90,6 @@ router.post('/submit', async (req, res) => {
         req.session.password = hashedPassword;
         req.session.dietaryRestrictions = dietaryRestrictions;
 
-
         // Redirect the user to the home page
         res.redirect('/home');
     } catch (err) {

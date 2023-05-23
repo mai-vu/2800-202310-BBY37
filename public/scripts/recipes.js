@@ -36,8 +36,8 @@ function saveRecipe(id, icon) {
     .then(response => response.json())
     .then(data => {
       if (data.saved) {
-        icon.classList.remove("bi-star");
-        icon.classList.add("bi-star-fill");
+        icon.classList.remove("bi-heart");
+        icon.classList.add("bi-heart-fill");
       } else {
         // Check if the recipe card is in the '/myRecipes' page
         const isMyRecipesPage = window.location.pathname === '/recipes/myRecipes';
@@ -48,8 +48,8 @@ function saveRecipe(id, icon) {
             recipeCard.remove();
           }
         }
-        icon.classList.remove("bi-star-fill");
-        icon.classList.add("bi-star");
+        icon.classList.remove("bi-heart-fill");
+        icon.classList.add("bi-heart");
       }
     })
     .catch(error => {

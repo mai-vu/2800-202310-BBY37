@@ -25,6 +25,9 @@ function removeIngredient(index) {
         const updatedIngredients = Array.from(document.querySelectorAll('.ingredient-item span'))
           .map(ingredient => ingredient.textContent.trim());
         ingredientsInput.value = JSON.stringify(updatedIngredients);
+
+        // Toggle the Find Recipes button
+        toggleFindRecipesButton();
       } else {
         console.error('Failed to remove ingredient');
       }
@@ -33,6 +36,19 @@ function removeIngredient(index) {
       console.error('Failed to remove ingredient:', error);
     });
 }
+
+const ingredientsInput = document.getElementById('ingredientsInput');
+const findRecipesButton = document.querySelector('form[action="/recipes"] button');
+
+function toggleFindRecipesButton() {
+  const ingredients = JSON.parse(ingredientsInput.value);
+  if (ingredients && ingredients.length >= 1) {
+    findRecipesButton.disabled = false;
+  } else {
+    findRecipesButton.disabled = true;
+  }
+}
+toggleFindRecipesButton();
 
 //Custom Easter Egg Card Appearance
 function showCustomCard(event) {
