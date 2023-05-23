@@ -1,46 +1,48 @@
 <%- include("templates/header") %>
 
-<div class="container" style="padding-left: 2%; padding-right: 2%; margin-bottom: 5%; margin-top: 2.5%; padding-bottom: 2.5%; padding-top: 2.5%; background-color: plum; border-radius: 50px; text-align:justify; max-width: 60%">
-  <div class="d-flex align-items-center justify-content-between">
-    <h1><%= recipe.name %></h1>
-    <i class="btn btn-outline-primary bi <%= recipe.isSaved ? 'bi-star-fill' : 'bi-star' %>"
-      onclick="saveRecipe('<%= recipe.id %>', this)" style="border-radius: 100%"></i>
-  </div>
-  <p><strong>Time:</strong> <%= recipe.minutes %> minutes</p>
+<div class="container pt-1 pb-5">
+  <div class="card bg-body-tertiary p-2">
+    <div class="d-flex align-items-center justify-content-between">
+      <h1><%= recipe.name %></h1>
+      <i class="btn btn-outline-primary bi <%= recipe.isSaved ? 'bi-star-fill' : 'bi-star' %>"
+        onclick="saveRecipe('<%= recipe.id %>', this)"></i>
+    </div>
+    <p><strong>Time:</strong> <%= recipe.minutes %> minutes</p>
 
-  <p><strong>Ingredients:</strong></p>
-  <ul>
-    <% for (let i = 0; i < recipe.ingredients.length; i++) { %>
-      <li><%= recipe.ingredients[i] %></li>
-    <% } %>
-  </ul>
-
-  <p><strong>Nutrition:</strong></p>
-  <ul>
-    <li>Calories: <%= recipe.nutrition[0] %></li>
-    <li>Total Fat: <%= recipe.nutrition[1] %> (PDV)</li>
-    <li>Sugar: <%= recipe.nutrition[2] %> (PDV)</li>
-    <li>Sodium: <%= recipe.nutrition[3] %> (PDV)</li>
-    <li>Protein: <%= recipe.nutrition[4] %> (PDV)</li>
-    <li>Saturated Fat: <%= recipe.nutrition[5] %> (PDV)</li>
-    <li>Carbohydrates: <%= recipe.nutrition[6] %> (PDV)</li>
-  </ul>
-
-  <p><strong>Steps:</strong></p>
-  <ol>
-    <% for (let i = 0; i < recipe.steps.length; i++) { %>
-      <% if (i === 0) { %>
-        <li><%= recipe.steps[i].slice(1) %></li>
-      <% } else if (i === recipe.steps.length - 1) { %>
-        <li><%= recipe.steps[i].slice(0, -1) %></li>
-      <% } else { %>
-        <li><%= recipe.steps[i] %></li>
+    <p><strong>Ingredients:</strong></p>
+    <ul class="list-unstyled">
+      <% for (let i = 0; i < recipe.ingredients.length; i++) { %>
+        <li><%= recipe.ingredients[i] %></li>
       <% } %>
-    <% } %>
-  </ol>
+    </ul>
 
-  <p><strong>Description:</strong></p>
-  <p><%= recipe.description %></p>
+    <p><strong>Nutrition:</strong></p>
+    <ul class="list-unstyled">
+      <li>Calories: <%= recipe.nutrition[0] %></li>
+      <li>Total Fat: <%= recipe.nutrition[1] %> (PDV)</li>
+      <li>Sugar: <%= recipe.nutrition[2] %> (PDV)</li>
+      <li>Sodium: <%= recipe.nutrition[3] %> (PDV)</li>
+      <li>Protein: <%= recipe.nutrition[4] %> (PDV)</li>
+      <li>Saturated Fat: <%= recipe.nutrition[5] %> (PDV)</li>
+      <li>Carbohydrates: <%= recipe.nutrition[6] %> (PDV)</li>
+    </ul>
+
+    <p><strong>Steps:</strong></p>
+    <ol>
+      <% for (let i = 0; i < recipe.steps.length; i++) { %>
+        <% if (i === 0) { %>
+          <li><%= recipe.steps[i].slice(1) %></li>
+        <% } else if (i === recipe.steps.length - 1) { %>
+          <li><%= recipe.steps[i].slice(0, -1) %></li>
+        <% } else { %>
+          <li><%= recipe.steps[i] %></li>
+        <% } %>
+      <% } %>
+    </ol>
+
+    <p><strong>Description:</strong></p>
+    <p><%= recipe.description %></p>
+  </div>
 </div>
 
 <script src="/scripts/recipes.js"></script>
