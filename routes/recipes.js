@@ -55,8 +55,10 @@ router.post('/', async (req, res) => {
                 }
             },
             {
-                // Only return the top 100 recipes
-                $limit: 40
+                //Return only random 40 recipes that match the ingredients
+                $sample: {
+                    size: 40
+                  }
             }
         ]).toArray();
 
