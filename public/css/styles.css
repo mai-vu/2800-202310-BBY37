@@ -136,6 +136,10 @@ a:after {
   background: transparent;
 }
 
+.card-text, .card-title {
+  color: black;
+}
+
 .nav-link:after {
   transition: width .5s ease, background-color .5s ease, left .5s ease;
 }

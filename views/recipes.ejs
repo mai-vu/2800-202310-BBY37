@@ -64,8 +64,8 @@
               <p class="card-text"><strong>Number of Ingredients:</strong> <%= recipes[i].n_ingredients %></p>
             </div>
           </a>
-          <div class="d-flex align-items-center justify-content-end pe-3 pb-2">
-            <i class="btn btn-outline-primary bi <%= recipes[i].isSaved ? 'bi-star-fill' : 'bi-star' %>"
+          <div class="d-flex align-items-center justify-content-end pe-3 pb-2" >
+            <i class="btn btn-outline-primary bi <%= recipes[i].isSaved ? 'bi-star-fill' : 'bi-star' %>" style="border-radius: 100%;"
               onclick="saveRecipe('<%= recipes[i].id %>', this)"></i>
           </div>
         </div>
