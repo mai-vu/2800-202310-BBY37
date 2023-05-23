@@ -4,7 +4,7 @@
   <div class="card bg-body-tertiary p-2">
     <div class="d-flex align-items-center justify-content-between">
       <h1><%= recipe.name %></h1>
-      <i class="btn btn-outline-primary bi <%= recipe.isSaved ? 'bi-star-fill' : 'bi-star' %>"
+      <i class="btn btn-outline-primary bi <%= recipe.isSaved ? 'bi-heart-fill' : 'bi-heart' %>"
         onclick="saveRecipe('<%= recipe.id %>', this)"></i>
     </div>
     <p><strong>Time:</strong> <%= recipe.minutes %> minutes</p>
