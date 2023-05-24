@@ -7,23 +7,26 @@
     </div>
   </div>
 
-  <div class="row justify-content-center">
+  <<div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
-      <div class="card text-center fixed-card" style="margin-top: 5%">
-        <div class="card-body py-4 px-3" style="font-family: comfortaaBold; max-width: 200%;">
+      <div class="card text-center fixed-card bg-body-tertiary" style="margin-top: 5%">
+        <div class="card-body py-4 px-3 text-center" style="font-family: comfortaaBold; max-width: 200%;">
           <% if (error) { %>
-            <div class="alert alert-danger" role="alert">
-              <%= error %>
-            </div>
+          <div class="alert alert-danger" role="alert">
+            <%= error %>
+          </div>
           <% } %>
           <h5 class="card-title">Welcome!</h5>
           <p class="card-text">Sign up or log in to get started.</p>
-          <a href="/join/signup" class="btn btn-lg" style="background-color: plum;">Sign Up</a>
-          <a href="/join/login" class="btn btn-lg">Log In</a>
+          <div class="d-flex justify-content-center">
+            <a href="/join/signup" class="btn btn-lg btn-primary me-2" style="background-color: rgb(153, 77, 191);">Sign Up</a>
+            <a href="/join/login" class="btn btn-lg btn-secondary ms-2" style="background-color: rgb(212, 85, 195);">Log In</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
+    
 </main>
 
 

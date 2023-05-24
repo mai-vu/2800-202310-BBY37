@@ -1,83 +1,57 @@
 <%- include("templates/header") %>
 
-<div class="container" style="padding-top: 2%; padding-bottom: 2%;">
-  <h1 class="ostrichFontBlack" style="text-align: center; text-decoration:underline">Recipes</h1>
-
-  <!-- Checkbox for ignoring dietary restrictions and sorting drop down -->
-  <form class="mt-2" id="recipesForm" method="<%= isMyRecipesPage ? 'GET' : 'POST' %>" action="<%= isMyRecipesPage ? '/recipes/myRecipes' : '/recipes' %>">
-    <div class="form-group">
-      <label for="sortOption">Sort by:</label>
-      <select class="form-control" id="sortOption" onchange="sortRecipes()">
-        <option value="" <%= !sort ? 'selected' : '' %>>Most matched ingredients</option>
-        <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Time: Ascending</option>
-        <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Time: Descending</option>
-        <option value="numIngredients" <%= sort === 'numIngredients' ? 'selected' : '' %>>Least Ingredients Required</option>
-      </select>
-      <input type="hidden" id="sortInput" name="sort" value="<%= sort %>">
-    </div>
-
-    <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="ignoreDietaryRestrictionsCheckbox"
-        onchange="toggleDietaryRestrictions(this)" value="<%= ignoreDietaryRestrictions %>"
-        <% if(ignoreDietaryRestrictions) { %>checked<% } %>>
-      <label class="form-check-label" for="ignoreDietaryRestrictionsCheckbox">Ignore my dietary restrictions</label>
-
-      <!-- Hidden inputs for dietary restrictions and ingredients -->
-      <input type="hidden" id="ignoreDietaryRestrictionsInput" name="ignoreDietaryRestrictions"
-        value="<%= ignoreDietaryRestrictions %>">
-        <% if (!isMyRecipesPage) { %>
-          <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= ingredients %>">
-        <% } %>
-    </div>    
-  </form>
-
-  <% if (recipes.length === 0) { %>
-  <p class="ostrichFontBlack" style="text-align: center;">Sorry, no recipes found.</p>
-  <% } else { %>
+<div class="container">
   <div class="row justify-content-center">
-    <% for (let i = 0; i < recipes.length; i++) { %>
-    <!-- Inside the loop -->
-    <% if (ignoreDietaryRestrictions || ((!dietaryRestrictions.includes('Gluten-Free') || recipes[i].tags.includes('gluten-free')) 
-    && (!dietaryRestrictions.includes('Low-Carb') || recipes[i].tags.includes('low-carb')) 
-    &&(!dietaryRestrictions.includes('Low-Fat') || recipes[i].tags.includes('low-fat')) 
-    && (!dietaryRestrictions.includes('Vegetarian') || (recipes[i].tags.includes('vegan') && recipes[i].tags.includes('vegetarian'))) 
-    && (!dietaryRestrictions.includes('Lactose-Free') || recipes[i].tags.includes('dairy-free'))
-    )) { %>
-    <div id="recipe-<%= recipes[i].id %>" class="col-md-6">
-      <div class="card mb-4" style="max-width: 100%; max-height: 100%; background-color: plum; border-radius: 50px">
-        <div class="card-body">
-          <h2 class="card-title"><%= recipes[i].name %></h2>
-          <p class="card-text"><%= recipes[i].description %></p>
-          <% if (parseInt(recipes[i].minutes) > 60) { %>
-          <% const hours = Math.floor(parseInt(recipes[i].minutes) / 60); %>
-          <% const minutes = parseInt(recipes[i].minutes) % 60; %>
-          <p class="card-text"><strong>Time:</strong> <%= hours %> hours <%= minutes %> minutes</p>
-          <% } else { %>
-          <p class="card-text"><strong>Time:</strong> <%= recipes[i].minutes %> minutes</p>
-          <% } %>
-          <p class="card-text"><strong>Number of Ingredients:</strong> <%= recipes[i].n_ingredients %></p>
-          <p class="card-text"><strong>Tags:</strong></p>
-          <div class="tags comfortaaBold">
-            <% for (let j = 0; j < recipes[i].tags.length; j++) { %>
-            <span class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill">
-              <%= recipes[i].tags[j] %>
-            </span>
-            <% } %>
-          </div><br>
-          <div class="d-flex align-items-center justify-content-between">
-            <a href="/recipes/<%= encodeURIComponent(recipes[i].name) %>" class="btn btn-primary">View Recipe</a>
-            <i class="btn btn-outline-primary bi <%= recipes[i].isSaved ? 'bi-star-fill' : 'bi-star' %>"
-              onclick="saveRecipe('<%= recipes[i].id %>', this)"></i>
-          </div>
+    <div class="col-md-8">
+      <form class="card bg-body-tertiary p-2" id="recipesForm" method="<%= isMyRecipesPage ? 'GET' : 'POST' %>"
+        action="<%= isMyRecipesPage ? '/recipes/myRecipes' : '/recipes' %>">
+        <div class="form-group">
+          <label for="sortOption">Sort by:</label>
+          <select class="form-control" id="sortOption" onchange="sortRecipes()">
+            <option value="" <%= !sort ? 'selected' : '' %>>Most matched ingredients (Default)</option>
+            <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Time: Ascending</option>
+            <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Time: Descending</option>
+            <option value="numIngredients" <%= sort === 'numIngredients' ? 'selected' : '' %>>Least Ingredients Required
+            </option>
+          </select>
+          <input type="hidden" id="sortInput" name="sort" value="<%= sort %>">
         </div>
-      </div>
+
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="ignoreDietaryRestrictionsCheckbox"
+            onchange="toggleDietaryRestrictions(this)" value="<%= ignoreDietaryRestrictions %>"
+            <% if (ignoreDietaryRestrictions) { %>checked<% } %>>
+          <label class="form-check-label" for="ignoreDietaryRestrictionsCheckbox">Ignore my dietary restrictions</label>
+        </div>
+
+        <input type="hidden" id="ignoreDietaryRestrictionsInput" name="ignoreDietaryRestrictions"
+          value="<%= ignoreDietaryRestrictions %>">
+        <% if (!isMyRecipesPage) { %>
+        <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= ingredients %>">
+        <% } %>
+      </form>
     </div>
-    <% } %>
+  </div>
+
+  <div class="container" style="padding-top: 2%; padding-bottom: 2%;">
+    <% if (recipes.length === 0) { %>
+    <p class="ostrichFontBlack" style="text-align: center;">Sorry, no recipes found.</p>
+    <% } else { %>
+    <div class="row justify-content-center pb-3">
+      <% for (let i = 0; i < recipes.length; i++) { %>
+        <!-- Inside the loop -->
+        <% if (ignoreDietaryRestrictions || ((!dietaryRestrictions.includes('Gluten-Free') || recipes[i].tags.includes('gluten-free')) 
+              && (!dietaryRestrictions.includes('Low-Carb') || recipes[i].tags.includes('low-carb')) 
+              &&(!dietaryRestrictions.includes('Low-Fat') || recipes[i].tags.includes('low-fat')) 
+              && (!dietaryRestrictions.includes('Vegetarian') || (recipes[i].tags.includes('vegan') && recipes[i].tags.includes('vegetarian'))) 
+            && (!dietaryRestrictions.includes('Lactose-Free') || recipes[i].tags.includes('dairy-free')))) { %>
+            <%- include("templates/recipes-card", { recipe: recipes[i] }) %>
+        <% } %>
+      <% } %>
+    </div>
     <% } %>
   </div>
-  <% } %>
-</div>
 
-<script src="/scripts/recipes.js"></script>
+  <script src="/scripts/recipes.js"></script>
 
-<%- include("templates/footer") %>
+  <%- include("templates/footer") %>
