@@ -107,7 +107,7 @@ body {
   background-size: cover;
 }
 
-.form-control {
+.form-control, .btn {
   font-family: comfortaaBold !important;
 }
 
