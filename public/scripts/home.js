@@ -32,6 +32,25 @@ function removeIngredient(index) {
     });
 }
 
+function addWaste(waste) {
+  fetch("/home/addWaste", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        waste: waste
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Waste added:", waste);
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+}
+
 const ingredientsInput = document.getElementById('ingredientsInput');
 const findRecipesButton = document.querySelector('form[action="/recipes"] button');
 

@@ -44,14 +44,14 @@ async function sendPrompt(testPrompt) {
 
 //Generate recipes based on ingredients list
 router.post('/', async (req, res) => {
-   let ingredients = req.session.ingredients;
-   console.log(ingredients);
+   let wasteList = req.session.wasteList;
+   console.log(wasteList);
    
-//    let chatString = await sendPrompt(makePrompt(ingredients));
-//    let chatJSON = JSON.parse(chatString);
-//        res.render('wasteReductionCards', {
-//          wastes : chatJSON
-//    });
+   let chatString = await sendPrompt(makePrompt(wasteList));
+   let chatJSON = JSON.parse(chatString);
+       res.render('wasteReductionCards', {
+         wastes : chatJSON
+   });
 });
 
 module.exports = router
