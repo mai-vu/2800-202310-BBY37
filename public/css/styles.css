@@ -160,6 +160,12 @@ a:after {
   color: rgb(81, 12, 116);
 }
 
+.btn-sm {
+  color: rgb(81, 12, 116);
+  border-radius: 50px;
+  background-color: plum; 
+  border-color: rgb(81, 12, 116);
+}
 /* .nav-link:hover {
   color: black;
 } */

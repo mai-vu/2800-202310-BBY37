@@ -1,21 +1,63 @@
-<div class="container mt-5">
-  <h2 class="mb-4 ostrichFontBlack">Reduce Your Waste</h2>
-  <p class="mb-4">Choose ingredients to find creative ways to reduce waste or make something yummy:</p>
+<%- include("templates/header") %>
 
-  <div class="row">
-    <div class="col-md-6">
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('banana peels')">Banana peels</button>
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('stale bread')">Stale bread</button>
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('overripe tomatoes')">Overripe tomatoes</button>
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('leftover cooked rice')">Leftover cooked rice</button>
+<div class="container mt-1 pb-5">
+  <div class="card bg-body-tertiary p-4">
+    <h3 class="mb-2 ostrichFontBlack">200,000+ recipes await. But before that...</h3>
+    <p class="mb-2">Did you know: Nearly 60% of the food produced in Canada is tossed every year.
+      Here are some of the most commonly wasted items that you may have in your kitchen:
+    </p>
+    <div class="row">
+      <div class="col-md-6">
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2" onclick="addWaste('banana peels')">Banana
+          peels</button>
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2" onclick="addWaste('stale bread')">Stale
+          bread</button>
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2" onclick="addWaste('overripe tomatoes')">Overripe
+          tomatoes</button>
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2"
+          onclick="addWaste('leftover cooked rice')">Leftover cooked rice</button>
+      </div>
+
+      <div class="col-md-6 ">
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2" onclick="addWaste('wilting herbs')">Wilting
+          herbs</button>
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2" onclick="addWaste('overripe bananas')">Overripe
+          bananas</button>
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2" onclick="addWaste('bruised apples')">Bruised
+          apples</button>
+        <button class="btn btn-outline-primary btn-sm btn-block mb-2" onclick="addWaste('vegetable scraps')">Vegetable
+          scraps</button>
+      </div>
     </div>
 
-    <div class="col-md-6">
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('wilting herbs')">Wilting herbs</button>
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('overripe bananas')">Overripe bananas</button>
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('bruised apples')">Bruised apples</button>
-      <button class="btn btn-outline-primary btn-block mb-3" onclick="addWaste('vegetable scraps')">Vegetable scraps</button>
+    <div class="w-100 mt-3 mb-3 d-flex justify-content-between">
+      <input class="form-control" type="text" name="waste" placeholder="Or Enter Yours">
+      <button class="btn btn-info" onclick="addWasteFromInput()"
+        style="background-color: rgb(212, 85, 195);">Add</button>
     </div>
+
+    <!-- Prints ingredients -->
+    <div class="bg-plum rounded-10px p-3">
+      <%- include('templates/ingredients', {ingredients: wasteList}) %>
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      <!-- Added container div with flex utility classes -->
+      <form method="POST" action="/reduceMyWaste">
+        <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= JSON.stringify(wasteList) %>">
+        <button class="btn" style="background-color: rgb(212, 85, 195)">Reduce My Waste!</button>
+      </form>
+    </div>
+
+  </div>
+  <div class="d-flex justify-content-center mt-2">
+    <!-- Added container div with flex utility classes -->
+    <form method="GET" action="/home">
+      <input type="hidden" id="isFindRecipes" name="isFindRecipes" value="true">
+      <button class="btn btn-success">I'm Good, Take Me to Recipes Library</button>
+    </form>
   </div>
 </div>
 
+<script src="/scripts/home.js"></script>
+<%- include("templates/footer") %>

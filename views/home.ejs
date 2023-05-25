@@ -1,14 +1,16 @@
 <%- include("templates/header") %>
+<div class="d-flex justify-content-start mt-1 ps-3"> <!-- Added container div with flex utility classes -->
+    <form method="GET" action="/home">
+      <input type="hidden" id="isFindRecipes" name="isFindRecipes" value="false">
+      <button class="btn btn-sm" style="color: white; background-color: royalblue;">Back</button>
+    </form>
+</div>
 <!-- Home page content -->
-<div class="container py-5 text-center">
-    <h1 class="display-4 fw-bold comfortaaBold">
-        Hello, <%= name %>!
-    </h1>
-    <%- include('reduceMyWaste.ejs') %>
-    <div class="col-lg-6 mx-auto mt-4 ostrichFontBlack">
+<div class="container py-2 text-center">
+    <div class="col-lg-6 mx-auto mt-2 ostrichFontBlack bg-body-tertiary">
         What are we making today?
     </div>
-    <form class="w-100 mx-auto mt-4" id="form" role="userInput" method="POST" action="/home/addIngredient">
+    <form class="w-100 mx-auto mt-2" id="form" role="userInput" method="POST" action="/home/addIngredient">
         <div class="input-group">
             <input class="form-control comfortaaBold" type="text" id="ingredientInput" name="ingredient"
                 placeholder="Enter ingredient" style="border-radius:50px;">
@@ -27,13 +29,6 @@
         <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
         <button class="btn btn-success">Find Recipes</button>
     </form>
-    <form class="mt-2" method="POST" action="/reduceMyWaste">
-        <input type="hidden" id="wasteInput">
-        <button class="btn btn-primary">Reduce My Waste!</button>
-      </form>
-      
-    
-    
 </div>
 
 <script src="/scripts/home.js"></script>
