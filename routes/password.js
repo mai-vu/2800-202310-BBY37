@@ -16,7 +16,12 @@ var {
 } = include('database');
 const userCollection = database.db(mongodb_database).collection('users');
 
+// const imageFilePath = '../img/entreepreneurIconOnly.png';
+
 const sendResetPasswordEmail = (email, resetLink) => {
+//   const image = fs.readFileSync(imageFilePath);
+//   const encodedImage = image.toString('base64');
+//   const dataUrl = `data:image/png;base64,${encodedImage}`;
 
   const msg = {
     to: email,
