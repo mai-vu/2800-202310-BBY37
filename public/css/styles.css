@@ -171,6 +171,10 @@ a:after {
   display: none;
 }
 
+select option {
+  font-size: x-small;
+}
+
 .custom-footer {
   border-top: 2px solid rgb(188, 123, 220); 
 }
