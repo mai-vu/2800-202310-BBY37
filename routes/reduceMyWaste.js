@@ -37,11 +37,7 @@ async function sendPrompt(testPrompt) {
         temperature : 0.9,
     });
     const chatString = response.data.choices[0].text;
-
-    console.log(chatString);
-
     return chatString;
-    
 };
 
 
@@ -51,22 +47,11 @@ router.post('/', async (req, res) => {
    let ingredients = req.session.ingredients;
    console.log(ingredients);
    
-   let chatString = await sendPrompt(makePrompt(ingredients));
-   console.log(chatString);
-   let chatJSON = JSON.parse(chatString);
-    console.log(chatJSON);
-   res.render('wasteReductionCards', {
-         wastes : chatJSON
-   });
+//    let chatString = await sendPrompt(makePrompt(ingredients));
+//    let chatJSON = JSON.parse(chatString);
+//        res.render('wasteReductionCards', {
+//          wastes : chatJSON
+//    });
 });
-
-
-
-
-
-
-
-
-
 
 module.exports = router

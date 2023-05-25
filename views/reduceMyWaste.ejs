@@ -1,57 +1,20 @@
 <div class="container mt-5">
-    <h2 class="mb-4 ostrichFontBlack">Reduce Your Waste</h2>
-    <p class="mb-4">Choose ingredients to find creative ways to reduce waste or make something yummy:</p>
-  
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient1" name="ingredient" value="banana peels">
-          <label class="form-check-label" for="ingredient1">Banana peels</label>
-        </div>
-  
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient2" name="ingredient" value="stale bread">
-          <label class="form-check-label" for="ingredient2">Stale bread</label>
-        </div>
-  
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient3" name="ingredient" value="overripe tomatoes">
-          <label class="form-check-label" for="ingredient3">Overripe tomatoes</label>
-        </div>
-  
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient4" name="ingredient" value="leftover cooked rice">
-          <label class="form-check-label" for="ingredient4">Leftover cooked rice</label>
-        </div>
-      </div>
-  
-      <div class="col-md-6">
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient5" name="ingredient" value="wilting herbs">
-          <label class="form-check-label" for="ingredient5">Wilting herbs</label>
-        </div>
-  
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient6" name="ingredient" value="overripe bananas">
-          <label class="form-check-label" for="ingredient6">Overripe bananas</label>
-        </div>
-  
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient7" name="ingredient" value="bruised apples">
-          <label class="form-check-label" for="ingredient7">Bruised apples</label>
-        </div>
-  
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="ingredient8" name="ingredient" value="vegetable scraps">
-          <label class="form-check-label" for="ingredient8">Vegetable scraps</label>
-        </div>
-      </div>
+  <h2 class="mb-4 ostrichFontBlack">Reduce Your Waste</h2>
+  <p class="mb-4">Choose ingredients to find creative ways to reduce waste or make something yummy:</p>
+
+  <div class="row">
+    <div class="col-md-6">
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('banana peels')">Banana peels</button>
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('stale bread')">Stale bread</button>
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('overripe tomatoes')">Overripe tomatoes</button>
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('leftover cooked rice')">Leftover cooked rice</button>
     </div>
-  
-    <div class="row">
-      <div class="col-md-12">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+
+    <div class="col-md-6">
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('wilting herbs')">Wilting herbs</button>
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('overripe bananas')">Overripe bananas</button>
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('bruised apples')">Bruised apples</button>
+      <button class="btn btn-outline-primary btn-block mb-3" onclick="addIngredient('vegetable scraps')">Vegetable scraps</button>
     </div>
   </div>
-  
+</div>
