@@ -7,6 +7,7 @@ const express = require('express')
 const router = express.Router()
 const expireTime = 60 * 60 * 1000; // 1 hour
 const sgMail = require('@sendgrid/mail');
+const fs = require('fs');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const mongodb_database = process.env.MONGODB_DATABASE;
@@ -16,20 +17,37 @@ var {
 const userCollection = database.db(mongodb_database).collection('users');
 
 const sendResetPasswordEmail = (email, resetLink) => {
-    const msg = {
-        to: email,
-        from: 'noreply.entreepreneur@gmail.com',
-        subject: 'Reset your password for Entreepreneur account',
-        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`
-    };
-    sgMail
-        .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
-        })
+
+  const msg = {
+    to: email,
+    from: 'noreply.entreepreneur@gmail.com',
+    subject: 'Entreepreneur - Password Reset',
+    html: `
+      <p>Hello,<br>
+      You have requested a password reset for your account. Please follow the instructions below to reset your password:</p>
+      <ol>
+        <li>Visit the password reset page by clicking on the link below:<br>
+          <a href="https://entreepreneur.cyclic.app/password/forgot-password">Reset Password</a>
+        </li>
+        <li>If the link doesn't work, copy and paste the following URL into your web browser:<br>
+          <a href="https://entreepreneur.cyclic.app/password/forgot-password">https://entreepreneur.cyclic.app/password/forgot-password</a>
+        </li>
+        <li>You will be directed to a page where you can enter your new password.</li>
+      </ol>
+      <p>If you did not initiate this password reset request, please ignore this email. No further action is required.</p>
+      <p>Best,<br>
+      - The Entreepreneur Team</p>
+    `
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log('Email sent');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 // Generate a random token
@@ -84,8 +102,8 @@ router.post('/forgot-password', async (req, res) => {
         });
         
         // Send password reset email with reset token
-        // const resetLink = `http://localhost:3000/password/reset-password?token=${resetToken}`;
-        const resetLink = `https://entreepreneur.cyclic.app/password/reset-password?token=${resetToken}`;
+        const resetLink = `http://localhost:3000/password/reset-password?token=${resetToken}`;
+        // const resetLink = `https://entreepreneur.cyclic.app/password/reset-password?token=${resetToken}`;
         sendResetPasswordEmail(email, resetLink);
         console.log(resetLink);
 
@@ -150,4 +168,4 @@ router.post('/reset-password', async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;
