@@ -4,6 +4,11 @@
   <div class="row align-items-center g-lg-5 py-5">
     <div class="col-md-10 mx-auto col-lg-5">
       <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" action='/join/loggingin' method='post'>
+        <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+          <%= error %>
+        </div>
+        <% } %>
         <div class="form-floating mb-3">
           <input name='email' type="email" class="form-control ostrichFontBlack" id="floatingInput"
             placeholder="name@example.com" required>
@@ -14,9 +19,11 @@
             placeholder="Password" required>
           <label for="floatingPassword">Password</label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary ostrichFontBlack" style="background-color: rgb(212, 85, 195);" type="submit">Sign In</button>
+        <button class="w-100 btn btn-lg btn-primary ostrichFontBlack" style="background-color: rgb(212, 85, 195);"
+          type="submit">Log In</button>
         <div class="text-center mt-3">
-          <a href="/password/forgot-password" class="text-body-secondary small-link" style="color: blue;">Forgot your password?</a>
+          <a href="/password/forgot-password" class="text-body-secondary small-link" style="color: blue;">Forgot your
+            password?</a>
         </div>
         <hr class="my-4">
         <small class="text-body-secondary comfortaaBold">By clicking Sign In, you agree to the terms of use.</small>

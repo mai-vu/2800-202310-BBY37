@@ -1,27 +1,30 @@
 <%- include("templates/header") %>
 
-<div class="container col-xl-10 col-xxl-8 px-4 py-5">
-    <div class="row align-items-center g-lg-5 py-5">
-        <div class="col-lg-7 text-center text-lg-start">
-            <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Create User</h1>
-        </div>
+<div class="container col-xl-10 col-xxl-8 px-4 py-4 pt-1">
+    <div class="row align-items-center g-lg-5 py-1">
         <div class="col-md-10 mx-auto col-lg-5">
-            <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" method="post" action="/join/submit">
-                <div class="form-floating mb-3">
-                    <input name='name' type="text" class="form-control" id="floatingInput" placeholder="Your name" required>
+            <form class="p-3 p-md-5 border rounded-3 bg-body-tertiary" method="post" action="/join/submit">
+                <% if (error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+                <% } %>
+                <div class="form-floating mb-2">
+                    <input name='name' type="text" class="form-control" id="floatingInput" placeholder="Your name"
+                        required>
                     <label for="floatingInput">Name</label>
                 </div>
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-2">
                     <input name='email' type="email" class="form-control" id="floatingInput"
                         placeholder="name@example.com" required>
                     <label for="floatingInput">Email address</label>
                 </div>
-                <div class="form-floating mb-3">
+                <div class="form-floating mb-2">
                     <input name='password' type="password" class="form-control" id="floatingPassword"
                         placeholder="Password" required>
                     <label for="floatingPassword">Password</label>
                 </div>
-                <div class="form-group mb-3">
+                <div class="form-group mb-2">
                     <label for="dietaryRestrictions">Dietary Restrictions: (Optional)</label>
                     <% dietaryRestrictions.forEach(function(dietaryRestriction) { %>
                     <div class="form-check">
@@ -33,10 +36,10 @@
                     </div>
                     <% }); %>
                 </div>
-                
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
-                <hr class="my-4">
-                <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                <button class="w-100 btn btn-lg btn-primary" style="background-color: rgb(153, 77, 191);"
+                    type="submit">Sign up</button>
+                <hr class="my-2">
+                <small class="text-body-secondary comfortaaBold">By clicking Sign up, you agree to the terms of use.</small>
             </form>
         </div>
     </div>
