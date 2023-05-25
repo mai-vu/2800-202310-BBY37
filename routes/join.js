@@ -22,7 +22,7 @@ const userCollection = database.db(mongodb_database).collection('users');
 router.get('/signup', (req, res) => {
     const error = req.query.error;
     res.render('signup', {
-        dietaryRestrictions: allRestrictions, 
+        dietaryRestrictions: allRestrictions,
         error: error
     });
 });

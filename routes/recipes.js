@@ -55,12 +55,15 @@ router.post('/', async (req, res) => {
                 }
             },
             {
-                //Return only random 40 recipes that match the ingredients
+                $limit: 10000
+            },
+            {
                 $sample: {
-                    size: 40
-                  }
+                    size: 10
+                }
             }
         ]).toArray();
+
 
         // Retrieve the user's email from the session
         const email = req.session.email;
@@ -101,7 +104,7 @@ router.post('/', async (req, res) => {
                 ingredients: ingredientsJSON,
                 sort: sortOption,
                 ignoreDietaryRestrictions: ignoreDietaryRestrictions,
-                recipes: recipesWithSavedStatus, 
+                recipes: recipesWithSavedStatus,
                 isMyRecipesPage: false
             });
         } else {
@@ -131,14 +134,14 @@ router.get('/myRecipes', async (req, res) => {
 
         //if user doesn't have any saved recipes, assign an empty array
         const savedRecipeIds = user.savedRecipes || [];
-        
+
         // Retrieve the saved recipes from the recipe collection
         const savedRecipes = await recipeCollection.find({
             id: {
                 $in: savedRecipeIds
             }
         }).toArray();
-  
+
 
         // Add 'isSaved' property to each recipe
         savedRecipes.forEach(recipe => {
