@@ -166,12 +166,13 @@ a:after {
   background-color: plum; 
   border-color: rgb(81, 12, 116);
 }
-/* .nav-link:hover {
-  color: black;
-} */
 
 .hidden {
   display: none;
+}
+
+select option {
+  font-size: x-small;
 }
 
 .custom-footer {

@@ -7,7 +7,7 @@
         action="<%= isMyRecipesPage ? '/recipes/myRecipes' : '/recipes' %>">
         <div class="form-group">
           <label for="sortOption">Sort by:</label>
-          <select class="form-control" id="sortOption" onchange="sortRecipes()">
+          <select class="form-control" id="sortOption" onchange="sortRecipes()" style="font-size: small;">
             <option value="" <%= !sort ? 'selected' : '' %>>Most matched ingredients (Default)</option>
             <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Time: Ascending</option>
             <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Time: Descending</option>
@@ -39,14 +39,14 @@
     <% } else { %>
     <div class="row justify-content-center pb-3">
       <% for (let i = 0; i < recipes.length; i++) { %>
-        <!-- Inside the loop -->
-        <% if (ignoreDietaryRestrictions || ((!dietaryRestrictions.includes('Gluten-Free') || recipes[i].tags.includes('gluten-free')) 
+      <!-- Inside the loop -->
+      <% if (ignoreDietaryRestrictions || ((!dietaryRestrictions.includes('Gluten-Free') || recipes[i].tags.includes('gluten-free')) 
               && (!dietaryRestrictions.includes('Low-Carb') || recipes[i].tags.includes('low-carb')) 
               &&(!dietaryRestrictions.includes('Low-Fat') || recipes[i].tags.includes('low-fat')) 
               && (!dietaryRestrictions.includes('Vegetarian') || (recipes[i].tags.includes('vegan') && recipes[i].tags.includes('vegetarian'))) 
             && (!dietaryRestrictions.includes('Lactose-Free') || recipes[i].tags.includes('dairy-free')))) { %>
-            <%- include("templates/recipes-card", { recipe: recipes[i] }) %>
-        <% } %>
+      <%- include("templates/recipes-card", { recipe: recipes[i] }) %>
+      <% } %>
       <% } %>
     </div>
     <% } %>
