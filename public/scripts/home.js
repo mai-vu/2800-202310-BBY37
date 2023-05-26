@@ -91,8 +91,6 @@ function addWasteFromInput() {
   }
 }
 
-
-
 const ingredientsInput = document.getElementById('ingredientsInput');
 const findRecipesButton = document.querySelector('form[action="/recipes"] button');
 const reduceWasteButton = document.querySelector('form[action="/reduceMyWaste"] button');
@@ -119,7 +117,9 @@ toggleButton();
 
 // Disable the Reduce Waste button after clicking
 document.querySelector('form[action="/reduceMyWaste"]').addEventListener('submit', function() {
-  reduceWasteButton.disabled = true;
+  if (reduceWasteButton && reduceWasteButton.disabled === false) {
+    reduceWasteButton.disabled = true;
+  }
 });
 
 //Custom Easter Egg Card Appearance
