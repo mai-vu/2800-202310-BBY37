@@ -117,6 +117,10 @@ function toggleButton() {
 }
 toggleButton();
 
+// Disable the Reduce Waste button after clicking
+document.querySelector('form[action="/reduceMyWaste"]').addEventListener('submit', function() {
+  reduceWasteButton.disabled = true;
+});
 
 //Custom Easter Egg Card Appearance
 function showCustomCard(event) {
