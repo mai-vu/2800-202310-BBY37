@@ -86,28 +86,97 @@
             ├──   recipes-card.ejs
             └──   wasteCard.ejs
  
- ## Instructions***
- How to install or run the project
-    
-    <aside>
-    💡 **The main point here is to tell the new developer how to use the GitHub repo to begin working on your web app, including:**
-    
-    1. What does the developer need to install (don’t leave anything out!) like:
-        1. language(s)
-        2. IDEs
-        3. Database(s)
-        4. Other software
-    2. Which 3rd party APIs and frameworks does the developer need to download?
-    3. Do they need any API keys?
-    4. In which order should they install things? Does installation location matter?
-    5. Include detailed configuration instructions.
-    6. Include a link to the testing plan you have completed so the new developer can see your testing history and maybe contribute to a minor bugfix!
-    7. ***In a separate plaintext file called passwords.txt that has NOT been added to your repo, provide us with any admin/user/server login IDs and passwords. Don’t add this to your repo, especially if your repo is public! Upload this plaintext file to the 05d Dropbox in D2L.***
-    </aside>
-    
+ ## Instructions
+
+1. Installation Requirements:
+   - Language: JavaScript (Node.js)
+   - IDEs: Any preferred code editor or IDE (e.g., Visual Studio Code, Atom)
+   - Database: MongoDB (Make sure it is installed and running)
+
+2. 3rd Party APIs and Frameworks:
+   - Install the required dependencies by running the command: `npm install` in the project directory. The dependencies include:
+      - @sendgrid/mail
+      - bcrypt
+      - connect-mongo
+      - dotenv
+      - ejs
+      - express
+      - express-session
+      - fs
+      - Joi
+      - MongoDB
+
+3. API Keys:
+   - OpenAI Key: Obtain an API key from OpenAI and store it in the appropriate environment variable or configuration file.
+
+4. Installation Order and Location:
+   - Install Node.js and MongoDB according to their respective official documentation.
+   - Clone the project repository from [https://github.com/mai-vu/2800-202310-BBY37.git].
+   - Navigate to the project directory.
+   - Run the command `npm install` to install the required dependencies.
+
+5. Configuration:
+   - Create a `.env` file in the root directory of the project.
+   - Add the required environment variables in the `.env` file, such as the database connection URL and OpenAI API key.
+   - Refer to the `.env.example` file provided in the project for the required environment variables.
+
 ## How to use the product (Features)***
 
-## Credits, References, and Licenses ***
+## Credits
+Contributors        Github              
+- Mai Vu,           mai-vu
+- Tomasz Stojek,    TomaszStojek
+- Samuel Chua,      Crite-Spranberries
+- Haurence Li,      qowier
+
+Guides and Videos:
+
+"CodeDeepDive: [https://www.youtube.com/watch?v=_gQITRGs4y0&ab_channel=CodeDeepDive]
+SendGrid API Documentation: [https://docs.sendgrid.com/for-developers/sending-email/api-getting-started]
+Google Cloud Vision API Documentation: [https://cloud.google.com/vision/docs]
+MongoDB Atlas Search Documentation: [https://www.mongodb.com/docs/atlas/atlas-search/text/]
+Studio3T: [https://www.youtube.com/watch?v=yZsKlxJcReE&ab_channel=Studio3T]
+Acknowledgment:
+
+ChatGPT: A special acknowledgment goes to ChatGPT for providing valuable assistance throughout the project. [https://chat.openai.com/]
+
+## References 
+
+Dataset:
+
+Dataset from Kaggle: [https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions]
+Citation: "Generating Personalized Recipes from Historical User Preferences" by Bodhisattwa Prasad Majumder, Shuyang Li, Jianmo Ni, Julian McAuley. EMNLP, 2019. [Link to the paper]
+
+Image Content Credits:
+
+Minecraft:
+mushroomBlock: [https://www.deviantart.com/iwithered/art/1080p-Minecraft-Mushroom-Wallpaper-403102898]
+sus_stew: [https://qph.cf2.quoracdn.net/main-qimg-cc299f2127fbf00e184546f2f99f28dd-lq]
+wooden_planks2: [http://pixelartmaker-data-78746291193.nyc3.digitaloceanspaces.com/image/2c6a08e6e3929a6.png]
+background and theme images generated with OpenAi [https://openai.com/product/dall-e-2]
+
+
+## Licenses 
+
+Copyright (c) 2023 Tomasz Stojek
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Entreepreneur), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ## AI Usages
     1. Did you use AI to help create your app? If so, how? Be specific.
