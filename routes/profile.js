@@ -1,5 +1,6 @@
-require("../utils.js");
-require('dotenv').config();
+// Import required modules and dependencies
+require("../utils.js"); // Assuming this is a custom utility module
+require('dotenv').config(); // Load environment variables from .env file
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt');
@@ -36,14 +37,19 @@ router.get('/', (req, res) => {
 
 //Route to edit profile page
 router.get('/editProfile', (req, res) => {
+    // Get the user's information (email, name, password, diet restrictions) from the session
     var name = req.session.name;
     var email = req.session.email;
     var password = req.session.password;
     var restrictions = req.session.dietaryRestrictions;
+
+    // Check if the user is logged in
     if (!req.session.authenticated) {
         res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
         return;
     }
+
+    // Render the edit profile page
     res.render("editProfile", {
         email: email,
         name: name,
@@ -56,7 +62,10 @@ router.get('/editProfile', (req, res) => {
 
 //Define a route for the edit profile form's action
 router.post('/updateProfile', async (req, res) => {
+    // Get the user's email from the session
     const email = req.session.email;
+
+    // Get the user's information from the form
     var {
         name,
         currentPassword,
@@ -89,6 +98,7 @@ router.post('/updateProfile', async (req, res) => {
         return;
     }
 
+    // Check if dietaryRestrictions is an array, and if not, convert it to an array
     if (!Array.isArray(dietaryRestrictions)) {
         dietaryRestrictions = [dietaryRestrictions];
     }
@@ -98,7 +108,7 @@ router.post('/updateProfile', async (req, res) => {
         email
     });
 
-    // Check if the current password is correct
+    // Check if the current password is correct, and if not, render the edit profile page with an error message
     const isCorrectPassword = await bcrypt.compare(currentPassword, user.password);
     if (!isCorrectPassword) {
         return res.render('editProfile', {
@@ -149,6 +159,7 @@ router.post('/updateProfile', async (req, res) => {
     req.session.password = hashedPassword;
     req.session.dietaryRestrictions = dietaryRestrictions;
 
+    // Redirect the user to the profile page
     res.redirect('/profile/');
 });
 

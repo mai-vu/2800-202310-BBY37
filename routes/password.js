@@ -1,24 +1,28 @@
-require("../utils.js");
-require('dotenv').config();
-const bcrypt = require('bcrypt');
-const saltRounds = 12;
-const crypto = require('crypto');
-const express = require('express')
-const router = express.Router()
+// Import required modules and dependencies
+require("../utils.js"); // Assuming this is a custom utility module
+require('dotenv').config(); // Load environment variables from .env file
+const bcrypt = require('bcrypt'); // Import bcrypt module for hashing passwords
+const saltRounds = 12; // Number of salt rounds for bcrypt
+const crypto = require('crypto'); // Import crypto module for generating random tokens
+const express = require('express'); // Import express module
+const router = express.Router(); // Create a router object
 const expireTime = 60 * 60 * 1000; // 1 hour
-const sgMail = require('@sendgrid/mail');
-const ejs = require('ejs');
-const path = require('path');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sgMail = require('@sendgrid/mail'); // Import SendGrid module for sending emails
+const ejs = require('ejs'); // Import EJS module for rendering EJS templates
+const path = require('path'); // Import path module for working with file and directory paths
+sgMail.setApiKey(process.env.SENDGRID_API_KEY); // Set SendGrid API key
 
+// Database connection
 const mongodb_database = process.env.MONGODB_DATABASE;
 var {
     database
 } = include('database');
 const userCollection = database.db(mongodb_database).collection('users');
 
+// Path to EJS template
 const templatePath = path.join(__dirname, '..', 'views', 'resetPasswordTemplate.ejs');
 
+// Send password reset email
 const sendResetPasswordEmail = (email, resetLink) => {
     ejs.renderFile(templatePath, {resetLink}, (error, renderedTemplate) => {
         if (error) {
@@ -95,7 +99,7 @@ router.post('/forgot-password', async (req, res) => {
         });
         
         // Send password reset email with reset token
-        // const resetLink = `http://localhost:3000/password/reset-password?token=${resetToken}`;
+        // const resetLink = `http://localhost:3000/password/reset-password?token=${resetToken}`; // for local testing
         const resetLink = `https://entreepreneur.cyclic.app/password/reset-password?token=${resetToken}`;
         sendResetPasswordEmail(email, resetLink);
         console.log(resetLink);

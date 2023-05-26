@@ -1,3 +1,4 @@
+// Updates the value of the hidden input when the user clicks on a checkbox
 function toggleDietaryRestrictions(checkbox) {
   // Update the value of the checkbox input
   checkbox.value = checkbox.checked;
@@ -9,21 +10,22 @@ function toggleDietaryRestrictions(checkbox) {
   document.getElementById('recipesForm').submit();
 }
 
+//Submit the form when the user chooses a sorting option
 function sortRecipes() {
   // Get the sorting option (ascending or descending) from the select element
   const selectElement = document.getElementById('sortOption');
   const sortOption = selectElement.value;
 
+  // Update the value of the hidden input
   const hiddenInput = document.getElementById('sortInput');
   hiddenInput.value = sortOption;
-
-  console.log(sortOption + " in sortRecipe " + hiddenInput.value);
   
   document.getElementById('recipesForm').submit();
 }
 
 //save recipe to user's savedRecipes array, or unsave it if it's already saved
 function saveRecipe(id, icon) {
+  // Send a POST request to the server with the recipe's id
   fetch("/recipes/saveRecipe", {
       method: "POST",
       headers: {
@@ -36,6 +38,7 @@ function saveRecipe(id, icon) {
     .then(response => response.json())
     .then(data => {
       if (data.saved) {
+        // Update the icon to a filled heart if the recipe was saved
         icon.classList.remove("bi-heart");
         icon.classList.add("bi-heart-fill");
       } else {
@@ -48,6 +51,8 @@ function saveRecipe(id, icon) {
             recipeCard.remove();
           }
         }
+
+        // Update the icon to an empty heart if the recipe was unsaved
         icon.classList.remove("bi-heart-fill");
         icon.classList.add("bi-heart");
       }

@@ -3,7 +3,7 @@ document.getElementById('form').addEventListener('submit', function(event) {
     event.preventDefault(); // This will prevent form submission
 });
 
-
+// Add an event listener to the input
 document.getElementById('ingredientInput').addEventListener('input', async function() {
     let testEntry = this.value; // get the current value of the input
 
@@ -22,6 +22,8 @@ document.getElementById('ingredientInput').addEventListener('input', async funct
             // Process your data here
             const suggestionsDiv = document.getElementById('suggestions');
             suggestionsDiv.innerHTML = ''; // Clear out any previous suggestions
+
+            // Loop through the data and add a button for each suggestion
             for (const suggestion of data) {
                 const btn = document.createElement('button');
                 btn.type = 'button';
@@ -36,6 +38,7 @@ document.getElementById('ingredientInput').addEventListener('input', async funct
                     document.querySelector('[role="userInput"]').submit();
                 });
                 
+                // Add the button to the suggestions div
                 suggestionsDiv.appendChild(btn);
             }
         } catch (error) {
