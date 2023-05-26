@@ -1,14 +1,10 @@
 # Welcome to Entréepreneur!
 #### Our team, BBY 37, is developing Entréepreneur, a personalized meal planning app, to help individuals reduce food waste and simplify their cooking experience with sustainable recipes tailored to their existing inventory.
 ## Technologies used
-1. Javascript
-2. HTML/EJS
-3. CSS
-4. ExpressJS
-5. NodeJS
-6. ChatGPT API
-7. SendGrid API
-8. Database: MongoDB
+- HTML/EJS, CSS, Javascript, ExpressJS/NodeJS
+- APIs: ChatGPT API, SendGrid API
+- CSS framework: BootStrap
+- Database: MongoDB
 
 ## File Contents
     Listing of File Contents of folder
@@ -105,7 +101,14 @@
     7. ***In a separate plaintext file called passwords.txt that has NOT been added to your repo, provide us with any admin/user/server login IDs and passwords. Don’t add this to your repo, especially if your repo is public! Upload this plaintext file to the 05d Dropbox in D2L.***
     </aside>
     
-## How to use the product (Features)***
+## How to use the product (Features)
+#### List of notable features:
+- Sign in or sign up, with feature to reset password by entering your email again.
+- Select any common perishables to figure out how to use them!
+- Enter any other soon-to-perish food item and find out how to utilize them most effectively.
+- Enter ingredients into the ingredients search bar to find recipes!
+- Figure out what the recipes need, how long it takes to make, and fun story tidbits from the recipe creator!
+- Save favourite recipes and view them in My Recipes!
 
 ## Credits, References, and Licenses ***
 
@@ -134,5 +137,5 @@ For any and all inquiries to our team BBY-37, or about our app Entréepreneur, p
 - Samuel Chua, schua15@my.bcit.ca
 - Haurence Li, hli223@my.bcit.ca
 
-#### Shoutout: 
+### Shoutout: 
 Special thanks to guidance provided by Instructors at BCIT, especailly Carly, and Patrick.
