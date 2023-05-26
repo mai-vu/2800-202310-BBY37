@@ -1,33 +1,29 @@
 # Welcome to Entréepreneur!
 #### Our team, BBY 37, is developing Entréepreneur, a personalized meal planning app, to help individuals reduce food waste and simplify their cooking experience with sustainable recipes tailored to their existing inventory.
 ## Technologies used
-1. Javascript
-2. HTML/EJS
-3. CSS
-4. ExpressJS
-5. NodeJS
-6. ChatGPT API
-7. SendGrid API
-8. Database: MongoDB
+- HTML/EJS, CSS, Javascript, ExpressJS/NodeJS
+- APIs: ChatGPT API, SendGrid API
+- CSS framework: BootStrap
+- Database: MongoDB
 
 ## File Contents
     Listing of File Contents of folder
     .
-    ├──   .gitignore
-    ├──   database.js
-    ├──   index.js
-    ├──   package.json
-    ├──   Procfile
-    ├──   README.md
-    ├──   utils.js
+    ├──   .gitignore                          # File specifying which files and directories should be ignored by Git.
+    ├──   database.js                         # File containing code related to the database operations.
+    ├──   index.js                            # Main entry point file for the application.
+    ├──   package.json                        # File containing metadata and dependencies information for the project.
+    ├──   Procfile                            # File used by Qoddi to specify the commands needed to run the application.
+    ├──   README.md                           # File containing documentation and information about the project.
+    ├──   utils.js                            # File containing utility functions for the application.
     ├──   .vscode
-    │   └──   settings.json 
+    │   └──   settings.json                   # Configuration file for Visual Studio Code with project-specific settings.
     │
     ├──   public
-    |   │   └──   dietaryRestrictions.json
-    │   ├──   css
+    |   │   └──   dietaryRestrictions.json    # jSon file to store dietary restrictions of users.
+    │   ├──   css                             # Folder containing personalized CSS of our app.
     |   │   └──   styles.css
-    │   ├──   files_font
+    │   ├──   files_font                      # Folder containing all fonts used in the app.
     |   │   ├──   comfortaa.ttf
     |   │   ├──   comfortaaBold.ttf
     |   │   ├──   mcItalic.otf
@@ -35,7 +31,7 @@
     |   │   ├──   ostrichSans.otf
     |   │   ├──   ostrichSansBlack.otf
     |   │   └──   virgo.ttf
-    │   ├──   img
+    │   ├──   img                             # Folder containing all images used in the app, including logo and easter eggs.
     |   │   ├──   404.gif
     |   │   ├──   ai_bg.jpg
     |   │   ├──   entreePreneurIconOnly.png
@@ -45,46 +41,46 @@
     |   │   ├──   sus_stew.png
     |   │   └──   wooden_planks2.jpg
     |   |       
-    |   └──   scripts
-    |       ├──   editProfile.js
-    |       ├──   footer.js
-    |       ├──   home.js
-    |       ├──   index.js
-    |       ├──   recipes.js
-    |       └──   topTen.js
+    |   └──   scripts                         # Folder containing all scripts used in the app.
+    |       ├──   editProfile.js              # Script for handling profile editing.
+    |       ├──   footer.js                   # Script for handling footer logic.
+    |       ├──   home.js                     # Script for handling app home logic.
+    |       ├──   index.js                    # Script for handling log-in authentitcation.
+    |       ├──   recipes.js                  # Script for handling recipe population.
+    |       └──   topTen.js                   # Script for handling top ten recipe results.
     |           
-    └──   routes
-    |   ├──   fuzzySearch.js
-    |   ├──   home.js
-    |   ├──   join.js
-    |   ├──   password.js
-    |   ├──   profile.js
-    |   ├──   recipes.js
-    |   └──   reduceMyWaste.js
+    └──   routes                              # Express Routes for handling javascript.
+    |   ├──   fuzzySearch.js                  # Script for handling fuzzy search.
+    |   ├──   home.js                         # Script for handling logged in landing page.
+    |   ├──   join.js                         # Script for handling signing up.
+    |   ├──   password.js                     # Script for handling resetting passwords.
+    |   ├──   profile.js                      # Script for handling profile rendering.
+    |   ├──   recipes.js                      # Script for handling recipe sorting and searching.
+    |   └──   reduceMyWaste.js                # Script for handling waste reduction page.
     |           
-    └──   views
-        ├──   404.ejs
-        ├──   editProfile.ejs
-        ├──   emailSent.ejs
-        ├──   forgot-password.ejs
-        ├──   home.ejs
-        ├──   index.ejs
-        ├──   login.ejs
-        ├──   profile.ejs
-        ├──   recipe.ejs
-        ├──   recipes.ejs
-        ├──   reduceMyWaste.ejs
-        ├──   reset-password.ejs
-        ├──   resetPasswordTemplate.ejs
-        ├──   signup.ejs
-        ├──   wasteReductionCards.ejs
-        └──   templates
-            ├──   easterEgg.ejs
-            ├──   footer.ejs
-            ├──   header.ejs
-            ├──   ingredients.ejs
-            ├──   recipes-card.ejs
-            └──   wasteCard.ejs
+    └──   views                               # Folder for all HTML in EJS format.
+        ├──   404.ejs                         # HTML for the 404 page.
+        ├──   editProfile.ejs                 # HTML for the editProfile page.
+        ├──   emailSent.ejs                   # HTML for the password reset confirmation.
+        ├──   forgot-password.ejs             # HTML for the forgot password page.
+        ├──   home.ejs                        # HTML for the home page.
+        ├──   index.ejs                       # HTML for the main entry for app.
+        ├──   login.ejs                       # HTML for the log in page.
+        ├──   profile.ejs                     # HTML for the profile page.
+        ├──   recipe.ejs                      # HTML for the recipe card.
+        ├──   recipes.ejs                     # HTML for the recipes results page.
+        ├──   reduceMyWaste.ejs               # HTML for the reduceWaste page.
+        ├──   reset-password.ejs              # HTML for the password reset page.
+        ├──   resetPasswordTemplate.ejs       # HTML for the password reset prompting page.
+        ├──   signup.ejs                      # HTML for the sign up page.
+        ├──   wasteReductionCards.ejs         # HTML for the reduceWaste card.
+        └──   templates                       # Folder for reusable template HTML in EJS
+            ├──   easterEgg.ejs               # HTML for the easter egg page.
+            ├──   footer.ejs                  # HTML for the footer.
+            ├──   header.ejs                  # HTML for the header.
+            ├──   ingredients.ejs             # HTML for the ingredients.
+            ├──   recipes-card.ejs            # HTML for the recipe card template.
+            └──   wasteCard.ejs               # HTML for the reduceWaste card template.
  
  ## Instructions***
  How to install or run the project
@@ -105,7 +101,14 @@
     7. ***In a separate plaintext file called passwords.txt that has NOT been added to your repo, provide us with any admin/user/server login IDs and passwords. Don’t add this to your repo, especially if your repo is public! Upload this plaintext file to the 05d Dropbox in D2L.***
     </aside>
     
-## How to use the product (Features)***
+## How to use the product (Features)
+#### List of notable features:
+- Sign in or sign up, with feature to reset password by entering your email again.
+- Select any common perishables to figure out how to use them!
+- Enter any other soon-to-perish food item and find out how to utilize them most effectively.
+- Enter ingredients into the ingredients search bar to find recipes!
+- Figure out what the recipes need, how long it takes to make, and fun story tidbits from the recipe creator!
+- Save favourite recipes and view them in My Recipes!
 
 ## Credits, References, and Licenses ***
 
@@ -134,5 +137,5 @@ For any and all inquiries to our team BBY-37, or about our app Entréepreneur, p
 - Samuel Chua, schua15@my.bcit.ca
 - Haurence Li, hli223@my.bcit.ca
 
-#### Shoutout: 
+### Shoutout: 
 Special thanks to guidance provided by Instructors at BCIT, especailly Carly, and Patrick.
