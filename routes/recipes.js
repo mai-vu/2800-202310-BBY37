@@ -23,10 +23,12 @@ router.post('/', async (req, res) => {
             return;
         }
 
+        // Retrieve the ignoreDietaryRestrictions value from the request body
         const ignoreDietaryRestrictions = (req.body.ignoreDietaryRestrictions === 'true');
 
+        // Retrieve the ingredients from the request body
         const ingredients = JSON.parse(req.body.ingredients);
-        console.log(ingredients);
+
         // Search for recipes that contain at least one of the ingredients  
         const recipes = await recipeCollection.aggregate([{
                 $match: {
@@ -49,7 +51,8 @@ router.post('/', async (req, res) => {
                     }
                 }
             },
-            {
+            {   
+                //sort by number of matches
                 $sort: {
                     numMatches: -1
                 }
@@ -57,9 +60,10 @@ router.post('/', async (req, res) => {
             {
                 $limit: 10000
             },
-            {
+            {   
+                //randomly select 20 recipes from the top 10000
                 $sample: {
-                    size: 10
+                    size: 20
                 }
             }
         ]).toArray();
