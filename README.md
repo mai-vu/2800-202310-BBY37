@@ -117,12 +117,81 @@
    - Refer to the `.env.example` file provided in the project for the required environment variables.
 
 ## List of notable features:
-- Sign in or sign up, with feature to reset password by entering your email again.
-- Select any common perishables to figure out how to use them!
-- Enter any other soon-to-perish food item and find out how to utilize them most effectively.
-- Enter ingredients into the ingredients search bar to find recipes!
-- Figure out what the recipes need, how long it takes to make, and fun story tidbits from the recipe creator!
-- Save favourite recipes and view them in My Recipes!
+
+    1: Sign-Up / Log-In
+    To sign in to the application, the user must click on the sign-in button featured in the center card visible on the screen. If the user has made an account already, they can log-in through the log-in button.
+
+    *Index > Sign-In*
+    Alt:
+    *Index > Log-In*
+
+    2: Setting User Dietary Restrictions
+    The user's dietary restrictions is provided upon signing in as a new user. This will affect how your meal planning generations will work later. The user can check off as much boxes necessary to fit their needs. This can be edited in the profiles card after logging in.
+
+    *Index > Sign-in (Check off desired boxes)*
+    Alt:
+    *Home > Profile > Edit Profile (Check off desired boxes)*
+
+    3: Forgot Password Reset
+    If the user has logged in before but forgot their password, the app supports a reset password function. Underneath the log-in card is clickable text that allows the user to have a no-reply email sent to the typed in email that helps the user reset their password using a timed token.
+
+    *Index > Log-In > Forgot Password Link > Forgot Password Email (Follow E-Mail Instructions)*
+
+    **Section B: Main Functions**
+
+    1: Ingredient waste reduction utilization prompt
+    Shortly after the login user is instantly placed on the ingredient waste reduction page. User can then insert content in the addition bar, or choose the suggested fuzzy items.
+
+    *Home (User Insert Prompts)*
+
+    2: Meal generation prompt
+    If the user wishes to make a meal out of ingredients, they can click on the generate meal button below the ingredient waste reduction page. This will bring them to the secondary meal recipe generation prompt.
+
+    *Home > Meal Generation Page Button*
+
+    3: Meal recipe page
+    Upon making a meal in the meal generation prompt, the user is able to click on the green button which shows them to the recipe page. Here a user can click on the cards provided if they are interested, and can look at the single recipe card with the full ingredient descriptions.
+
+    *Home > Meal Generation Page Button > Recipe generate Button > Recipe Card*
+
+    4: Meal recipe favoriting
+    Upon searching for a meal recipe, the user is greeted with cards that can be previewed with brief descriptions of their qualities. The user can favorite them both in preview form or in the recipe page by clicking on the card, then clicking on the blue star icon in the bottom right of the card.
+
+    *Home > Meal Generation Page Button > Recipe generate Button > Recipe Card > Star Icon*
+
+    5: Meal recipe sorting
+    The user is able to sort ingredients in the meal generation recipe page. After a user has input their ingredients, recipes will show up. They will already be filtered with the user's dietary preferences, but they can also be sorted by ascending, descending, and least required ingredients, which is all visible after clicking on a white dropdown in the middle of the screen.
+
+    *Home > Meal Generation Page Button > Recipe generate Button > Sort By Button*
+
+    **Section C: Viewing Functions**
+
+    1: Viewing Waste reduction/Meal generation prompt
+    The user can click or remain on the home page which is indicated by a home icon to view both distinct prompts.
+
+    *Home*
+
+    2: Viewing Profile
+    The user can click on the person icon to view all of their account information and dietary restrictions.
+
+    *Home > Profile Icon*
+
+    3: Viewing favorited recipes
+    The user can click on the bookmark icon to view all saved recipes previously favorited.
+
+    *Home > Bookmark Icon*
+
+    4: Logout
+    The user can click on the door icon to log out of the application.
+
+    *Home > Door Exiting Icon*
+
+
+    **Section D: Easter Egg**
+
+    1: Suspicious Stew
+    Upon entering the index page, go to the meal generations page and input: Cremini mushroom, Porcini mushroom, Bread bowl, Rose Petals.
+    *Home > Meal Generation Page Button > Recipe generate Button > Input Ingredients Above*
 
 ## Credits
 Contributors        Github              
