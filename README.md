@@ -116,7 +116,13 @@
    - Add the required environment variables in the `.env` file, such as the database connection URL and OpenAI API key.
    - Refer to the `.env.example` file provided in the project for the required environment variables.
 
-## How to use the product (Features)***
+## List of notable features:
+- Sign in or sign up, with feature to reset password by entering your email again.
+- Select any common perishables to figure out how to use them!
+- Enter any other soon-to-perish food item and find out how to utilize them most effectively.
+- Enter ingredients into the ingredients search bar to find recipes!
+- Figure out what the recipes need, how long it takes to make, and fun story tidbits from the recipe creator!
+- Save favourite recipes and view them in My Recipes!
 
 ## Credits
 Contributors        Github              
