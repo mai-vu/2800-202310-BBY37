@@ -1,18 +1,19 @@
-// fuzzysearch.js
+// Import required modules and dependencies
+require("../utils.js"); // Assuming this is a custom utility module
+require('dotenv').config(); // Load environment variables from .env file
+const express = require('express'); // Import express module
+const router = express.Router(); // Create a router object
 
-require("../utils.js");
-const express = require('express');
-require('dotenv').config();
-const router = express.Router();
-const fs = require('fs');
+// Database connection
 const mongodb_database = process.env.MONGODB_DATABASE;
 var {
     database
 } = include('database');
 
-
+// Get the ingredients collection
 const ingredientsCollection = database.db(mongodb_database).collection('ingredients');
 
+// Define a route for the fuzzy search
 router.get('/', async (req, res) => {
     const testEntry = req.query.entry; // Access testEntry from the query parameters
     try {
@@ -31,8 +32,13 @@ router.get('/', async (req, res) => {
             }
         ];
 
+        // Execute the query
         const docs = await ingredientsCollection.aggregate(query).limit(10).toArray();
+
+        // Extract the top ten results
         const topTen = docs.map(doc => doc.name);
+
+        // json() sends a JSON response composed of the specified data
         res.json(topTen);
     } catch (err) {
         console.error('Error fetching ingredients:', err);
