@@ -8,29 +8,87 @@
 5. NodeJS
 6. ChatGPT API
 7. Database: MongoDB
-## File Contents***
-Listing of File Contents of folder [2 marks]
-    - **Tip: How to get a list of all your files**
-        
-        https://www.groovypost.com/howto/microsoft/list-directory-contents-to-a-printable-and-readable-txt-file/
-        
-        One quick way to get a list of all the files in your folder is the “tree” command. 
-        
-        On Windows: 
-        
-        ```bash
-        where tree        //to see the utility installed in system32
-        help tree         //to see how use this utility
-        tree /f           //to display the names of files in each folder
-        ```
-        
-        On a Mac
-        
-        ```flow
-        brew install tree            //to install the tree utility
-        man tree                     //to see how to use this command
-        tree                         //to show listing of files
-        ```
+
+## File Contents
+Listing of File Contents of folder
+|   .gitignore
+|   database.js
+|   index.js
+|   package.json
+|   Procfile
+|   README.md
+|   utils.js
+|   
++---.vscode
+|       settings.json
+|       
++---public
+|   |   dietaryRestrictions.json
+|   |   
+|   +---css
+|   |       styles.css
+|   |       
+|   +---files_font
+|   |       comfortaa.ttf
+|   |       comfortaaBold.ttf
+|   |       mcItalic.otf
+|   |       mcReg.otf
+|   |       ostrichSans.otf
+|   |       ostrichSansBlack.otf
+|   |       virgo.ttf
+|   |       
+|   +---img
+|   |       404.gif
+|   |       ai_bg.jpg
+|   |       entreePreneurIconOnly.png
+|   |       entreePreneurLogo.png
+|   |       food_bg.jpg
+|   |       mushroomBlock.png
+|   |       sus_stew.png
+|   |       wooden_planks2.jpg
+|   |       
+|   \---scripts
+|           editProfile.js
+|           footer.js
+|           home.js
+|           index.js
+|           recipes.js
+|           topTen.js
+|           
++---routes
+|       fuzzySearch.js
+|       home.js
+|       join.js
+|       password.js
+|       profile.js
+|       recipes.js
+|       reduceMyWaste.js
+|       
+\---views
+    |   404.ejs
+    |   editProfile.ejs
+    |   emailSent.ejs
+    |   forgot-password.ejs
+    |   home.ejs
+    |   index.ejs
+    |   login.ejs
+    |   profile.ejs
+    |   recipe.ejs
+    |   recipes.ejs
+    |   reduceMyWaste.ejs
+    |   reset-password.ejs
+    |   resetPasswordTemplate.ejs
+    |   signup.ejs
+    |   wasteReductionCards.ejs
+    |   
+    \---templates
+            easterEgg.ejs
+            footer.ejs
+            header.ejs
+            ingredients.ejs
+            recipes-card.ejs
+            wasteCard.ejs
+ 
  ## Instructions***
  How to install or run the project
     
@@ -53,23 +111,17 @@ Listing of File Contents of folder [2 marks]
 ## How to use the product (Features)***
 ## Credits, References, and Licenses ***
 ## AI Usages***
-    1. Did you use AI to help create your app? If so, how? Be specific. [ 2 marks]
-    2. DId you use AI to create data sets or clean data sets? If so, how? Be specific. [ 2 marks]
-    3. Does your app use AI? If so, how? Be specific. [ 2 marks]
-    4. Did you encounter any limitations? What were they, and how did you overcome them? Be specific. [ 2 marks]
+    1. Did you use AI to help create your app? If so, how? Be specific.
+    2. DId you use AI to create data sets or clean data sets? If so, how? Be specific.
+    3. Does your app use AI? If so, how? Be specific.
+    4. Did you encounter any limitations? What were they, and how did you overcome them? Be specific.
+
 ## Contact Info
-For any and all inquiries to our team BBY-37, please reach out below at the following email addresses.
-Mai Vu,  hvu28@my.bcit.ca
-Tomasz Stojek, tstojek@my.bcit.ca
-Samuel Chua, schua15@my.bcit.ca
-Haurence Li, hli223@my.bcit.ca
+For any and all inquiries to our team BBY-37, or about our app Entréepreneur, please reach out below at the following email addresses.
+- Mai Vu,  hvu28@my.bcit.ca
+- Tomasz Stojek, tstojek@my.bcit.ca
+- Samuel Chua, schua15@my.bcit.ca
+- Haurence Li, hli223@my.bcit.ca
 
-## Other additional (optional) sections
-
-- Table of contents
-- Illustrations
-- Scope of functionalities
-- Examples of use
-- Project status
-- Sources
-- Other information (Notes)
+#### Shoutout: 
+Special thanks to guidance provided by Instructors at BCIT, especailly Carly, and Patrick.
