@@ -31,8 +31,7 @@ document.getElementById('ingredientInput').addEventListener('input', async funct
                 
                 // Add a click event listener to the button
                 btn.addEventListener('click', function() {
-                    // When the button is clicked, set the input's value to the suggestion,
-                    // and submit the form
+                    // When the button is clicked, set the input's value to the suggestion, and submit the form
                     document.getElementById('ingredientInput').value = suggestion;
                     document.querySelector('[role="userInput"]').submit();
                 });

@@ -23,7 +23,7 @@ const joinRouter = require('./routes/join');
 const homeRouter = require('./routes/home');
 const recipesRouter = require('./routes/recipes');
 const fuzzysearchRouter = require('./routes/fuzzySearch');
-
+const reduceMyWasteRouter = require('./routes/reduceMyWaste');
 
 app.set('view engine', 'ejs')
 
@@ -68,6 +68,8 @@ app.use('/profile', profileRouter);
 app.use('/password', passwordRouter);
 
 app.use('/recipes', recipesRouter);
+
+app.use('/reduceMyWaste', reduceMyWasteRouter);
 
 app.use(express.static(__dirname + "/public"));
 

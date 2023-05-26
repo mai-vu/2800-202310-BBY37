@@ -7,6 +7,8 @@ const express = require('express')
 const router = express.Router()
 const expireTime = 60 * 60 * 1000; // 1 hour
 const sgMail = require('@sendgrid/mail');
+const ejs = require('ejs');
+const path = require('path');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const mongodb_database = process.env.MONGODB_DATABASE;
@@ -15,22 +17,31 @@ var {
 } = include('database');
 const userCollection = database.db(mongodb_database).collection('users');
 
+const templatePath = path.join(__dirname, '..', 'views', 'resetPasswordTemplate.ejs');
+
 const sendResetPasswordEmail = (email, resetLink) => {
-    const msg = {
-        to: email,
-        from: 'noreply.entreepreneur@gmail.com',
-        subject: 'Reset your password for Entreepreneur account',
-        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`
-    };
-    sgMail
-        .send(msg)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
-        })
+    ejs.renderFile(templatePath, {resetLink}, (error, renderedTemplate) => {
+        if (error) {
+            console.error('Error rendering EJS template:', error);
+            return;
+        }
+        const msg = {
+            to: email,
+            from: 'noreply.entreepreneur@gmail.com',
+            subject: 'Reset your password for Entreepreneur account',
+            html: renderedTemplate
+        };
+
+        sgMail.send(msg)
+            .then(() => {
+                console.log('Email sent');
+            })
+            .catch((error) => {
+                console.error('Error sending email:', error);
+            });
+    });
 };
+
 
 // Generate a random token
 function generateToken() {
@@ -89,7 +100,7 @@ router.post('/forgot-password', async (req, res) => {
         sendResetPasswordEmail(email, resetLink);
         console.log(resetLink);
 
-        res.send('Password reset email sent');
+        res.render('emailSent');
     } catch (err) {
         console.error(err);
         return res.status(500).send('Internal server error');
@@ -150,4 +161,4 @@ router.post('/reset-password', async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;

@@ -20,8 +20,10 @@ const userCollection = database.db(mongodb_database).collection('users');
 
 // Define a route for the sign up page
 router.get('/signup', (req, res) => {
+    const error = req.query.error;
     res.render('signup', {
-        dietaryRestrictions: allRestrictions
+        dietaryRestrictions: allRestrictions,
+        error: error
     });
 });
 
@@ -56,8 +58,7 @@ router.post('/submit', async (req, res) => {
                     key
                 }
             } = validationResult.error.details[0];
-            const errorMessage = `Please provide a ${key}.<br> <a href="/join/signup">Try again</a>`;
-            res.send(errorMessage);
+            res.redirect('/join/signup?error=' + encodeURIComponent(`Please provide a ${key}.Try again')`));
             return;
         }
 
@@ -66,7 +67,7 @@ router.post('/submit', async (req, res) => {
             email: email
         });
         if (user) {
-            res.send(`The email address is already in use. <a href="/join/signup">Try again</a>`);
+            res.redirect('/join/signup?error=' + encodeURIComponent(`Email already in use, please try again`));
             return;
         }
 
@@ -90,7 +91,6 @@ router.post('/submit', async (req, res) => {
         req.session.password = hashedPassword;
         req.session.dietaryRestrictions = dietaryRestrictions;
 
-
         // Redirect the user to the home page
         res.redirect('/home');
     } catch (err) {
@@ -101,7 +101,10 @@ router.post('/submit', async (req, res) => {
 
 // Define a route for the login page
 router.get('/login', (req, res) => {
-    res.render('login');
+    const error = req.query.error;
+    res.render('login', {
+        error: error
+    });
 });
 
 // Define a route for the login form's action
@@ -113,7 +116,9 @@ router.post('/loggingin', async (req, res) => {
     const validationResult = schema.validate(email);
     if (validationResult.error) {
         const errorMessage = `Please enter both fields to log in.<br> <a href="/join/login">Try again</a>`;
-        res.send(errorMessage);
+        res.render('login', {
+            error: errorMessage
+        });
         return;
     }
 
@@ -144,8 +149,7 @@ router.post('/loggingin', async (req, res) => {
         return;
     } else {
         console.log("incorrect password");
-        const errorMessage = `Invalid email/password combination.<br><a href="/join/login">Try again</a>`;
-        res.send(errorMessage);
+        res.redirect('/join/login?error=' + encodeURIComponent(`Invalid email/password combination. Try again`));
         return;
     }
 });

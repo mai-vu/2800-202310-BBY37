@@ -1,28 +1,27 @@
-
-/* These are the font setters */
+/* Font setters */
 @font-face {
-    font-family: virgo;
-    src: url(/files_font/virgo.ttf);
+  font-family: virgo;
+  src: url(/files_font/virgo.ttf);
 }
 
 @font-face {
-    font-family: ostrich;
-    src: url(/files_font/ostrichSans.otf);
+  font-family: ostrich;
+  src: url(/files_font/ostrichSans.otf);
 }
 
 @font-face {
-    font-family: ostrichBlack;
-    src: url(/files_font/ostrichSansBlack.otf);
+  font-family: ostrichBlack;
+  src: url(/files_font/ostrichSansBlack.otf);
 }
 
 @font-face {
-    font-family: comfortaa;
-    src: url(/files_font/comfortaa.ttf);
+  font-family: comfortaa;
+  src: url(/files_font/comfortaa.ttf);
 }
 
 @font-face {
-    font-family: comfortaaBold;
-    src: url(/files_font/comfortaaBold.ttf);
+  font-family: comfortaaBold;
+  src: url(/files_font/comfortaaBold.ttf);
 }
 
 @font-face {
@@ -35,30 +34,31 @@
   src: url(/files_font/mcItalic.otf);
 }
 
-/* These are the classes to implement the font */
+/* Classes to implement the font */
 .ostrichFont {
-    font-family: ostrich;
+  font-family: ostrich;
 }
 
 .ostrichFontBlack {
-    font-family: ostrichBlack;
+  font-family: ostrichBlack;
 }
 
 .comfortaa {
-    font-family: comfortaa;
+  font-family: comfortaa;
 }
 
 .comfortaaBold {
-    font-family: comfortaaBold;
+  font-family: comfortaaBold;
 }
 
 /* Typing effect font settings */
 #typedText {
-    font-family: ostrich;
-    font-size: 125%;
-    color: #000;
-  }
+  font-family: ostrich;
+  font-size: 125%;
+  color: #000;
+}
 
+/* Fixed card positioning */
 .fixed-card {
   position: fixed;
   top: 50%;
@@ -66,87 +66,119 @@
   transform: translate(-50%, -50%);
 }
 
+/* Background color */
+.bg-body-tertiary {
+  background-color: plum !important;
+}
+
+/* Typing text styles */
+.typed-text {
+  font-family: ostrich;
+  font-size: 100%;
+  border-radius: 50px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: 3rem; /* Adjust the height as needed */
+  overflow: visible;
+}
+
+/* Relative positioning for fixed card */
 .fixed-card {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  position: relative;
+}
 
-  @media (max-width: 767px) {
-    .fixed-card {
-      align-content: center;
-      width: 90%;
-    }
-  }
+/* Custom header style */
+.custom-header {
+  border-bottom: 2px solid rgb(188, 123, 220);
+}
 
-  @media (min-width: 768px) and (max-width: 991px) {
-    .fixed-card {
-      align-content: center;
-      width: 80%;
-    }
-  }
+/* Body styles */
+body {
+  background-color: plum;
+  background: url(/img/ai_bg.jpg) no-repeat center fixed;
+  background-size: cover;
+}
 
-  @media (min-width: 992px) and (max-width: 1199px) {
-    .fixed-card {
-      align-content: center;
-      width: 60%;
-    }
-  }
+/* Form control and button font */
+.form-control, .btn {
+  font-family: comfortaaBold !important;
+}
 
+/* Small link style */
+.small-link {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  color: rgb(0, 26, 226) !important;
+}
 
-  body {
-    background-color: plum;
-    background: url(/img/ai_bg.jpg) no-repeat center fixed;
-    background-size: cover;
-  }
+/* Link styles */
+a {
+  float: left;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #9d3cce;
+}
 
-  .form-control{
-    font-family: comfortaaBold !important;
-  }
+a:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 3px;
+  width:
 
+ 0;
+  background: transparent;
+}
 
-  a {
-    float: left;
-    position: relative;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #9d3cce;
-  }
-  
-  a:after {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    height: 3px;
-    width: 0;
-    background: transparent;
-  }
+/* Card text and title color */
+.card-text, .card-title {
+  color: black;
+}
 
-  .nav-link:after {
-    transition: width .5s ease, background-color .5s ease, left .5s ease;
-  }
-  
-  .nav-link:hover:after {
-    width: 100%;
-    left: 0;
-    background: black;
-  }
+/* Navigation link animation */
+.nav-link:after {
+  transition: width .5s ease, background-color .5s ease, left .5s ease;
+}
 
-  .nav-link {
-    color: darkmagenta;
-    font-size: 110%;
-  }
+.nav-link:hover:after {
+  width: 100%;
+  left: 0;
+  background: black;
+}
 
-  .nav-link:hover {
-    color: black;
-  }
+/* Navigation link styles */
+.nav-link {
+  color: darkmagenta;
+  font-size: 110%;
+}
 
-  .hidden {
-    display: none;
-  }
+/* Active icon color */
+.nav-link.active i {
+  color: rgb(81, 12, 116);
+}
 
-  
-  
+/* Small button styles */
+.btn-sm {
+  color: rgb(81, 12, 116);
+  border-radius: 50px;
+  background-color: plum; 
+  border-color: rgb(81, 12, 116);
+}
+
+/* Hidden element */
+.hidden {
+  display: none;
+}
+
+/* Select option font size */
+select option {
+  font-size: x-small;
+}
+
+/* Custom footer style */
+.custom-footer {
+  border-top: 2px solid rgb(188, 123, 220); 
+}
