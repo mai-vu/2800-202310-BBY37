@@ -116,6 +116,8 @@
    - Add the required environment variables in the `.env` file, such as the database connection URL and OpenAI API key.
    - Refer to the `.env.example` file provided in the project for the required environment variables.
 
+6. Testing doc : [https://docs.google.com/spreadsheets/d/1D2_0nNGg7m1hTnAi-jS_qQN1x1nJDsQwbwI791cURqY/edit#gid=394496370]
+
 ## List of notable features:
 
     1: Sign-Up / Log-In
