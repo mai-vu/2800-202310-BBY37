@@ -1,19 +1,34 @@
-require("../utils.js");
-require('dotenv').config();
-const express = require('express')
-const router = express.Router()
-const fs = require('fs');
-
-// read and parse the JSON file
-const allRestrictions = JSON.parse(fs.readFileSync('public/dietaryRestrictions.json'));
+// Import required modules and dependencies
+require("../utils.js"); // Assuming this is a custom utility module
+require('dotenv').config(); // Load environment variables from .env file
+const express = require('express') // Import express module
+const router = express.Router() // Create a router object
 
 //database connection
 const mongodb_database = process.env.MONGODB_DATABASE;
 var {
     database
 } = include('database');
+
+// Get the users and recipes collection
 const userCollection = database.db(mongodb_database).collection('users');
 const recipeCollection = database.db(mongodb_database).collection('recipes');
+
+// Helper function to sort recipes
+function sortRecipes(recipes, sortOption) {
+  if (sortOption === 'asc') {
+    // Sort the recipes by minutes in ascending order
+    return recipes.sort((a, b) => a.minutes - b.minutes);
+  } else if (sortOption === 'desc') {
+    // Sort the recipes by minutes in descending order
+    return recipes.sort((a, b) => b.minutes - a.minutes);
+  } else if (sortOption === 'numIngredients') {
+    // Sort the recipes by number of ingredients in ascending order
+    return recipes.sort((a, b) => a.ingredients.length - b.ingredients.length);
+  }
+  // Default sorting option if none of the above conditions match
+  return recipes;
+}
 
 //Generate recipes based on ingredients list
 router.post('/', async (req, res) => {
@@ -23,10 +38,12 @@ router.post('/', async (req, res) => {
             return;
         }
 
+        // Retrieve the ignoreDietaryRestrictions value from the request body
         const ignoreDietaryRestrictions = (req.body.ignoreDietaryRestrictions === 'true');
 
+        // Retrieve the ingredients from the request body
         const ingredients = JSON.parse(req.body.ingredients);
-        console.log(ingredients);
+
         // Search for recipes that contain at least one of the ingredients  
         const recipes = await recipeCollection.aggregate([{
                 $match: {
@@ -49,7 +66,8 @@ router.post('/', async (req, res) => {
                     }
                 }
             },
-            {
+            {   
+                //sort by number of matches
                 $sort: {
                     numMatches: -1
                 }
@@ -57,9 +75,10 @@ router.post('/', async (req, res) => {
             {
                 $limit: 10000
             },
-            {
+            {   
+                //randomly select 20 recipes from the top 10000
                 $sample: {
-                    size: 10
+                    size: 20
                 }
             }
         ]).toArray();
@@ -84,19 +103,13 @@ router.post('/', async (req, res) => {
                 };
             });
 
-            // Sort the recipes based on the sort option
+            // Sort the recipes based on the sort option using the helper function
             const sortOption = req.body.sort;
-            if (sortOption === 'asc') {
-                recipesWithSavedStatus.sort((a, b) => a.minutes - b.minutes);
-            } else if (sortOption === 'desc') {
-                recipesWithSavedStatus.sort((a, b) => b.minutes - a.minutes);
-            } else if (sortOption === 'numIngredients') {
-                recipesWithSavedStatus.sort((a, b) => a.ingredients.length - b.ingredients.length);
-            }
+            const sortedRecipes = sortRecipes(recipesWithSavedStatus, sortOption);
 
             const ingredientsJSON = JSON.stringify(ingredients);
 
-            // Render the recipes page (recipes.ejs) with the matching recipes  
+            // Render the recipes page (recipes.ejs) with the matching recipes and the user's dietary restrictions based on sort option
             res.render("recipes", {
                 email: req.session.email,
                 name: req.session.name,
@@ -104,7 +117,7 @@ router.post('/', async (req, res) => {
                 ingredients: ingredientsJSON,
                 sort: sortOption,
                 ignoreDietaryRestrictions: ignoreDietaryRestrictions,
-                recipes: recipesWithSavedStatus,
+                recipes: sortedRecipes,
                 isMyRecipesPage: false
             });
         } else {
@@ -117,13 +130,16 @@ router.post('/', async (req, res) => {
     }
 });
 
+//View saved recipes
 router.get('/myRecipes', async (req, res) => {
     try {
+        // Redirect to home page if user is not logged in
         if (!req.session.authenticated) {
             res.redirect('/?error=' + encodeURIComponent('You must be logged in to view this page. Sign up or log in now'));
             return;
         }
 
+        // Retrieve the ignoreDietaryRestrictions value from the request query
         const ignoreDietaryRestrictions = (req.query.ignoreDietaryRestrictions === 'true');
 
         // Get the user's saved recipe IDs from the user document
@@ -148,18 +164,13 @@ router.get('/myRecipes', async (req, res) => {
             recipe.isSaved = savedRecipeIds.includes(recipe.id.toString());
         });
 
-        // Sort the recipes based on the sort option
+        // Sort the recipes based on the sort option using the helper function
         const sortOption = req.query.sort;
-        if (sortOption === 'asc') {
-            savedRecipes.sort((a, b) => a.minutes - b.minutes);
-        } else if (sortOption === 'desc') {
-            savedRecipes.sort((a, b) => b.minutes - a.minutes);
-        } else if (sortOption === 'numIngredients') {
-            savedRecipes.sort((a, b) => a.ingredients.length - b.ingredients.length);
-        }
+        const sortedRecipes = sortRecipes(savedRecipes, sortOption);
 
+        // Render the recipes page (recipes.ejs) with the saved recipes and the user's dietary restrictions based on sort option
         res.render('recipes', {
-            recipes: savedRecipes,
+            recipes: sortedRecipes,
             dietaryRestrictions: req.session.dietaryRestrictions,
             ignoreDietaryRestrictions: ignoreDietaryRestrictions,
             sort: sortOption,

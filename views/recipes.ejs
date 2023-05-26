@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <div class="container" style="padding-top: 2%; padding-bottom: 2%;">
+  <div class="container p-2">
     <% if (recipes.length === 0) { %>
     <p class="ostrichFontBlack" style="text-align: center;">Sorry, no recipes found.</p>
     <% } else { %>
@@ -50,6 +50,14 @@
       <% } %>
     </div>
     <% } %>
+
+    <!-- Refresh button -->
+    <div class="text-center pb-5">
+      <% if (!isMyRecipesPage) { %>
+      <button class="btn btn-sm" style="color: white;" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i>
+        New Recipes</button>
+      <% } %>
+    </div>
   </div>
 
   <script src="/scripts/recipes.js"></script>

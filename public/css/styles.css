@@ -51,6 +51,12 @@
   font-family: comfortaaBold;
 }
 
+/* Logo sizing css */
+.logo {
+  max-width: 40%;
+  max-height: 40%;
+}
+
 /* Typing effect font settings */
 #typedText {
   font-family: ostrich;
