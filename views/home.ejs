@@ -1,11 +1,8 @@
 <%- include("templates/header") %>
-<div class="d-flex justify-content-start mt-1 ps-3">
-    <!-- Added container div with flex utility classes -->
-    <button class="btn btn-sm" style="color: white; background-color: royalblue;" onclick="updateFindRecipes(false)">Back</button>
-</div>
+
 <!-- Home page content -->
-<div class="container py-2 text-center">
-    <div class="col-lg-6 mx-auto mt-2 ostrichFontBlack bg-body-tertiary">
+<div class="container text-center">
+    <div class="col-lg-6 mx-auto ostrichFontBlack bg-body-tertiary" style="border-radius: 10px">
         What are we making today?
     </div>
     <form class="w-100 mx-auto mt-2" id="form" role="userInput" method="POST" action="/home/addIngredient">
@@ -21,12 +18,21 @@
         <%- include('templates/ingredients', {ingredients: ingredients}) %>
     </div>
     <form class="mt-4" method="POST" action="/home/clearIngredients">
-        <button class="btn btn-danger">Clear Ingredients</button>
+        <button class="btn btn-danger">Clear All</button>
     </form>
-    <form class="mt-2" method="POST" action="/recipes">
-        <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
-        <button class="btn btn-success">Find Recipes</button>
-    </form>
+</div>
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between mt-2">
+        <button class="btn btn-sm" style="background-color: rgb(153, 77, 191); color: white;" onclick="updateFindRecipes(false)">
+            <i class="bi bi-arrow-left-circle"></i> Reduce Waste
+        </button>
+    
+        <form method="POST" action="/recipes">
+            <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= JSON.stringify(ingredients) %>">
+            <button class="btn btn-sm" style="background-color: rgb(212, 85, 195); color: white;"> Find Recipes <i class="bi bi-arrow-right-circle"></i></button>
+        </form>
+    </div>
 </div>
 
 <script src="/scripts/home.js"></script>

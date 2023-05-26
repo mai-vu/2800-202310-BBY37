@@ -141,8 +141,9 @@ function updateFindRecipes(value) {
   .then(response => {
     if (response.ok) {
       // Update was successful
-      
-      window.location.reload(); // Reload the page to reflect the updated value
+
+      //redeirect to the home page
+      window.location.href = '/home';
     } else {
       // Handle error case
       console.error('Error updating findRecipes value');

@@ -19,13 +19,10 @@ router.get('/', async (req, res) => {
       req.session.wasteList = [];
     }
 
-    console.log(req.session.findRecipes);
-
     if (!req.session.findRecipes || req.session.findRecipes === "false") {
       res.render("reduceMyWaste", {
         name: req.session.name,
         wasteList: req.session.wasteList,
-        isFindRecipes: req.session.findRecipes
       });
     } else {
       res.render("home", {
@@ -46,6 +43,12 @@ router.post('/updateFindRecipes', (req, res) => {
     findRecipes
   } = req.body;
   req.session.findRecipes = findRecipes;
+  //check f there's sth in req.session.ingredients, push to req.session.wasteList
+  if (req.session.ingredients.length > 0) {
+    req.session.wasteList = req.session.wasteList.concat(req.session.ingredients);
+    req.session.ingredients = [];
+  }
+
   res.sendStatus(200);
 });
 
@@ -59,17 +62,10 @@ router.post('/addIngredient', async (req, res) => {
     if (ingredient !== "") {
       if (!req.session.findRecipes && !req.session.wasteList.includes(ingredient)) {
         req.session.wasteList.push(ingredient);
-        res.render("reduceMyWaste", {
-          name: req.session.name,
-          wasteList: req.session.wasteList
-        });
+        res.redirect("/home");
       } else if (req.session.findRecipes && !req.session.ingredients.includes(ingredient)) {
         req.session.ingredients.push(ingredient);
-        res.render("home", {
-          name: req.session.name,
-          dietaryRestrictions: req.session.dietaryRestrictions,
-          ingredients: req.session.ingredients
-        });
+        res.redirect("/home");
       }
     }
   } catch (err) {
@@ -89,8 +85,6 @@ router.post('/removeIngredient', async (req, res) => {
   } else {
     req.session.ingredients.splice(index, 1);
   }
-
-  console.log("list after remove " + req.session.wasteList);
 
   if (!req.session.findRecipes) {
     res.render("reduceMyWaste", {
