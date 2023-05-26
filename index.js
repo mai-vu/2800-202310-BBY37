@@ -25,7 +25,6 @@ const recipesRouter = require('./routes/recipes');
 const fuzzysearchRouter = require('./routes/fuzzySearch');
 const reduceMyWasteRouter = require('./routes/reduceMyWaste');
 
-
 app.set('view engine', 'ejs')
 
 app.use(express.urlencoded({

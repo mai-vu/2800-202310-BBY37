@@ -1,9 +1,7 @@
 <%- include("templates/header") %>
-<div class="d-flex justify-content-start mt-1 ps-3"> <!-- Added container div with flex utility classes -->
-    <form method="GET" action="/home">
-      <input type="hidden" id="isFindRecipes" name="isFindRecipes" value="false">
-      <button class="btn btn-sm" style="color: white; background-color: royalblue;">Back</button>
-    </form>
+<div class="d-flex justify-content-start mt-1 ps-3">
+    <!-- Added container div with flex utility classes -->
+    <button class="btn btn-sm" style="color: white; background-color: royalblue;" onclick="updateFindRecipes(false)">Back</button>
 </div>
 <!-- Home page content -->
 <div class="container py-2 text-center">

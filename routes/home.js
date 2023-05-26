@@ -2,13 +2,6 @@ require("../utils.js");
 require('dotenv').config();
 const express = require('express')
 const router = express.Router()
-const fs = require('fs');
-
-//database connection
-const mongodb_database = process.env.MONGODB_DATABASE;
-var {
-  database
-} = include('database');
 
 //Route to home page
 router.get('/', async (req, res) => {
@@ -26,12 +19,13 @@ router.get('/', async (req, res) => {
       req.session.wasteList = [];
     }
 
-    req.session.findRecipes = req.query.isFindRecipes === "true" ? true : false;
+    console.log(req.session.findRecipes);
 
     if (!req.session.findRecipes || req.session.findRecipes === "false") {
       res.render("reduceMyWaste", {
         name: req.session.name,
-        wasteList: req.session.wasteList
+        wasteList: req.session.wasteList,
+        isFindRecipes: req.session.findRecipes
       });
     } else {
       res.render("home", {
@@ -44,6 +38,15 @@ router.get('/', async (req, res) => {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
+});
+
+//Update req.session.findRecipes
+router.post('/updateFindRecipes', (req, res) => {
+  const {
+    findRecipes
+  } = req.body;
+  req.session.findRecipes = findRecipes;
+  res.sendStatus(200);
 });
 
 router.post('/addIngredient', async (req, res) => {

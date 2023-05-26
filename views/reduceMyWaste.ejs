@@ -45,17 +45,16 @@
       <!-- Added container div with flex utility classes -->
       <form method="POST" action="/reduceMyWaste">
         <input type="hidden" id="ingredientsInput" name="ingredients" value="<%= JSON.stringify(wasteList) %>">
-        <button class="btn btn-success" >Reduce My Waste!</button>
+        <button class="btn btn-success">Reduce My Waste!</button>
       </form>
     </div>
 
   </div>
   <div class="d-flex justify-content-center mt-2">
     <!-- Added container div with flex utility classes -->
-    <form method="GET" action="/home">
-      <input type="hidden" id="isFindRecipes" name="isFindRecipes" value="true">
-      <button class="btn" style="background-color: rgb(212, 85, 195)">I'm Good, Take Me to Recipes Library</button>
-    </form>
+    <button class="btn" style="background-color: rgb(212, 85, 195)" onclick="updateFindRecipes(true)">
+      I'm Good, Take Me to Recipes Library
+    </button>
   </div>
 </div>
 

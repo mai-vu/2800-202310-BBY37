@@ -116,11 +116,43 @@ function toggleButton() {
 toggleButton();
 
 // Disable the Reduce Waste button after clicking
-document.querySelector('form[action="/reduceMyWaste"]').addEventListener('submit', function() {
-  if (reduceWasteButton && reduceWasteButton.disabled === false) {
-    reduceWasteButton.disabled = true;
+document.addEventListener('DOMContentLoaded', function() {
+  const reduceWasteButton = document.querySelector('form[action="/reduceMyWaste"] button');
+  
+  if (reduceWasteButton) {
+    document.querySelector('form[action="/reduceMyWaste"]').addEventListener('submit', function() {
+      if (!reduceWasteButton.disabled) {
+        reduceWasteButton.disabled = true;
+      }
+    });
   }
 });
+
+//Call the updateFindRecipes function when the toggle is clicked
+function updateFindRecipes(value) {
+  console.log('value:' + value);
+  fetch('/home/updateFindRecipes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ findRecipes: value })
+  })
+  .then(response => {
+    if (response.ok) {
+      // Update was successful
+      
+      window.location.reload(); // Reload the page to reflect the updated value
+    } else {
+      // Handle error case
+      console.error('Error updating findRecipes value');
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  });
+}
+
 
 //Custom Easter Egg Card Appearance
 function showCustomCard(event) {
