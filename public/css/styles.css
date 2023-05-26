@@ -1,4 +1,4 @@
-/* These are the font setters */
+/* Font setters */
 @font-face {
   font-family: virgo;
   src: url(/files_font/virgo.ttf);
@@ -34,7 +34,7 @@
   src: url(/files_font/mcItalic.otf);
 }
 
-/* These are the classes to implement the font */
+/* Classes to implement the font */
 .ostrichFont {
   font-family: ostrich;
 }
@@ -58,6 +58,7 @@
   color: #000;
 }
 
+/* Fixed card positioning */
 .fixed-card {
   position: fixed;
   top: 50%;
@@ -65,58 +66,52 @@
   transform: translate(-50%, -50%);
 }
 
-.fixed-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
+/* Background color */
 .bg-body-tertiary {
   background-color: plum !important;
 }
 
-@media (max-width: 767px) {
-  .fixed-card {
-    align-content: center;
-    width: 90%;
-  }
+/* Typing text styles */
+.typed-text {
+  font-family: ostrich;
+  font-size: 100%;
+  border-radius: 50px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: 3rem; /* Adjust the height as needed */
+  overflow: visible;
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-  .fixed-card {
-    align-content: center;
-    width: 80%;
-  }
+/* Relative positioning for fixed card */
+.fixed-card {
+  position: relative;
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
-  .fixed-card {
-    align-content: center;
-    width: 60%;
-  }
-}
-
+/* Custom header style */
 .custom-header {
   border-bottom: 2px solid rgb(188, 123, 220);
 }
 
+/* Body styles */
 body {
   background-color: plum;
   background: url(/img/ai_bg.jpg) no-repeat center fixed;
   background-size: cover;
 }
 
+/* Form control and button font */
 .form-control, .btn {
   font-family: comfortaaBold !important;
 }
 
+/* Small link style */
 .small-link {
   font-size: 0.8rem;
   text-decoration: underline;
   color: rgb(0, 26, 226) !important;
 }
 
+/* Link styles */
 a {
   float: left;
   position: relative;
@@ -132,14 +127,18 @@ a:after {
   bottom: 0;
   left: 50%;
   height: 3px;
-  width: 0;
+  width:
+
+ 0;
   background: transparent;
 }
 
+/* Card text and title color */
 .card-text, .card-title {
   color: black;
 }
 
+/* Navigation link animation */
 .nav-link:after {
   transition: width .5s ease, background-color .5s ease, left .5s ease;
 }
@@ -150,16 +149,18 @@ a:after {
   background: black;
 }
 
+/* Navigation link styles */
 .nav-link {
   color: darkmagenta;
   font-size: 110%;
 }
 
-/* Customize the active icon color */
+/* Active icon color */
 .nav-link.active i {
   color: rgb(81, 12, 116);
 }
 
+/* Small button styles */
 .btn-sm {
   color: rgb(81, 12, 116);
   border-radius: 50px;
@@ -167,14 +168,17 @@ a:after {
   border-color: rgb(81, 12, 116);
 }
 
+/* Hidden element */
 .hidden {
   display: none;
 }
 
+/* Select option font size */
 select option {
   font-size: x-small;
 }
 
+/* Custom footer style */
 .custom-footer {
   border-top: 2px solid rgb(188, 123, 220); 
 }
